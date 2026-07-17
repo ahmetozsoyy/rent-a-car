@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Car, LogOut, LayoutDashboard } from 'lucide-react';
+import { Car, LogOut, LayoutDashboard, Globe } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { useTranslation } from 'react-i18next';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, logout } = useAuthStore();
   const navigate = useNavigate();
+  const { i18n } = useTranslation();
 
   const handleLogout = () => {
     logout();
@@ -31,8 +33,17 @@ const Navbar: React.FC = () => {
           <Link to="/about" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 500 }}>About</Link>
         </div>
 
-        {/* Auth Buttons */}
+        {/* Auth Buttons and Lang Switcher */}
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          
+          {/* Language Switcher */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginRight: '1rem', cursor: 'pointer' }} onClick={() => i18n.changeLanguage(i18n.language === 'tr' ? 'en' : 'tr')}>
+            <Globe size={18} color="var(--text-muted)" />
+            <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+              {i18n.language === 'tr' ? 'TR' : 'EN'}
+            </span>
+          </div>
+
           {isAuthenticated ? (
             <>
               <Link to="/dashboard" className="btn btn-primary" style={{ padding: '0.5rem 1rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
