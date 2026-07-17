@@ -1,5 +1,6 @@
 import React from 'react';
-import { IVehicle, VehicleSegment } from '../types/vehicle';
+import { VehicleSegment } from '../types/vehicle';
+import type { IVehicle } from '../types/vehicle';
 import { useTranslation } from 'react-i18next';
 import { Settings, Fuel, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';

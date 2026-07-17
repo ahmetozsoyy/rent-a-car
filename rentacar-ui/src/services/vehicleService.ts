@@ -1,5 +1,5 @@
 import api from './api';
-import { IVehicle } from '../types/vehicle';
+import type { IVehicle } from '../types/vehicle';
 
 export const vehicleService = {
   getAllVehicles: async (): Promise<IVehicle[]> => {

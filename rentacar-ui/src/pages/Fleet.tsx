@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Search } from 'lucide-react';
 import { vehicleService } from '../services/vehicleService';
-import { IVehicle } from '../types/vehicle';
+import type { IVehicle } from '../types/vehicle';
 import VehicleCard from '../components/VehicleCard';
 import VehicleCardSkeleton from '../components/VehicleCardSkeleton';
 
