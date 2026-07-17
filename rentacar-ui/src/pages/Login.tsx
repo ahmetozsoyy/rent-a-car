@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useAuthStore } from '../store/authStore';
+import { useTranslation } from 'react-i18next';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const loginFn = useAuthStore(state => state.login);
+  const { t } = useTranslation();
   
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
@@ -26,7 +28,7 @@ const Login: React.FC = () => {
       // Redirect to home
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Invalid credentials or login failed.');
+      setError(t('toast.loginError'));
     } finally {
       setLoading(false);
     }
@@ -55,12 +57,12 @@ const Login: React.FC = () => {
       )}
 
       <div className="glass" style={{ width: '100%', maxWidth: '400px', padding: '2rem' }}>
-        <h2 className="text-center">Welcome Back</h2>
-        <p className="text-center mb-4">Login to manage your rentals.</p>
+        <h2 className="text-center">{t('login.title')}</h2>
+        <p className="text-center mb-4">{t('login.subtitle')}</p>
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Email</label>
+            <label className="form-label">{t('login.email')}</label>
             <input 
               type="email" 
               className="form-control" 
@@ -71,7 +73,7 @@ const Login: React.FC = () => {
             />
           </div>
           <div className="form-group">
-            <label className="form-label">Password</label>
+            <label className="form-label">{t('login.password')}</label>
             <input 
               type="password" 
               className="form-control" 
@@ -82,7 +84,7 @@ const Login: React.FC = () => {
             />
           </div>
           <button type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? t('login.loading') : t('login.submit')}
           </button>
         </form>
       </div>

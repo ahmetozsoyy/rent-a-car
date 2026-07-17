@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -17,10 +19,10 @@ const Register: React.FC = () => {
     
     try {
       await api.post('/auth/register', formData);
-      setSuccess('Account created successfully! Redirecting to login...');
+      setSuccess(t('toast.registerSuccess'));
       setTimeout(() => navigate('/login'), 2000);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to create account. Please try again.');
+      setError(t('toast.registerError'));
     } finally {
       setLoading(false);
     }
@@ -49,12 +51,12 @@ const Register: React.FC = () => {
       )}
 
       <div className="glass" style={{ width: '100%', maxWidth: '400px', padding: '2rem' }}>
-        <h2 className="text-center">Create Account</h2>
-        <p className="text-center mb-4">Join us to start renting premium vehicles.</p>
+        <h2 className="text-center">{t('register.title')}</h2>
+        <p className="text-center mb-4">{t('register.subtitle')}</p>
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">First Name</label>
+            <label className="form-label">{t('register.firstName')}</label>
             <input 
               type="text" 
               className="form-control" 
@@ -65,7 +67,7 @@ const Register: React.FC = () => {
             />
           </div>
           <div className="form-group">
-            <label className="form-label">Last Name</label>
+            <label className="form-label">{t('register.lastName')}</label>
             <input 
               type="text" 
               className="form-control" 
@@ -76,7 +78,7 @@ const Register: React.FC = () => {
             />
           </div>
           <div className="form-group">
-            <label className="form-label">Email</label>
+            <label className="form-label">{t('register.email')}</label>
             <input 
               type="email" 
               className="form-control" 
@@ -87,7 +89,7 @@ const Register: React.FC = () => {
             />
           </div>
           <div className="form-group">
-            <label className="form-label">Password</label>
+            <label className="form-label">{t('register.password')}</label>
             <input 
               type="password" 
               className="form-control" 
@@ -98,7 +100,7 @@ const Register: React.FC = () => {
             />
           </div>
           <button type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={loading}>
-            {loading ? 'Creating Account...' : 'Register'}
+            {loading ? t('register.loading') : t('register.submit')}
           </button>
         </form>
       </div>
