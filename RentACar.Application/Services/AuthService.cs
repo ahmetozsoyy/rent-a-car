@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using RentACar.Application.Common.Interfaces;
 using RentACar.Application.DTOs;
 using RentACar.Domain.Entities;
-using RentACar.Domain.Exceptions;
+using RentACar.Domain.Enums;
 
 namespace RentACar.Application.Services;
 
@@ -34,7 +34,8 @@ public class AuthService : IAuthService
             request.FirstName,
             request.LastName,
             request.Email,
-            _passwordHasher.HashPassword(request.Password)
+            _passwordHasher.HashPassword(request.Password),
+            UserRole.Customer
         );
 
         _dbContext.Users.Add(user);
