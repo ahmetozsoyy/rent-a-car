@@ -69,8 +69,16 @@ public class ReservationService : IReservationService
         if (request.PickupLocationId != request.DropoffLocationId)
             totalPrice += 1000m;
 
+        // Phase 15: Credit Card Discount
+        decimal discountAmount = 0;
+        if (request.PaymentMethod == PaymentMethod.CreditCard)
+        {
+            discountAmount = totalPrice * 0.15m; // 15% discount
+            totalPrice -= discountAmount;
+        }
+
         // 4. Rezervasyonu Oluştur
-        var reservation = new Reservation(request.UserId, request.VehicleId, request.PickupLocationId, request.DropoffLocationId, request.StartDate, request.EndDate, totalPrice);
+        var reservation = new Reservation(request.UserId, request.VehicleId, request.PickupLocationId, request.DropoffLocationId, request.StartDate, request.EndDate, totalPrice, request.PaymentMethod, discountAmount, request.DriverFirstName, request.DriverLastName, request.DriverTcNo, request.DriverPhone);
 
         _context.Reservations.Add(reservation);
         await _context.SaveChangesAsync(cancellationToken); 

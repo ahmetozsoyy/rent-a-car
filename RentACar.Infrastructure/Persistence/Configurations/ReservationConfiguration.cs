@@ -10,6 +10,12 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
     {
         builder.HasKey(r => r.Id);
         builder.Property(r => r.TotalPrice).HasColumnType("decimal(18,2)");
+        builder.Property(r => r.DiscountAmount).HasColumnType("decimal(18,2)");
+
+        builder.Property(r => r.DriverFirstName).HasMaxLength(50);
+        builder.Property(r => r.DriverLastName).HasMaxLength(50);
+        builder.Property(r => r.DriverTcNo).HasMaxLength(11);
+        builder.Property(r => r.DriverPhone).HasMaxLength(20);
 
         // Foreign Key İlişkileri (Silinme korumalı)
         builder.HasOne(r => r.User)

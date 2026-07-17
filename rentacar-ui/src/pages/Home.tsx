@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import BookingForm from '../components/BookingForm';
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
@@ -9,10 +10,8 @@ const Home: React.FC = () => {
       <div className="text-center">
         <h1>{t('home.title')}</h1>
         <p>{t('home.subtitle')}</p>
-        <div className="mt-4 flex justify-center gap-4">
-          <button className="btn btn-primary">{t('home.browseFleet')}</button>
-          <button className="btn btn-outline">{t('home.learnMore')}</button>
-        </div>
+        
+        <BookingForm />
       </div>
     </div>
   );

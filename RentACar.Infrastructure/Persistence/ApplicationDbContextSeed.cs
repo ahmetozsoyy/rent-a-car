@@ -21,8 +21,10 @@ public static class ApplicationDbContextSeed
         {
             var loc1 = new Location("İstanbul Havalimanı", "Arnavutköy", "İstanbul", 100);
             var loc2 = new Location("Ankara Esenboğa", "Çubuk", "Ankara", 50);
+            var loc3 = new Location("İzmir Adnan Menderes", "Gaziemir", "İzmir", 40);
+            var loc4 = new Location("Bursa Şehir Merkezi", "Osmangazi", "Bursa", 30);
             
-            context.Locations.AddRange(loc1, loc2);
+            context.Locations.AddRange(loc1, loc2, loc3, loc4);
             await context.SaveChangesAsync();
         }
 
@@ -60,7 +62,8 @@ public static class ApplicationDbContextSeed
             context.RentalExtras.AddRange(
                 new RentalExtra("Bebek Koltuğu", 250, PriceType.PerDay),
                 new RentalExtra("Tam Kapsamlı Premium Sigorta", 1500, PriceType.PerDay),
-                new RentalExtra("Ek Sürücü", 500, PriceType.Fixed)
+                new RentalExtra("Ek Sürücü", 500, PriceType.Fixed),
+                new RentalExtra("Ek Cam ve Lastik Güvencesi", 350, PriceType.PerDay)
             );
             await context.SaveChangesAsync();
         }

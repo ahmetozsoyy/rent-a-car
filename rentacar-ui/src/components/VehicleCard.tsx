@@ -3,7 +3,7 @@ import { VehicleSegment } from '../types/vehicle';
 import type { IVehicle } from '../types/vehicle';
 import { useTranslation } from 'react-i18next';
 import { Settings, Fuel, ChevronRight, ChevronDown, ChevronUp, ShieldCheck, UserCheck, Car } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 interface VehicleCardProps {
   vehicle: IVehicle;
@@ -12,6 +12,7 @@ interface VehicleCardProps {
 const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [isExpanded, setIsExpanded] = useState(false);
   const [insuranceType, setInsuranceType] = useState('standard');
 
@@ -126,7 +127,12 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
 
             {/* Checkout Button */}
             <button 
-              onClick={() => navigate('/checkout')}
+              onClick={() => {
+                const params = new URLSearchParams(searchParams.toString());
+                params.set('vehicleId', vehicle.id);
+                params.set('insurance', insuranceType);
+                navigate(`/checkout?${params.toString()}`);
+              }}
               className="btn btn-primary" 
               style={{ width: '100%', marginTop: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}
             >

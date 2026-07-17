@@ -1,3 +1,5 @@
+using RentACar.Domain.Enums;
+
 namespace RentACar.Application.DTOs;
 
 public record CreateReservationRequest(
@@ -7,5 +9,10 @@ public record CreateReservationRequest(
     Guid DropoffLocationId,
     DateTime StartDate,
     DateTime EndDate,
-    List<Guid> RentalExtraIds
+    List<Guid> RentalExtraIds,
+    PaymentMethod PaymentMethod = PaymentMethod.PayAtOffice,
+    string? DriverFirstName = null,
+    string? DriverLastName = null,
+    string? DriverTcNo = null,
+    string? DriverPhone = null
 );
