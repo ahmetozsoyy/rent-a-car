@@ -20,6 +20,19 @@ var builder = WebApplication.CreateBuilder(args);
 // Application Services
 builder.Services.AddApplicationServices();
 
+// CORS Configuration
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173", "http://localhost:3000") // Vite and Next.js defaults
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+});
+
 // PostgreSQL Connection
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -108,6 +121,9 @@ app.UseHttpsRedirection();
 
 // Hangfire Dashboard
 app.UseHangfireDashboard();
+
+// Use CORS
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
