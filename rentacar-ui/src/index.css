@@ -55,13 +55,16 @@ body {
 
 /* Glassmorphism / Soft Elevation utility */
 .glass {
-  background: var(--bg-card);
+  background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
-  border-radius: var(--border-radius);
   box-shadow: var(--shadow-sm);
-  transition: all var(--transition-speed) ease-in-out;
+  border-radius: 16px;
+}
+
+.glass:hover .vehicle-img {
+  transform: scale(1.05);
 }
 
 .glass-nav {
