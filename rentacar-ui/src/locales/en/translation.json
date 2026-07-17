@@ -47,6 +47,13 @@
     "diesel": "Diesel",
     "dailyRate": "Daily Rate",
     "rentNow": "Rent Now",
-    "noVehicles": "No vehicles found matching your criteria."
+    "close": "Close",
+    "noVehicles": "No vehicles found matching your criteria.",
+    "minAge": "Min. Age",
+    "bodyType": "Body",
+    "insuranceType": "Insurance Type",
+    "standardInsurance": "Standard Insurance (Free)",
+    "premiumInsurance": "Full Premium (+1500₺/day)",
+    "proceedCheckout": "Proceed to Checkout"
   }
 }

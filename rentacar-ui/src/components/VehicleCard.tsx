@@ -100,26 +100,26 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <UserCheck size={16} />
-                <span>Min. Yaş: {vehicle.minDriverAge}</span>
+                <span>{t('fleet.minAge')}: {vehicle.minDriverAge}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <Car size={16} />
-                <span>Kasa: {vehicle.bodyType}</span>
+                <span>{t('fleet.bodyType')}: {vehicle.bodyType}</span>
               </div>
             </div>
 
             {/* Insurance Selection */}
             <div>
-              <h4 style={{ fontSize: '0.875rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Güvence Türü</h4>
+              <h4 style={{ fontSize: '0.875rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>{t('fleet.insuranceType')}</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', cursor: 'pointer' }}>
                   <input type="radio" name={`insurance-${vehicle.id}`} checked={insuranceType === 'standard'} onChange={() => setInsuranceType('standard')} />
-                  Standart Sigorta (Ücretsiz)
+                  {t('fleet.standardInsurance')}
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', cursor: 'pointer' }}>
                   <input type="radio" name={`insurance-${vehicle.id}`} checked={insuranceType === 'premium'} onChange={() => setInsuranceType('premium')} />
                   <ShieldCheck size={16} color="var(--primary)" />
-                  Tam Kapsamlı Premium (+1500₺/gün)
+                  {t('fleet.premiumInsurance')}
                 </label>
               </div>
             </div>
@@ -130,7 +130,7 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
               className="btn btn-primary" 
               style={{ width: '100%', marginTop: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}
             >
-              Rezervasyona Devam Et <ChevronRight size={16} />
+              {t('fleet.proceedCheckout')} <ChevronRight size={16} />
             </button>
 
           </div>

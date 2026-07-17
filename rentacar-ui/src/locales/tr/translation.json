@@ -47,6 +47,13 @@
     "diesel": "Dizel",
     "dailyRate": "Günlük Ücret",
     "rentNow": "Hemen Kirala",
-    "noVehicles": "Arama kriterlerinize uygun araç bulunamadı."
+    "close": "Kapat",
+    "noVehicles": "Arama kriterlerinize uygun araç bulunamadı.",
+    "minAge": "Min. Yaş",
+    "bodyType": "Kasa",
+    "insuranceType": "Güvence Türü",
+    "standardInsurance": "Standart Sigorta (Ücretsiz)",
+    "premiumInsurance": "Tam Kapsamlı Premium (+1500₺/gün)",
+    "proceedCheckout": "Rezervasyona Devam Et"
   }
 }
