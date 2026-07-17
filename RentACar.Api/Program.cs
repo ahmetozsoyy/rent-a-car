@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RentACar.Infrastructure.Persistence;
 using RentACar.Application;
+using RentACar.Application.Common.Interfaces;
 using RentACar.Api.Middlewares;
 using Hangfire;
 using Hangfire.PostgreSql;

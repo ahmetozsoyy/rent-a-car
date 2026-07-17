@@ -7,7 +7,7 @@ namespace RentACar.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplicationServices(IServiceCollection services)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddScoped<IReservationService, ReservationService>();
