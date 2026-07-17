@@ -14,8 +14,7 @@ public class VehicleConfiguration : IEntityTypeConfiguration<Vehicle>
         builder.Property(v => v.Model).IsRequired().HasMaxLength(50);
         builder.Property(v => v.DailyPrice).HasColumnType("decimal(18,2)");
         
-        // Optimistic Concurrency için PostgreSQL'in dahili xmin token yapısını kullanıyoruz
-        builder.UseXminAsConcurrencyToken();
+        builder.Property(v => v.RowVersion).IsRowVersion();
                
         builder.HasOne(v => v.CurrentLocation)
                .WithMany(l => l.Vehicles)
