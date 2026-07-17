@@ -15,8 +15,9 @@ export interface IVehicle {
   segment: VehicleSegment;
   dailyPrice: number;
   currentLocationId: string;
-  // UI için ekstra gösterim alanları (örneğin image URL) backend'de yoksa frontend'de mocklanabilir veya ileride eklenebilir.
   imageUrl?: string;
-  transmission?: 'Auto' | 'Manual'; // Opsiyonel özellikler
-  fuelType?: 'Petrol' | 'Diesel' | 'Electric' | 'Hybrid';
+  transmission: string;
+  fuelType: string;
+  bodyType: string;
+  minDriverAge: number;
 }
