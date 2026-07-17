@@ -55,5 +55,20 @@
     "standardInsurance": "Standart Sigorta (Ücretsiz)",
     "premiumInsurance": "Tam Kapsamlı Premium (+1500₺/gün)",
     "proceedCheckout": "Rezervasyona Devam Et"
+  },
+  "booking": {
+    "pickupLocation": "Alış Ofisi",
+    "dropoffLocation": "Teslim Ofisi",
+    "pickupDate": "Alış Tarihi",
+    "dropoffDate": "Teslim Tarihi",
+    "time": "Saat",
+    "searchCars": "Araç Bul",
+    "sundayClosed": "Pazar günleri ofislerimiz kapalıdır. Lütfen başka bir gün seçin.",
+    "fillRequired": "Lütfen gerekli tüm alanları doldurun."
+  },
+  "checkout": {
+    "title": "Rezervasyon ve Ödeme",
+    "missingParams": "Eksik rezervasyon bilgileri. Lütfen araç seçerek ilerleyin.",
+    "loadError": "Araç bilgileri yüklenemedi."
   }
 }

@@ -23,6 +23,7 @@ public class VehiclesController : BaseController
                 v.Id, 
                 v.Brand, 
                 v.Model, 
+                v.Year,
                 v.DailyPrice, 
                 v.Transmission,
                 v.FuelType,
@@ -34,5 +35,32 @@ public class VehiclesController : BaseController
             .ToListAsync(cancellationToken);
             
         return Ok(vehicles);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetVehicleById(Guid id, CancellationToken cancellationToken)
+    {
+        var vehicle = await _context.Vehicles
+            .Where(v => v.Id == id)
+            .Select(v => new 
+            { 
+                v.Id, 
+                v.Brand, 
+                v.Model, 
+                v.Year,
+                v.DailyPrice, 
+                v.Transmission,
+                v.FuelType,
+                v.BodyType,
+                v.MinDriverAge,
+                v.ImageUrl,
+                Segment = v.Segment.ToString() 
+            })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (vehicle == null)
+            return NotFound(new { message = "Araç bulunamadı." });
+
+        return Ok(vehicle);
     }
 }

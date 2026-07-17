@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { vehicleService } from '../services/vehicleService';
 import type { IVehicle } from '../types/vehicle';
-import { CreditCard, CheckCircle, CarFront, Users } from 'lucide-react';
+import { CreditCard, CheckCircle, CarFront, Users, ShieldCheck } from 'lucide-react';
 
 interface RentalExtra {
   id: string;
@@ -135,8 +135,13 @@ const Checkout: React.FC = () => {
         startDate: pickupDate.toISOString(),
         endDate: dropoffDate.toISOString(),
         rentalExtraIds: selectedExtraIds,
-        paymentMethod: paymentMethod === 'CreditCard' ? 2 : 1, // 2: CreditCard, 1: PayAtOffice
-        ...(isForSomeoneElse ? driverDetails : {})
+        paymentMethod: paymentMethod === 'CreditCard' ? 2 : 1,
+        ...(isForSomeoneElse ? {
+          driverFirstName: driverDetails.firstName,
+          driverLastName: driverDetails.lastName,
+          driverTcNo: driverDetails.tcNo,
+          driverPhone: driverDetails.phone
+        } : {})
       };
       
       const response = await api.post('/reservations', payload);

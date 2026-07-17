@@ -55,5 +55,20 @@
     "standardInsurance": "Standard Insurance (Free)",
     "premiumInsurance": "Full Premium (+1500₺/day)",
     "proceedCheckout": "Proceed to Checkout"
+  },
+  "booking": {
+    "pickupLocation": "Pickup Office",
+    "dropoffLocation": "Dropoff Office",
+    "pickupDate": "Pickup Date",
+    "dropoffDate": "Dropoff Date",
+    "time": "Time",
+    "searchCars": "Find Cars",
+    "sundayClosed": "Our offices are closed on Sundays. Please select another day.",
+    "fillRequired": "Please fill in all required fields."
+  },
+  "checkout": {
+    "title": "Reservation & Payment",
+    "missingParams": "Missing reservation details. Please select a vehicle first.",
+    "loadError": "Failed to load vehicle details."
   }
 }
