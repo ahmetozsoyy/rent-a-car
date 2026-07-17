@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 const Navbar: React.FC = () => {
   const { isAuthenticated, logout } = useAuthStore();
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleLogout = () => {
     logout();
@@ -28,9 +28,9 @@ const Navbar: React.FC = () => {
         
         {/* Navigation Links */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          <Link to="/" style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: 500 }}>Home</Link>
-          <Link to="/fleet" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 500 }}>Fleet</Link>
-          <Link to="/about" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 500 }}>About</Link>
+          <Link to="/" style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: 500 }}>{t('navbar.home')}</Link>
+          <Link to="/fleet" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 500 }}>{t('navbar.fleet')}</Link>
+          <Link to="/about" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 500 }}>{t('navbar.about')}</Link>
         </div>
 
         {/* Auth Buttons and Lang Switcher */}
@@ -47,16 +47,16 @@ const Navbar: React.FC = () => {
           {isAuthenticated ? (
             <>
               <Link to="/dashboard" className="btn btn-primary" style={{ padding: '0.5rem 1rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                <LayoutDashboard size={18} /> Dashboard
+                <LayoutDashboard size={18} /> {t('navbar.dashboard')}
               </Link>
               <button onClick={handleLogout} className="btn btn-outline" style={{ padding: '0.5rem 1rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                <LogOut size={18} /> Logout
+                <LogOut size={18} /> {t('navbar.logout')}
               </button>
             </>
           ) : (
             <>
-              <Link to="/login" className="btn btn-outline" style={{ padding: '0.5rem 1rem' }}>Login</Link>
-              <Link to="/register" className="btn btn-primary" style={{ padding: '0.5rem 1rem' }}>Sign Up</Link>
+              <Link to="/login" className="btn btn-outline" style={{ padding: '0.5rem 1rem' }}>{t('navbar.login')}</Link>
+              <Link to="/register" className="btn btn-primary" style={{ padding: '0.5rem 1rem' }}>{t('navbar.signup')}</Link>
             </>
           )}
         </div>
