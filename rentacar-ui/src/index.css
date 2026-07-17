@@ -1,24 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import '@fontsource/geist-sans/400.css';
+@import '@fontsource/geist-sans/500.css';
+@import '@fontsource/geist-sans/600.css';
+@import '@fontsource/geist-sans/700.css';
+
+@import '@fontsource/geist-mono/400.css';
+@import '@fontsource/geist-mono/500.css';
+@import '@fontsource/geist-mono/600.css';
 
 :root {
-  /* Premium Dark Theme variables */
-  --bg-main: #0f172a;
-  --bg-card: rgba(30, 41, 59, 0.7);
-  --bg-card-hover: rgba(51, 65, 85, 0.8);
+  /* Premium Light Theme variables (Slate/Zinc & Titanium focus) */
+  --bg-main: #f8fafc; /* Slate-50 */
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-hover: rgba(255, 255, 255, 1);
   
-  --text-main: #f8fafc;
-  --text-muted: #cbd5e1;
+  --text-main: #0f172a; /* Slate-900 */
+  --text-muted: #64748b; /* Slate-500 */
   
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --accent: #10b981;
+  --primary: #334155; /* Slate-700 / Titanium Gray */
+  --primary-hover: #1e293b; /* Slate-800 */
+  --accent: #2563eb; /* Corporate Blue accent */
   
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --glass-border: rgba(148, 163, 184, 0.2); /* Slate-400 at 20% */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-glow: 0 0 0 2px rgba(51, 65, 85, 0.2);
   
-  --border-radius: 16px;
-  --transition-speed: 0.3s;
+  --border-radius: 12px;
+  --transition-speed: 200ms; /* 150ms-250ms strict rule */
 }
 
 * {
@@ -28,19 +36,24 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  /* Minimal high-contrast background */
   background-image: 
-    radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.15) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(203, 213, 225, 0.3) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(226, 232, 240, 0.4) 0px, transparent 50%);
   background-attachment: fixed;
 }
 
-/* Glassmorphism utility */
+.technical-data {
+  font-family: 'Geist Mono', monospace;
+}
+
+/* Glassmorphism / Soft Elevation utility */
 .glass {
   background: var(--bg-card);
   backdrop-filter: blur(12px);
@@ -48,33 +61,35 @@ body {
   border: 1px solid var(--glass-border);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-sm);
+  transition: all var(--transition-speed) ease-in-out;
 }
 
 .glass-nav {
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(248, 250, 252, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--glass-border);
   position: sticky;
   top: 0;
   z-index: 50;
+  transition: all var(--transition-speed) ease-in-out;
 }
 
 .glass:hover {
   box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
-  transition: all var(--transition-speed) ease;
+  border-color: rgba(148, 163, 184, 0.4);
 }
 
 /* Typography */
 h1, h2, h3, h4 {
-  font-weight: 700;
-  letter-spacing: -0.025em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   color: var(--text-main);
 }
 
-h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-h2 { font-size: 2rem; margin-bottom: 0.75rem; }
+h1 { font-size: 2.25rem; margin-bottom: 1rem; }
+h2 { font-size: 1.875rem; margin-bottom: 0.75rem; }
 
 p { color: var(--text-muted); }
 
@@ -83,36 +98,38 @@ p { color: var(--text-muted); }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 600;
+  padding: 0.625rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 500;
   cursor: pointer;
-  border: none;
-  transition: all var(--transition-speed) ease;
-  font-size: 1rem;
+  border: 1px solid transparent;
+  transition: all var(--transition-speed) ease-in-out;
+  font-size: 0.95rem;
   text-decoration: none;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  background-color: var(--primary);
   color: white;
-  box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow);
 }
 
 .btn-outline {
   background: transparent;
-  border: 1px solid var(--primary);
+  border: 1px solid var(--glass-border);
   color: var(--primary);
 }
 
 .btn-outline:hover {
-  background: var(--primary);
-  color: white;
+  background: var(--bg-card);
+  border-color: var(--primary);
+  color: var(--primary-hover);
 }
 
 /* Layout */
@@ -125,7 +142,7 @@ p { color: var(--text-muted); }
 
 /* Forms */
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-label {
@@ -133,23 +150,24 @@ p { color: var(--text-muted); }
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text-muted);
+  color: var(--primary);
 }
 
 .form-control {
   width: 100%;
-  padding: 0.75rem 1rem;
-  background: rgba(15, 23, 42, 0.6);
+  padding: 0.625rem 0.875rem;
+  background: white;
   border: 1px solid var(--glass-border);
-  border-radius: 8px;
+  border-radius: 6px;
   color: var(--text-main);
-  transition: all var(--transition-speed);
+  transition: all var(--transition-speed) ease-in-out;
+  font-family: 'Geist Sans', sans-serif;
 }
 
 .form-control:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 /* Utilities */
@@ -169,4 +187,15 @@ p { color: var(--text-muted); }
 @media (min-width: 768px) {
   .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Skeleton Loading Animation */
+@keyframes skeleton-pulse {
+  0% { background-color: rgba(148, 163, 184, 0.1); }
+  50% { background-color: rgba(148, 163, 184, 0.3); }
+  100% { background-color: rgba(148, 163, 184, 0.1); }
+}
+.skeleton {
+  animation: skeleton-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  border-radius: 4px;
 }

@@ -3,7 +3,7 @@
 ## 1. Tasarım Felsefesi ve İlham Kaynakları
 - **Kurumsal ve Premium Duruş:** Arayüz tasarımları kesinlikle **Mercedes-Benz Fleet Management, Tesla Fleet ve BMW ConnectedDrive** panellerinin sadeliğinden ve olgunluğundan ilham alacaktır.
 - **Minimalizm:** Gereksiz görsel kalabalıktan uzak, yüksek kontrastlı, modern, şık ve bol boşluklu (whitespace) bir tasarım dili benimsenecektir.
-- **Renk Paleti:** Koyu mod (Dark Mode) ağırlıklı veya slate/zinc tonlarının hakim olduğu, kurumsal mavi, titanyum gri ve şık metalik aksan renkleriyle desteklenmiş endüstriyel bir palet kullanılacaktır.
+- **Renk Paleti:** açık tema  (Mode) ağırlıklı veya slate/zinc tonlarının hakim olduğu, titanyum gri ve şık metalik aksan renkleriyle desteklenmiş endüstriyel bir palet kullanılacaktır.
 
 ## 2. Tipografi (Font Standartları)
 - **Ana Font:** Tüm arayüzde kesinlikle **Geist** font ailesi (Vercel Geist) kullanılacaktır.
