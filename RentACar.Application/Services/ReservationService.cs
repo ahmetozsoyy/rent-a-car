@@ -13,18 +13,30 @@ public class ReservationService : IReservationService
 {
     private readonly IApplicationDbContext _context;
     private readonly IBackgroundJobClient _backgroundJobClient;
+    private readonly IDistributedLockService _distributedLockService;
 
-    public ReservationService(IApplicationDbContext context, IBackgroundJobClient backgroundJobClient)
+    public ReservationService(IApplicationDbContext context, IBackgroundJobClient backgroundJobClient, IDistributedLockService distributedLockService)
     {
         _context = context;
         _backgroundJobClient = backgroundJobClient;
+        _distributedLockService = distributedLockService;
     }
 
     public async Task<ReservationResultDto> CreateReservationAsync(CreateReservationRequest request, CancellationToken cancellationToken)
     {
-        // 1. Araç mevcut mu?
-        var vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.Id == request.VehicleId, cancellationToken)
-            ?? throw new NotFoundException("Belirtilen araç bulunamadı.");
+        var lockKey = $"vehicle-lock-{request.VehicleId}";
+        bool lockAcquired = await _distributedLockService.AcquireLockAsync(lockKey, TimeSpan.FromSeconds(10));
+
+        if (!lockAcquired)
+        {
+            throw new ConflictException("Şu anda bu araç üzerinde başka bir işlem yapılıyor, lütfen tekrar deneyin.");
+        }
+
+        try
+        {
+            // 1. Araç mevcut mu?
+            var vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.Id == request.VehicleId, cancellationToken)
+                ?? throw new NotFoundException("Belirtilen araç bulunamadı.");
 
         // 2. Çakışma Kontrolü (Zero Double-Booking)
         var hasConflict = await _context.Reservations
@@ -72,11 +84,16 @@ public class ReservationService : IReservationService
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        // 5. Hangfire ile 15 Dakika (900 sn) Kilidi Başlat
-        _backgroundJobClient.Schedule<ReservationTimeoutJob>(
-            job => job.CheckAndExpireReservationAsync(reservation.Id), 
-            TimeSpan.FromMinutes(15));
+            // 5. Hangfire ile 15 Dakika (900 sn) Kilidi Başlat
+            _backgroundJobClient.Schedule<ReservationTimeoutJob>(
+                job => job.CheckAndExpireReservationAsync(reservation.Id), 
+                TimeSpan.FromMinutes(15));
 
-        return new ReservationResultDto(reservation.Id, reservation.Status.ToString(), reservation.TotalPrice, "Rezervasyon başarıyla oluşturuldu. Ödeme için 15 dakikanız var.");
+            return new ReservationResultDto(reservation.Id, reservation.Status.ToString(), reservation.TotalPrice, "Rezervasyon başarıyla oluşturuldu. Ödeme için 15 dakikanız var.");
+        }
+        finally
+        {
+            await _distributedLockService.ReleaseLockAsync(lockKey);
+        }
     }
 }

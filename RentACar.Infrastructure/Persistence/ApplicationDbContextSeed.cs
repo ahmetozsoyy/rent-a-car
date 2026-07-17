@@ -11,7 +11,7 @@ public static class ApplicationDbContextSeed
         // 1. Kullanıcılar
         if (!await context.Users.AnyAsync())
         {
-            var user = new User("Test", "Müşterisi", "test@mercedes.com", "dummy_hash_123");
+            var user = new User("Test", "Müşterisi", "test@mercedes.com", "dummy_hash_123", UserRole.Customer);
             context.Users.Add(user);
             await context.SaveChangesAsync();
         }
@@ -19,8 +19,8 @@ public static class ApplicationDbContextSeed
         // 2. Lokasyonlar
         if (!await context.Locations.AnyAsync())
         {
-            var loc1 = new Location("İstanbul Havalimanı", "Arnavutköy", "İstanbul");
-            var loc2 = new Location("Ankara Esenboğa", "Çubuk", "Ankara");
+            var loc1 = new Location("İstanbul Havalimanı", "Arnavutköy", "İstanbul", 100);
+            var loc2 = new Location("Ankara Esenboğa", "Çubuk", "Ankara", 50);
             
             context.Locations.AddRange(loc1, loc2);
             await context.SaveChangesAsync();
@@ -32,9 +32,9 @@ public static class ApplicationDbContextSeed
             var ist = await context.Locations.FirstAsync(l => l.City == "İstanbul");
             var ank = await context.Locations.FirstAsync(l => l.City == "Ankara");
             
-            var v1 = new Vehicle("Mercedes-Benz", "G63 AMG", 2024, "34MER01", 15000, ist.Id, VehicleSegment.Premium);
-            var v2 = new Vehicle("Tesla", "Model S Plaid", 2024, "34TES01", 12000, ist.Id, VehicleSegment.Premium);
-            var v3 = new Vehicle("BMW", "i8", 2023, "06BMW01", 14000, ank.Id, VehicleSegment.Premium);
+            var v1 = new Vehicle("Mercedes-Benz", "G63 AMG", 2024, VehicleSegment.Luxury, 15000, ist.Id);
+            var v2 = new Vehicle("Tesla", "Model S Plaid", 2024, VehicleSegment.Luxury, 12000, ist.Id);
+            var v3 = new Vehicle("BMW", "i8", 2023, VehicleSegment.Luxury, 14000, ank.Id);
 
             context.Vehicles.AddRange(v1, v2, v3);
             await context.SaveChangesAsync();
