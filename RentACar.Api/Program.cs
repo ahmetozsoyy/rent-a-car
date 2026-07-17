@@ -5,6 +5,8 @@ using RentACar.Application.Common.Interfaces;
 using RentACar.Api.Middlewares;
 using Hangfire;
 using Hangfire.PostgreSql;
+using StackExchange.Redis;
+using RentACar.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
     
 builder.Services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+
+// Redis Connection
+var redisConnectionString = builder.Configuration.GetConnectionString("RedisConnection");
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString!));
+builder.Services.AddScoped<IDistributedLockService, RedisDistributedLockService>();
 
 // Hangfire Settings
 builder.Services.AddHangfire(config => config
