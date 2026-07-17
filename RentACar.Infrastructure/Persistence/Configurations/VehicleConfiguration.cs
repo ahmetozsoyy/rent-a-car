@@ -14,7 +14,7 @@ public class VehicleConfiguration : IEntityTypeConfiguration<Vehicle>
         builder.Property(v => v.Model).IsRequired().HasMaxLength(50);
         builder.Property(v => v.DailyPrice).HasColumnType("decimal(18,2)");
         
-        builder.Property(v => v.RowVersion).IsRowVersion();
+        builder.Property(v => v.RowVersion).IsConcurrencyToken();
                
         builder.HasOne(v => v.CurrentLocation)
                .WithMany(l => l.Vehicles)

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentACar.Infrastructure", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentACar.Api", "RentACar.Api\RentACar.Api.csproj", "{5A30396C-1E68-4BE7-9C51-730C1D99E0E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentACar.IntegrationTests", "RentACar.IntegrationTests\RentACar.IntegrationTests.csproj", "{58967CD6-38A0-4BB0-95AE-F1621D7433DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{5A30396C-1E68-4BE7-9C51-730C1D99E0E3}.Release|x64.Build.0 = Release|Any CPU
 		{5A30396C-1E68-4BE7-9C51-730C1D99E0E3}.Release|x86.ActiveCfg = Release|Any CPU
 		{5A30396C-1E68-4BE7-9C51-730C1D99E0E3}.Release|x86.Build.0 = Release|Any CPU
+		{58967CD6-38A0-4BB0-95AE-F1621D7433DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58967CD6-38A0-4BB0-95AE-F1621D7433DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58967CD6-38A0-4BB0-95AE-F1621D7433DC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{58967CD6-38A0-4BB0-95AE-F1621D7433DC}.Debug|x64.Build.0 = Debug|Any CPU
+		{58967CD6-38A0-4BB0-95AE-F1621D7433DC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{58967CD6-38A0-4BB0-95AE-F1621D7433DC}.Debug|x86.Build.0 = Debug|Any CPU
+		{58967CD6-38A0-4BB0-95AE-F1621D7433DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58967CD6-38A0-4BB0-95AE-F1621D7433DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58967CD6-38A0-4BB0-95AE-F1621D7433DC}.Release|x64.ActiveCfg = Release|Any CPU
+		{58967CD6-38A0-4BB0-95AE-F1621D7433DC}.Release|x64.Build.0 = Release|Any CPU
+		{58967CD6-38A0-4BB0-95AE-F1621D7433DC}.Release|x86.ActiveCfg = Release|Any CPU
+		{58967CD6-38A0-4BB0-95AE-F1621D7433DC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

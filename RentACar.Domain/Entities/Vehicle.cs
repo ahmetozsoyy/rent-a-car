@@ -11,9 +11,8 @@ public class Vehicle : BaseEntity
     public VehicleSegment Segment { get; private set; }
     public decimal DailyPrice { get; private set; }
     public Guid CurrentLocationId { get; private set; }
-    
-    // Optimistic Concurrency Token
     public byte[] RowVersion { get; private set; }
+    
 
     public Location CurrentLocation { get; private set; }
     public ICollection<Reservation> Reservations { get; private set; } = new List<Reservation>();
@@ -28,6 +27,7 @@ public class Vehicle : BaseEntity
         Segment = segment;
         DailyPrice = dailyPrice;
         CurrentLocationId = currentLocationId;
+        RowVersion = Guid.NewGuid().ToByteArray();
     }
 
     public void UpdateLocation(Guid newLocationId)
