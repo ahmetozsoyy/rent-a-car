@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { VehicleSegment } from '../types/vehicle';
 import type { IVehicle } from '../types/vehicle';
 import { useTranslation } from 'react-i18next';
-import { Settings, Fuel, ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Settings, Fuel, ChevronRight, ChevronDown, ChevronUp, ShieldCheck, UserCheck, Car } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface VehicleCardProps {
   vehicle: IVehicle;
@@ -11,6 +11,9 @@ interface VehicleCardProps {
 
 const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [insuranceType, setInsuranceType] = useState('standard');
 
   const segmentLabels: Record<number, string> = {
     [VehicleSegment.Economy]: 'Economy',
@@ -54,11 +57,11 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
         <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1rem', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Settings size={16} />
-            <span>{vehicle.transmission === 'Manual' ? t('fleet.manual') : t('fleet.auto')}</span>
+            <span>{vehicle.transmission === 'Manual' ? t('fleet.manual') || 'Manuel' : t('fleet.auto') || 'Otomatik'}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Fuel size={16} />
-            <span>{vehicle.fuelType === 'Diesel' ? t('fleet.diesel') : t('fleet.petrol')}</span>
+            <span>{vehicle.fuelType === 'Diesel' ? t('fleet.diesel') || 'Dizel' : vehicle.fuelType === 'Petrol' ? t('fleet.petrol') || 'Benzin' : vehicle.fuelType}</span>
           </div>
         </div>
 
@@ -66,7 +69,7 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
         <hr style={{ border: 'none', borderTop: '1px solid var(--glass-border)', margin: '1.25rem 0' }} />
 
         {/* Price & Button */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
           <div>
             <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>{t('fleet.dailyRate')}</span>
             <div className="technical-data" style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-main)' }}>
@@ -74,9 +77,63 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
             </div>
           </div>
           
-          <Link to={`/fleet/${vehicle.id}`} className="btn btn-primary" style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            {t('fleet.rentNow')} <ChevronRight size={16} />
-          </Link>
+          <button 
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="btn btn-primary" 
+            style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+          >
+            {isExpanded ? t('fleet.close') || 'Kapat' : t('fleet.rentNow') || 'Hemen Kirala'} 
+            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          </button>
+        </div>
+
+        {/* Expanded Area */}
+        <div style={{ 
+          maxHeight: isExpanded ? '500px' : '0', 
+          overflow: 'hidden', 
+          transition: 'max-height 300ms ease-in-out',
+          opacity: isExpanded ? 1 : 0,
+        }}>
+          <div style={{ paddingTop: '1.5rem', marginTop: '1rem', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            
+            {/* Extra Specs */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <UserCheck size={16} />
+                <span>Min. Yaş: {vehicle.minDriverAge}</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Car size={16} />
+                <span>Kasa: {vehicle.bodyType}</span>
+              </div>
+            </div>
+
+            {/* Insurance Selection */}
+            <div>
+              <h4 style={{ fontSize: '0.875rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Güvence Türü</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', cursor: 'pointer' }}>
+                  <input type="radio" name={`insurance-${vehicle.id}`} checked={insuranceType === 'standard'} onChange={() => setInsuranceType('standard')} />
+                  Standart Sigorta (Ücretsiz)
+                </label>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', cursor: 'pointer' }}>
+                  <input type="radio" name={`insurance-${vehicle.id}`} checked={insuranceType === 'premium'} onChange={() => setInsuranceType('premium')} />
+                  <ShieldCheck size={16} color="var(--primary)" />
+                  Tam Kapsamlı Premium (+1500₺/gün)
+                </label>
+              </div>
+            </div>
+
+            {/* Checkout Button */}
+            <button 
+              onClick={() => navigate('/checkout')}
+              className="btn btn-primary" 
+              style={{ width: '100%', marginTop: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}
+            >
+              Rezervasyona Devam Et <ChevronRight size={16} />
+            </button>
+
+          </div>
         </div>
 
       </div>
