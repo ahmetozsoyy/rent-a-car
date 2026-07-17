@@ -30,6 +30,10 @@ public static class ApplicationDbContextSeed
         if (await context.Vehicles.AnyAsync(v => v.Brand == "Mercedes-Benz" || v.Brand == "Tesla"))
         {
             var oldVehicles = await context.Vehicles.ToListAsync();
+            var vehicleIds = oldVehicles.Select(v => v.Id).ToList();
+            var oldReservations = await context.Reservations.Where(r => vehicleIds.Contains(r.VehicleId)).ToListAsync();
+            
+            context.Reservations.RemoveRange(oldReservations);
             context.Vehicles.RemoveRange(oldVehicles);
             await context.SaveChangesAsync();
         }
