@@ -3,7 +3,9 @@ namespace RentACar.Domain.Enums;
 public enum VehicleSegment
 {
     Economy = 1,
-    Comfort = 2,
-    Prestige = 3,
-    Luxury = 4
+    Compact = 2,
+    Standard = 3,
+    Premium = 4,
+    Luxury = 5,
+    SUV = 6
 }

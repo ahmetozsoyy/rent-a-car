@@ -27,16 +27,26 @@ public static class ApplicationDbContextSeed
         }
 
         // 3. Araçlar
+        if (await context.Vehicles.AnyAsync(v => v.Brand == "Mercedes-Benz" || v.Brand == "Tesla"))
+        {
+            var oldVehicles = await context.Vehicles.ToListAsync();
+            context.Vehicles.RemoveRange(oldVehicles);
+            await context.SaveChangesAsync();
+        }
+
         if (!await context.Vehicles.AnyAsync())
         {
             var ist = await context.Locations.FirstAsync(l => l.City == "İstanbul");
             var ank = await context.Locations.FirstAsync(l => l.City == "Ankara");
             
-            var v1 = new Vehicle("Mercedes-Benz", "G63 AMG", 2024, VehicleSegment.Luxury, 15000, ist.Id);
-            var v2 = new Vehicle("Tesla", "Model S Plaid", 2024, VehicleSegment.Luxury, 12000, ist.Id);
-            var v3 = new Vehicle("BMW", "i8", 2023, VehicleSegment.Luxury, 14000, ank.Id);
+            var v1 = new Vehicle("Fiat", "Egea", 2023, VehicleSegment.Economy, 2200, "Manuel", "Dizel", "Sedan", 21, "/images/vehicles/fiat-egea.png", ist.Id);
+            var v2 = new Vehicle("Volkswagen", "Polo", 2024, VehicleSegment.Economy, 2450, "Otomatik", "Benzin", "Hatchback", 21, "/images/vehicles/vw-polo.jpg", ist.Id);
+            var v3 = new Vehicle("Toyota", "Corolla", 2024, VehicleSegment.Standard, 3000, "Otomatik", "Hibrit", "Sedan", 25, "/images/vehicles/toyota-corolla.jpg", ank.Id);
+            var v4 = new Vehicle("BMW", "5.20 (G30)", 2023, VehicleSegment.Premium, 7500, "Otomatik", "Benzin", "Sedan", 27, "/images/vehicles/bmw-5.jpg", ist.Id);
+            var v5 = new Vehicle("Peugeot", "Rifter", 2023, VehicleSegment.Standard, 2850, "Otomatik", "Dizel", "Van", 25, "/images/vehicles/peugeot-rifter.jpg", ank.Id);
+            var v6 = new Vehicle("Volkswagen", "T-Roc", 2024, VehicleSegment.SUV, 3500, "Otomatik", "Benzin", "SUV", 25, "/images/vehicles/vw-troc.jpg", ist.Id);
 
-            context.Vehicles.AddRange(v1, v2, v3);
+            context.Vehicles.AddRange(v1, v2, v3, v4, v5, v6);
             await context.SaveChangesAsync();
         }
         
