@@ -18,26 +18,29 @@ const Navbar: React.FC = () => {
     <nav className="glass-nav">
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '4rem' }}>
         
-        {/* Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
-          <Car color="var(--primary)" size={28} />
-          <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>
-            Rent<span style={{ color: 'var(--primary)' }}>A</span>Car
-          </span>
-        </Link>
-        
-        {/* Navigation Links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          <Link to="/" style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: 500 }}>{t('navbar.home')}</Link>
-          <Link to="/fleet" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 500 }}>{t('navbar.fleet')}</Link>
-          <Link to="/about" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 500 }}>{t('navbar.about')}</Link>
+        {/* Left Side: Logo + Links */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '3rem' }}>
+          {/* Logo */}
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
+            <Car color="var(--primary)" size={28} />
+            <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>
+              Rent<span style={{ color: 'var(--primary)' }}>A</span>Car
+            </span>
+          </Link>
+          
+          {/* Navigation Links */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <Link to="/" style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: 500 }}>{t('navbar.home')}</Link>
+            <Link to="/fleet" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 500 }}>{t('navbar.fleet')}</Link>
+            <Link to="/about" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 500 }}>{t('navbar.about')}</Link>
+          </div>
         </div>
 
         {/* Auth Buttons and Lang Switcher */}
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           
           {/* Language Switcher */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginRight: '1rem', cursor: 'pointer' }} onClick={() => i18n.changeLanguage(i18n.language === 'tr' ? 'en' : 'tr')}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginRight: '1rem', cursor: 'pointer', minWidth: '40px', justifyContent: 'center' }} onClick={() => i18n.changeLanguage(i18n.language === 'tr' ? 'en' : 'tr')}>
             <Globe size={18} color="var(--text-muted)" />
             <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
               {i18n.language === 'tr' ? 'TR' : 'EN'}
