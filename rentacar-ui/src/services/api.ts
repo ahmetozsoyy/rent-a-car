@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Varsayılan API Base URL
-const API_URL = import.meta.env.VITE_API_URL || 'https://localhost:7228/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5105/api';
 
 const api = axios.create({
   baseURL: API_URL,
