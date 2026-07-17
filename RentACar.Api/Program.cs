@@ -106,6 +106,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 // Hangfire Dashboard
 app.UseHangfireDashboard();
 
