@@ -36,5 +36,17 @@
     "registerSuccess": "Account created successfully! Redirecting to login...",
     "registerError": "Failed to create account. Please try again.",
     "loginError": "Invalid credentials or login failed."
+  },
+  "fleet": {
+    "title": "Our Vehicle Fleet",
+    "subtitle": "Choose the premium vehicle that suits your needs and hit the road.",
+    "searchPlaceholder": "Search by brand or model...",
+    "auto": "Auto",
+    "manual": "Manual",
+    "petrol": "Petrol",
+    "diesel": "Diesel",
+    "dailyRate": "Daily Rate",
+    "rentNow": "Rent Now",
+    "noVehicles": "No vehicles found matching your criteria."
   }
 }

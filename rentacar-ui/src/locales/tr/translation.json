@@ -36,5 +36,17 @@
     "registerSuccess": "Hesap başarıyla oluşturuldu! Giriş sayfasına yönlendiriliyorsunuz...",
     "registerError": "Hesap oluşturulamadı. Lütfen tekrar deneyin.",
     "loginError": "Geçersiz e-posta veya şifre."
+  },
+  "fleet": {
+    "title": "Araç Filomuz",
+    "subtitle": "İhtiyacınıza uygun premium aracı seçin ve yola çıkın.",
+    "searchPlaceholder": "Marka veya model arayın...",
+    "auto": "Otomatik",
+    "manual": "Manuel",
+    "petrol": "Benzin",
+    "diesel": "Dizel",
+    "dailyRate": "Günlük Ücret",
+    "rentNow": "Hemen Kirala",
+    "noVehicles": "Arama kriterlerinize uygun araç bulunamadı."
   }
 }
