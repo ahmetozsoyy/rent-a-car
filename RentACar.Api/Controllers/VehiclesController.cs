@@ -24,6 +24,11 @@ public class VehiclesController : BaseController
                 v.Brand, 
                 v.Model, 
                 v.DailyPrice, 
+                v.Transmission,
+                v.FuelType,
+                v.BodyType,
+                v.MinDriverAge,
+                v.ImageUrl,
                 Segment = v.Segment.ToString() 
             })
             .ToListAsync(cancellationToken);
