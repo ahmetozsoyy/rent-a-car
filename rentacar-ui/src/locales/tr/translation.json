@@ -1,0 +1,40 @@
+{
+  "navbar": {
+    "home": "Ana Sayfa",
+    "fleet": "Araç Filosu",
+    "about": "Hakkımızda",
+    "login": "Giriş Yap",
+    "signup": "Kayıt Ol",
+    "dashboard": "Panel",
+    "logout": "Çıkış Yap"
+  },
+  "home": {
+    "title": "Premium Araç Kiralama",
+    "subtitle": "Özenle seçilmiş premium araç koleksiyonumuzla üstün sürüş keyfini yaşayın.",
+    "browseFleet": "Filoyu İncele",
+    "learnMore": "Daha Fazla Bilgi"
+  },
+  "login": {
+    "title": "Tekrar Hoş Geldiniz",
+    "subtitle": "Kiralamalarınızı yönetmek için giriş yapın.",
+    "email": "E-posta",
+    "password": "Şifre",
+    "submit": "Giriş Yap",
+    "loading": "Giriş yapılıyor..."
+  },
+  "register": {
+    "title": "Hesap Oluştur",
+    "subtitle": "Premium araç kiralamaya başlamak için bize katılın.",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "email": "E-posta",
+    "password": "Şifre",
+    "submit": "Kayıt Ol",
+    "loading": "Hesap Oluşturuluyor..."
+  },
+  "toast": {
+    "registerSuccess": "Hesap başarıyla oluşturuldu! Giriş sayfasına yönlendiriliyorsunuz...",
+    "registerError": "Hesap oluşturulamadı. Lütfen tekrar deneyin.",
+    "loginError": "Geçersiz e-posta veya şifre."
+  }
+}

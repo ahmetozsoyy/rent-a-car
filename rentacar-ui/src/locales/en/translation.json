@@ -1,0 +1,40 @@
+{
+  "navbar": {
+    "home": "Home",
+    "fleet": "Fleet",
+    "about": "About",
+    "login": "Login",
+    "signup": "Sign Up",
+    "dashboard": "Dashboard",
+    "logout": "Logout"
+  },
+  "home": {
+    "title": "Premium Vehicle Rentals",
+    "subtitle": "Experience the ultimate driving pleasure with our curated collection of premium vehicles.",
+    "browseFleet": "Browse Fleet",
+    "learnMore": "Learn More"
+  },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Login to manage your rentals.",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Login",
+    "loading": "Logging in..."
+  },
+  "register": {
+    "title": "Create Account",
+    "subtitle": "Join us to start renting premium vehicles.",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Register",
+    "loading": "Creating Account..."
+  },
+  "toast": {
+    "registerSuccess": "Account created successfully! Redirecting to login...",
+    "registerError": "Failed to create account. Please try again.",
+    "loginError": "Invalid credentials or login failed."
+  }
+}
