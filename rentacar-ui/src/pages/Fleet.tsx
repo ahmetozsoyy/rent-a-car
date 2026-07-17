@@ -1,10 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Search } from 'lucide-react';
+import { vehicleService } from '../services/vehicleService';
+import { IVehicle } from '../types/vehicle';
+import VehicleCard from '../components/VehicleCard';
+import VehicleCardSkeleton from '../components/VehicleCardSkeleton';
 
 const Fleet: React.FC = () => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
+  const [vehicles, setVehicles] = useState<IVehicle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const data = await vehicleService.getAllVehicles();
+        setVehicles(data);
+      } catch (err: any) {
+        setError('Araçlar yüklenirken bir hata oluştu.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchVehicles();
+  }, []);
+
+  const filteredVehicles = vehicles.filter(v => 
+    v.brand.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    v.model.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="container mt-8 pb-8">
@@ -31,9 +57,21 @@ const Fleet: React.FC = () => {
         </div>
       </div>
 
-      {/* Grid or Empty State will go here */}
+      {error && <div className="text-center" style={{ color: 'var(--error)' }}>{error}</div>}
+
+      {/* Grid or Empty State */}
       <div className="fleet-grid">
-        {/* Placeholder for now */}
+        {loading ? (
+          Array.from({ length: 6 }).map((_, idx) => <VehicleCardSkeleton key={idx} />)
+        ) : filteredVehicles.length > 0 ? (
+          filteredVehicles.map(vehicle => (
+            <VehicleCard key={vehicle.id} vehicle={vehicle} />
+          ))
+        ) : (
+          <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+            {t('fleet.noVehicles')}
+          </div>
+        )}
       </div>
 
     </div>
