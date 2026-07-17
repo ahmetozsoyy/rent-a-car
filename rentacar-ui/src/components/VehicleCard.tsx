@@ -28,7 +28,7 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
   const imageUrl = vehicle.imageUrl || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800';
 
   return (
-    <div className="glass" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', height: '100%' }}>
+    <div className="glass" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Vehicle Image */}
       <div style={{ width: '100%', height: '200px', overflow: 'hidden', position: 'relative' }}>
         <img 
