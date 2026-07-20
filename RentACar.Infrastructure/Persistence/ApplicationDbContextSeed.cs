@@ -9,10 +9,16 @@ public static class ApplicationDbContextSeed
     public static async Task SeedAsync(ApplicationDbContext context)
     {
         // 1. Kullanıcılar
-        if (!await context.Users.AnyAsync(u => u.Email == "ozsoyyahmett@gmail.com"))
+        var adminUser = await context.Users.FirstOrDefaultAsync(u => u.Email == "ozsoyyahmett@gmail.com");
+        if (adminUser == null)
         {
-            var adminUser = new User("Ahmet", "Özsoy", "ozsoyyahmett@gmail.com", "admin_hash_123", UserRole.Admin);
+            adminUser = new User("Ahmet", "Özsoy", "ozsoyyahmett@gmail.com", "admin_hash_123", UserRole.Admin);
             context.Users.Add(adminUser);
+            await context.SaveChangesAsync();
+        }
+        else if (adminUser.Role != UserRole.Admin)
+        {
+            adminUser.UpdateRole(UserRole.Admin);
             await context.SaveChangesAsync();
         }
 
