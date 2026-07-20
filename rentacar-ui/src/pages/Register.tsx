@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 import { useTranslation } from 'react-i18next';
@@ -33,7 +34,7 @@ const Register: React.FC = () => {
     <div className="split-layout page-enter">
       
       {/* Toast Notification for Success/Error */}
-      {(error || success) && (
+      {(error || success) && createPortal(
         <div style={{
           position: 'fixed',
           top: '2rem',
@@ -45,10 +46,11 @@ const Register: React.FC = () => {
           fontWeight: 500,
           boxShadow: 'var(--shadow-lg)',
           animation: 'slideIn 250ms var(--ease-spring) forwards',
-          zIndex: 100
+          zIndex: 9999
         }}>
           {error || success}
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Left Image Area */}

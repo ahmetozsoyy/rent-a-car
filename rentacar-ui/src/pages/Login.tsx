@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 import { useAuthStore } from '../store/authStore';
@@ -36,7 +37,7 @@ const Login: React.FC = () => {
     <div className="split-layout page-enter">
       
       {/* Toast Notification for Error */}
-      {error && (
+      {error && createPortal(
         <div style={{
           position: 'fixed',
           top: '2rem',
@@ -48,10 +49,11 @@ const Login: React.FC = () => {
           fontWeight: 500,
           boxShadow: 'var(--shadow-lg)',
           animation: 'slideIn 250ms var(--ease-spring) forwards',
-          zIndex: 100
+          zIndex: 9999
         }}>
           {error}
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Left Image Area */}
