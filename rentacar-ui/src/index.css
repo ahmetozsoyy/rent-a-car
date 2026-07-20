@@ -8,26 +8,28 @@
 @import '@fontsource/geist-mono/600.css';
 
 :root {
-  /* Premium Automotive Light Theme variables */
+  /* Concept B: The Gallery (Porsche & Linear Sentezi) */
   --bg-main: #F7F7F5; /* Warm off-white */
   --bg-card: #FFFFFF;
-  --bg-card-hover: #FFFFFF;
+  --bg-card-hover: #FAFAFA;
   
-  --text-main: #111111;
-  --text-muted: #5F6368;
+  --text-main: #000000;
+  --text-muted: #737373; /* Linear style lighter gray */
   
-  --primary: #111111;
-  --primary-hover: #333333;
-  --accent: #8C8C8C; /* Titanium Silver */
+  --primary: #000000;
+  --primary-hover: #222222;
+  --accent: #A3A3A3;
   
-  --glass-border: rgba(0, 0, 0, 0.06);
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03), 0 2px 4px rgba(0, 0, 0, 0.02);
-  --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.08), 0 10px 15px -5px rgba(0, 0, 0, 0.03);
-  --shadow-glow: 0 0 0 2px rgba(17, 17, 17, 0.1);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 30px 60px -12px rgba(0, 0, 0, 0.15), 0 18px 36px -18px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 0 1px rgba(0, 0, 0, 0.05);
   
-  --border-radius: 24px; /* 20-28px as per spec */
-  --transition-speed: 200ms; /* 150ms-250ms strict rule */
-  --ease-spring: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --border-radius: 0px; /* Linear / Editorial edge */
+  --border-radius-soft: 8px; /* For minor inputs if needed */
+  
+  --transition-speed: 250ms;
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1); /* Ultra smooth ease-out */
 }
 
 * {
@@ -49,11 +51,9 @@ body {
   font-family: 'Geist Mono', monospace;
 }
 
-/* Glassmorphism / Soft Elevation utility */
+/* Minimal Form/Card Elevation utility */
 .glass {
   background: var(--bg-card);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-sm);
   border-radius: var(--border-radius);
@@ -61,7 +61,7 @@ body {
 }
 
 .glass:hover .vehicle-img {
-  transform: scale(1.02); /* Subtle zoom as per design spec */
+  transform: scale(1.03); /* Subtle editorial zoom */
 }
 
 .glass-nav {
@@ -108,39 +108,47 @@ body {
   border-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Typography */
+/* Typography (Devasa & Asimetrik yapı için) */
 h1, h2, h3, h4 {
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-weight: 500; /* Daha editoryal */
+  letter-spacing: -0.04em; /* Linear tarzı sıkı tracking */
   color: var(--text-main);
-  line-height: 1.1;
+  line-height: 1.05;
 }
 
-h1 { font-size: 3.5rem; margin-bottom: 1.5rem; letter-spacing: -0.04em; } /* 56px */
-h2 { font-size: 2.5rem; margin-bottom: 1rem; letter-spacing: -0.03em; } /* 40px */
-h3 { font-size: 1.5rem; margin-bottom: 0.75rem; }
+h1 { font-size: 5rem; margin-bottom: 1.5rem; letter-spacing: -0.05em; } /* 80px */
+h2 { font-size: 3rem; margin-bottom: 1rem; letter-spacing: -0.04em; } /* 48px */
+h3 { font-size: 1.75rem; margin-bottom: 0.75rem; }
 
-p { color: var(--text-muted); }
+p { color: var(--text-muted); font-size: 1.125rem; font-weight: 400; line-height: 1.7; letter-spacing: -0.01em; }
+
+.display-title {
+  font-size: 6rem;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  font-weight: 500;
+}
 
 /* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.875rem 1.5rem; /* Medium height, more spacious */
-  border-radius: 100px; /* Fully rounded buttons */
+  padding: 1rem 2rem; /* Daha keskin, Linear form */
+  border-radius: var(--border-radius-soft); 
   font-weight: 500;
   cursor: pointer;
   border: 1px solid transparent;
   transition: all var(--transition-speed) var(--ease-spring);
-  font-size: 0.95rem;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
   text-decoration: none;
 }
 
 .btn-primary {
   background-color: var(--primary);
   color: white;
-  box-shadow: none; /* No flashy shadows, keep it minimal */
+  box-shadow: 0 4px 14px 0 rgba(0,0,0,0.1);
 }
 
 .btn-primary:hover {
@@ -161,17 +169,28 @@ p { color: var(--text-muted); }
   color: var(--primary-hover);
 }
 
-/* Layout */
+/* Layout Utilities (Editorial/Asymmetric) */
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px; /* Genişlettik, editoryal boşluklar için */
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
 }
 
-/* Forms */
+.split-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+}
+@media (min-width: 1024px) {
+  .split-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Forms (Linear style) */
 .form-group {
-  margin-bottom: 1.5rem; /* More spacing */
+  margin-bottom: 1.5rem;
 }
 
 .form-label {
@@ -179,25 +198,26 @@ p { color: var(--text-muted); }
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text-main); /* High contrast */
+  color: var(--text-muted); /* Daha zarif, ince */
 }
 
 .form-control {
   width: 100%;
-  padding: 0.875rem 1rem; /* Spacious, Large touch targets */
-  background: var(--bg-card);
+  padding: 1rem 1.25rem;
+  background: transparent;
   border: 1px solid var(--glass-border);
-  border-radius: 12px;
+  border-radius: var(--border-radius-soft);
   color: var(--text-main);
   transition: all var(--transition-speed) var(--ease-spring);
   font-family: 'Geist Sans', sans-serif;
-  box-shadow: var(--shadow-sm); /* Subtle depth */
+  font-size: 1rem;
 }
 
 .form-control:focus {
   outline: none;
+  background: var(--bg-card);
   border-color: var(--primary);
-  box-shadow: 0 0 0 1px var(--primary); /* Minimal, sharp focus */
+  box-shadow: 0 0 0 1px var(--primary);
 }
 
 /* Utilities */
