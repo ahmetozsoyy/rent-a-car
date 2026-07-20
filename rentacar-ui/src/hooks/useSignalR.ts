@@ -27,6 +27,9 @@ export const useSignalR = () => {
       const targetRole = notification.targetRole || notification.TargetRole;
       const notifLocationId = notification.locationId || notification.LocationId;
 
+      const normalizedNotifLoc = notifLocationId ? notifLocationId.toString().toLowerCase() : null;
+      const normalizedUserLoc = locationId ? locationId.toString().toLowerCase() : null;
+
       if (role === 'Admin') {
         if (type === 'NEW_MESSAGE' && targetRole === 'Admin') {
           shouldShow = true;
@@ -35,8 +38,7 @@ export const useSignalR = () => {
         }
       } else if (role === 'Moderator') {
         // Eger token guncel degilse locationId null olabilir. 
-        // Token'i guncellemeyenleri engellememek adina gecici olarak hepsi true yapilabilir veya kontrol esnetilebilir.
-        if (!locationId || notifLocationId === locationId) {
+        if (!normalizedUserLoc || normalizedNotifLoc === normalizedUserLoc) {
           if (type === 'NEW_RESERVATION') {
             shouldShow = true;
           } else if (type === 'NEW_MESSAGE' && targetRole === 'Moderator') {
@@ -45,9 +47,11 @@ export const useSignalR = () => {
         }
       }
 
+      console.log('SignalR shouldShow?', shouldShow, 'type:', type, 'targetRole:', targetRole, 'userRole:', role);
+
       if (shouldShow) {
         incrementUnread();
-        toast(notification.message || notification.Message, {
+        toast(notification.message || notification.Message || 'Yeni Bildirim', {
           icon: '🔔',
           duration: Infinity, // Sürekli kalır
           style: {
@@ -62,11 +66,11 @@ export const useSignalR = () => {
     });
 
     connection.start()
-      .then(() => console.log('SignalR Connected'))
+      .then(() => console.log('SignalR Connected to', `${API_BASE}/notifications`))
       .catch(err => console.error('SignalR Connection Error: ', err));
 
     return () => {
       connection.stop();
     };
-  }, [role, locationId]);
+  }, [role, locationId, incrementUnread]);
 };
