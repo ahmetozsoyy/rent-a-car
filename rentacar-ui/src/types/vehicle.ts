@@ -22,4 +22,5 @@ export interface IVehicle {
   fuelType: string;
   bodyType: string;
   minDriverAge: number;
+  locationName?: string;
 }

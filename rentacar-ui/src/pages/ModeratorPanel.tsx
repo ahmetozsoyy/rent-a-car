@@ -128,7 +128,7 @@ const ModeratorPanel: React.FC = () => {
                 <select className="form-control" required value={blockVehicleId} onChange={e => setBlockVehicleId(e.target.value)}>
                   <option value="">Araç Seçin</option>
                   {vehicles.map(v => (
-                    <option key={v.id} value={v.id}>{v.brand} {v.model}</option>
+                    <option key={v.id} value={v.id}>{v.brand} {v.model} - {v.locationName}</option>
                   ))}
                 </select>
               </div>

@@ -21,7 +21,8 @@ public class VehiclesController : BaseController
             { 
                 v.Id, v.Brand, v.Model, v.Year, v.DailyPrice, 
                 v.Transmission, v.FuelType, v.BodyType, v.MinDriverAge, 
-                v.ImageUrl, Segment = v.Segment.ToString() 
+                v.ImageUrl, Segment = v.Segment.ToString(),
+                LocationName = v.CurrentLocation != null ? v.CurrentLocation.City + " Ofisi" : ""
             })
             .ToListAsync(cancellationToken);
             

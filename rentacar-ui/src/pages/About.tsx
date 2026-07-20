@@ -4,7 +4,7 @@ import { Mail, Phone, MapPin, Award, ShieldCheck, Clock } from 'lucide-react';
 const About: React.FC = () => {
   return (
     <div className="page-enter" style={{ backgroundColor: 'var(--bg-main)', minHeight: '100vh', paddingTop: '8rem', paddingBottom: '8rem' }}>
-      
+
       {/* Header */}
       <div className="container" style={{ marginBottom: '6rem', textAlign: 'center' }}>
         <h1 className="display-title" style={{ fontSize: '4rem', marginBottom: '1.5rem', letterSpacing: '-0.04em' }}>Hakkımızda</h1>
@@ -14,7 +14,7 @@ const About: React.FC = () => {
       </div>
 
       <div className="container" style={{ maxWidth: '1000px' }}>
-        
+
         {/* Story Section */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', marginBottom: '8rem', alignItems: 'center' }}>
           <div>
@@ -26,16 +26,16 @@ const About: React.FC = () => {
               Müşterilerimizin zamanının ne kadar değerli olduğunun farkındayız. Bu nedenle sıfır evrak karmaşası, anında teslimat ve 7/24 kesintisiz VIP destek sunarak sektördeki standartları her geçen gün daha da yukarı çekiyoruz.
             </p>
           </div>
-          <div style={{ 
-            borderRadius: '16px', 
-            overflow: 'hidden', 
+          <div style={{
+            borderRadius: '16px',
+            overflow: 'hidden',
             boxShadow: '0 20px 40px rgba(0,0,0,0.08)',
             border: '8px solid #FFF',
             height: '400px'
           }}>
-            <img 
-              src="/images/vehicles/mercedes.jpg" 
-              alt="Şirket Vizyonu" 
+            <img
+              src="/images/vehicles/mercedes.jpg"
+              alt="Şirket Vizyonu"
               style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(20%)' }}
             />
           </div>
@@ -69,10 +69,10 @@ const About: React.FC = () => {
         {/* Contact Information */}
         <div className="glass" style={{ padding: '4rem', borderRadius: '24px', position: 'relative', overflow: 'hidden' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            
+
             <div style={{ flex: 1 }}>
               <h2 style={{ fontSize: '2.5rem', fontWeight: 600, letterSpacing: '-0.02em', marginBottom: '2rem' }}>İletişim & Lokasyon</h2>
-              
+
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                   <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'rgba(0,0,0,0.05)', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--primary)' }}>
@@ -80,7 +80,7 @@ const About: React.FC = () => {
                   </div>
                   <div>
                     <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Merkez Ofis</div>
-                    <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>Barbaros Bulvarı, Nispetiye Mah. No:45<br/>Beşiktaş, İstanbul</div>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>Barbaros Bulvarı, Nispetiye Mah. No:45<br />Beşiktaş, İstanbul</div>
                   </div>
                 </div>
 
@@ -100,7 +100,7 @@ const About: React.FC = () => {
                   </div>
                   <div>
                     <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>E-Posta Adresi</div>
-                    <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>hello@rentacarluxury.com</div>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>ozsoyyahmett@gmail.com</div>
                   </div>
                 </div>
               </div>
@@ -108,11 +108,11 @@ const About: React.FC = () => {
 
             <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
               {/* Dummy Map Area */}
-              <div style={{ 
-                width: '100%', 
-                maxWidth: '400px', 
-                height: '300px', 
-                backgroundColor: '#E5E7EB', 
+              <div style={{
+                width: '100%',
+                maxWidth: '400px',
+                height: '300px',
+                backgroundColor: '#E5E7EB',
                 borderRadius: '16px',
                 display: 'flex',
                 alignItems: 'center',
