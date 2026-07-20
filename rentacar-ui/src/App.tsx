@@ -27,6 +27,9 @@ function App() {
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/moderator" element={<ModeratorPanel />} />
       </Routes>
+      <footer style={{ padding: '3rem 2rem', textAlign: 'center', background: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <img src="/images/vehicles/imza.png" alt="İmza" style={{ maxHeight: '60px', opacity: 0.9 }} />
+      </footer>
     </Router>
   );
 }
