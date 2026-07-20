@@ -14,16 +14,16 @@ const Home: React.FC = () => {
       minHeight: '100vh',
       position: 'relative'
     }}>
-      {/* Left Content Area */}
+      {/* Left Content Area (Smooth Fade Overlay) */}
       <div style={{ 
         display: 'flex', 
         flexDirection: 'column', 
         justifyContent: 'center', 
         padding: '8rem 4rem 4rem 4rem',
-        backgroundColor: 'var(--bg-main)',
-        boxShadow: '30px 0 60px rgba(0,0,0,0.15)',
+        background: 'linear-gradient(to right, var(--bg-main) 0%, var(--bg-main) 75%, rgba(247,247,245,0) 100%)',
+        width: '120%',
         minHeight: '100vh',
-        zIndex: 1
+        zIndex: 2
       }}>
         
         <div style={{ maxWidth: '650px', marginBottom: '4rem' }}>
