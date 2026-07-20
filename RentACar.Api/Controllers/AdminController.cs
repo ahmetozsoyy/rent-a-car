@@ -40,7 +40,12 @@ public class AdminController : BaseController
         var vehicle = await _context.Vehicles.FindAsync(request.VehicleId);
         if (vehicle == null) return NotFound("Araç bulunamadı.");
 
-        var block = new VehicleBlock(request.VehicleId, request.StartDate, request.EndDate, request.Reason);
+        var block = new VehicleBlock(
+            request.VehicleId, 
+            DateTime.SpecifyKind(request.StartDate, DateTimeKind.Utc), 
+            DateTime.SpecifyKind(request.EndDate, DateTimeKind.Utc), 
+            request.Reason
+        );
         _context.VehicleBlocks.Add(block);
         await _context.SaveChangesAsync(CancellationToken.None);
 
