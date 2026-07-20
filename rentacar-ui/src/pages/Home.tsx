@@ -14,18 +14,15 @@ const Home: React.FC = () => {
       minHeight: '100vh',
       position: 'relative'
     }}>
-      {/* Left Content Area (Glassmorphism Overlay) */}
+      {/* Left Content Area */}
       <div style={{ 
         display: 'flex', 
         flexDirection: 'column', 
         justifyContent: 'center', 
         padding: '8rem 4rem 4rem 4rem',
-        backgroundColor: 'rgba(247, 247, 245, 0.82)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
+        background: 'linear-gradient(to right, rgba(247,247,245,1) 0%, rgba(247,247,245,1) 85%, rgba(247,247,245,0) 100%)',
         minHeight: '100vh',
-        zIndex: 1,
-        borderRight: '1px solid rgba(255,255,255,0.3)'
+        zIndex: 1
       }}>
         
         <div style={{ maxWidth: '650px', marginBottom: '4rem' }}>
