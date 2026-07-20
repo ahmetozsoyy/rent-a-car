@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 import * as signalR from '@microsoft/signalr';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../store/authStore';
+import { useNotificationStore } from '../store/useNotificationStore';
 
 export const useSignalR = () => {
   const { role, locationId } = useAuthStore();
+  const incrementUnread = useNotificationStore((state) => state.incrementUnread);
 
   useEffect(() => {
     // Sadece Admin ve Moderator olanlar dinlesin
@@ -40,6 +42,7 @@ export const useSignalR = () => {
       }
 
       if (shouldShow) {
+        incrementUnread();
         toast(notification.message || notification.Message, {
           icon: '🔔',
           duration: Infinity, // Sürekli kalır

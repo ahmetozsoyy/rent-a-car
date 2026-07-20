@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import { useNotificationStore } from '../store/useNotificationStore';
 import { useTranslation } from 'react-i18next';
-import { User } from 'lucide-react';
+import { User, Bell } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, logout, role } = useAuthStore();
+  const { unreadCount, clearUnread } = useNotificationStore();
   const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation();
@@ -72,7 +74,21 @@ const Navbar: React.FC = () => {
                   Şube Yönetimi
                 </Link>
               )}
-              <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.25rem', fontSize: '0.9rem', background: 'var(--text-main)', color: '#FFF', borderRadius: '8px', textDecoration: 'none', fontWeight: 500 }}>
+              
+              <div 
+                onClick={clearUnread}
+                style={{ position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)', marginLeft: '0.5rem' }}
+                title="Bildirimleri Temizle"
+              >
+                <Bell size={20} color="var(--text-main)" />
+                {unreadCount > 0 && (
+                  <span style={{ position: 'absolute', top: -2, right: -2, background: 'red', color: 'white', fontSize: '0.7rem', fontWeight: 'bold', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </div>
+
+              <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.25rem', fontSize: '0.9rem', background: 'var(--text-main)', color: '#FFF', borderRadius: '8px', textDecoration: 'none', fontWeight: 500, marginLeft: '0.5rem' }}>
                 <User size={16} /> Detaylarım
               </Link>
             </>
