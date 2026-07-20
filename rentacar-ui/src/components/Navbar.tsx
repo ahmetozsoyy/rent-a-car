@@ -75,6 +75,10 @@ const Navbar: React.FC = () => {
                 </Link>
               )}
               
+              <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.25rem', fontSize: '0.9rem', background: 'var(--text-main)', color: '#FFF', borderRadius: '8px', textDecoration: 'none', fontWeight: 500 }}>
+                <User size={16} /> Detaylarım
+              </Link>
+              
               <div 
                 onClick={clearUnread}
                 style={{ position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)', marginLeft: '0.5rem' }}
@@ -87,10 +91,6 @@ const Navbar: React.FC = () => {
                   </span>
                 )}
               </div>
-
-              <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.25rem', fontSize: '0.9rem', background: 'var(--text-main)', color: '#FFF', borderRadius: '8px', textDecoration: 'none', fontWeight: 500, marginLeft: '0.5rem' }}>
-                <User size={16} /> Detaylarım
-              </Link>
             </>
           ) : (
             <>
