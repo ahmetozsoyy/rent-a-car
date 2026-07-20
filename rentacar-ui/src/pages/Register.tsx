@@ -76,7 +76,7 @@ const Register: React.FC = () => {
       }}>
         
         <div style={{ maxWidth: '450px', width: '100%' }}>
-          <h2 style={{ fontSize: '3rem', fontWeight: 500, letterSpacing: '-0.04em', marginBottom: '0.5rem' }}>{t('register.title') || 'Hesap Oluştur'}</h2>
+          <h2 style={{ fontSize: '3.5rem', fontWeight: 600, letterSpacing: '-0.04em', lineHeight: 1.1, marginBottom: '1rem' }}>Hesap<br/>Oluştur</h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '1.125rem', marginBottom: '3rem' }}>{t('register.subtitle') || 'Ayrıcalıklı dünyaya adım atın.'}</p>
           
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
