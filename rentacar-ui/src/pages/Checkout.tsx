@@ -5,6 +5,7 @@ import api from '../services/api';
 import { vehicleService } from '../services/vehicleService';
 import type { IVehicle } from '../types/vehicle';
 import { CreditCard, CheckCircle, CarFront, Users, ShieldCheck } from 'lucide-react';
+import PaymentModal from '../components/PaymentModal';
 
 interface RentalExtra {
   id: string;
@@ -119,8 +120,18 @@ const Checkout: React.FC = () => {
   let discount = paymentMethod === 'CreditCard' ? totalBeforeDiscount * 0.15 : 0;
   let finalPrice = totalBeforeDiscount - discount;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+
+  const handleInitialSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (paymentMethod === 'CreditCard') {
+      setShowPaymentModal(true);
+    } else {
+      processReservation();
+    }
+  };
+
+  const processReservation = async () => {
     try {
       const payload = {
         userId: '11111111-1111-1111-1111-111111111111',
@@ -349,7 +360,7 @@ const Checkout: React.FC = () => {
                 </span>
               </div>
 
-              <button onClick={handleSubmit} style={{ width: '100%', padding: '1.1rem', background: 'var(--primary)', color: '#FFF', border: 'none', borderRadius: '10px', fontSize: '1.05rem', fontWeight: 600, cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.6rem', transition: 'all 0.3s ease', boxShadow: '0 8px 20px rgba(0,0,0,0.15)' }}>
+              <button onClick={handleInitialSubmit} style={{ width: '100%', padding: '1.1rem', background: 'var(--primary)', color: '#FFF', border: 'none', borderRadius: '10px', fontSize: '1.05rem', fontWeight: 600, cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.6rem', transition: 'all 0.3s ease', boxShadow: '0 8px 20px rgba(0,0,0,0.15)' }}>
                 <CheckCircle size={20} /> Rezervasyonu Tamamla
               </button>
               
@@ -360,6 +371,14 @@ const Checkout: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      {showPaymentModal && (
+        <PaymentModal 
+          amount={finalPrice} 
+          onClose={() => setShowPaymentModal(false)} 
+          onSubmit={() => { setShowPaymentModal(false); processReservation(); }} 
+        />
+      )}
     </div>
   );
 };
