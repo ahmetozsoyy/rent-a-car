@@ -67,8 +67,8 @@ const BookingForm: React.FC = () => {
       return;
     }
     
-    // Yönlendirme yap, parametreleri Fleet'e taşı
-    navigate(`/fleet?pickupLoc=${pickupLoc}&dropoffLoc=${dropoffLoc}&pickupDate=${pickupDate}T${pickupTime}&dropoffDate=${dropoffDate}T${dropoffTime}`);
+    // Yönlendirme yap, parametreleri /search sayfasına taşı
+    navigate(`/search?pickupLoc=${pickupLoc}&dropoffLoc=${dropoffLoc}&pickupDate=${pickupDate}T${pickupTime}&dropoffDate=${dropoffDate}T${dropoffTime}`);
   };
 
   // Zaman aralığı 09:00 - 17:00
