@@ -7,9 +7,10 @@ const Home: React.FC = () => {
 
   return (
     <div className="split-layout home-split" style={{
-      backgroundImage: 'url(/images/vehicles/mercedes.jpg)',
-      backgroundSize: 'cover',
-      backgroundPosition: '10% center', // Sola yaslayıp resmi ekranda sağa itmiş oluruz
+      backgroundImage: 'url(/images/vehicles/mercedesyeni.jpg)',
+      backgroundSize: 'auto 100%',
+      backgroundPosition: 'right center',
+      backgroundRepeat: 'no-repeat',
       minHeight: '100vh',
       position: 'relative'
     }}>
