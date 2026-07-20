@@ -35,13 +35,13 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="container mt-8 flex justify-center" style={{ position: 'relative' }}>
+    <div className="container flex justify-center items-center" style={{ minHeight: 'calc(100vh - 5rem)', position: 'relative' }}>
       
       {/* Toast Notification for Error */}
       {error && (
         <div style={{
           position: 'absolute',
-          top: '-4rem',
+          top: '2rem',
           right: '1.5rem',
           padding: '1rem',
           borderRadius: '8px',
@@ -49,16 +49,16 @@ const Login: React.FC = () => {
           color: 'white',
           fontWeight: 500,
           boxShadow: 'var(--shadow-lg)',
-          animation: 'slideIn 250ms ease-in-out forwards',
+          animation: 'slideIn 250ms var(--ease-spring) forwards',
           zIndex: 100
         }}>
           {error}
         </div>
       )}
 
-      <div className="glass" style={{ width: '100%', maxWidth: '400px', padding: '2rem' }}>
-        <h2 className="text-center">{t('login.title')}</h2>
-        <p className="text-center mb-4">{t('login.subtitle')}</p>
+      <div className="glass" style={{ width: '100%', maxWidth: '450px', padding: '3rem' }}>
+        <h2 className="text-center" style={{ fontSize: '2rem' }}>{t('login.title')}</h2>
+        <p className="text-center mb-6">{t('login.subtitle')}</p>
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -72,7 +72,7 @@ const Login: React.FC = () => {
               onChange={e => setFormData({...formData, email: e.target.value})}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group mb-6">
             <label className="form-label">{t('login.password')}</label>
             <input 
               type="password" 
@@ -83,7 +83,7 @@ const Login: React.FC = () => {
               onChange={e => setFormData({...formData, password: e.target.value})}
             />
           </div>
-          <button type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={loading}>
+          <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '1rem' }} disabled={loading}>
             {loading ? t('login.loading') : t('login.submit')}
           </button>
         </form>
