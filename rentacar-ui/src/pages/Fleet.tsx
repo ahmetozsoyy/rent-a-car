@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
-import { IVehicle } from '../types';
+import type { IVehicle } from '../types/vehicle';
 
 // Showroom için ekstra teknik veriler
 const getTechnicalSpecs = (brand: string, model: string) => {
