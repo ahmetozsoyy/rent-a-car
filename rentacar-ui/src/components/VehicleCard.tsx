@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { VehicleSegment } from '../types/vehicle';
 import type { IVehicle } from '../types/vehicle';
 import { useTranslation } from 'react-i18next';
-import { Settings, Fuel, ChevronRight, ChevronDown, ChevronUp, ShieldCheck, UserCheck, Car } from 'lucide-react';
+import { Settings, Fuel, ArrowRight } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 interface VehicleCardProps {
@@ -13,8 +13,6 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [insuranceType, setInsuranceType] = useState('standard');
 
   const segmentLabels: Record<number, string> = {
     [VehicleSegment.Economy]: 'Economy',
@@ -25,121 +23,101 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
     [VehicleSegment.SUV]: 'SUV'
   };
 
-  // Backend'den resim gelmiyorsa placeholder kullanalım
   const imageUrl = vehicle.imageUrl || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800';
 
+  const handleSelect = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('vehicleId', vehicle.id);
+    navigate(`/checkout?${params.toString()}`);
+  };
+
   return (
-    <div className="glass" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-      {/* Vehicle Image */}
-      <div style={{ width: '100%', height: '260px', overflow: 'hidden', position: 'relative' }}>
+    <div className="glass" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: '1rem', border: 'none', background: 'transparent', boxShadow: 'none' }}>
+      
+      {/* Vehicle Image Container */}
+      <div style={{ 
+        width: '100%', 
+        height: '300px', 
+        overflow: 'hidden', 
+        position: 'relative',
+        borderRadius: 'var(--border-radius-soft)',
+        backgroundColor: '#F0F0F0'
+      }}>
         <img 
           src={imageUrl} 
           alt={`${vehicle.brand} ${vehicle.model}`} 
-          style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 350ms var(--ease-spring)' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 500ms var(--ease-spring)' }}
           className="vehicle-img"
         />
-        <div style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)', padding: '0.35rem 1rem', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main)', boxShadow: 'var(--shadow-sm)' }}>
+        <div style={{ 
+          position: 'absolute', 
+          top: '1rem', 
+          left: '1rem', 
+          background: 'rgba(0,0,0,0.7)', 
+          backdropFilter: 'blur(4px)', 
+          padding: '0.4rem 0.8rem', 
+          borderRadius: '4px', 
+          fontSize: '0.75rem', 
+          fontWeight: 600, 
+          color: '#FFF', 
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase' 
+        }}>
           {segmentLabels[vehicle.segment]}
         </div>
       </div>
       
-      {/* Content */}
-      <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+      {/* Content Area */}
+      <div style={{ paddingTop: '1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
         
-        {/* Title */}
+        {/* Title & Price Row */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>{vehicle.brand} {vehicle.model}</h3>
-            <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>{vehicle.year} Model</span>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: 500, margin: 0, color: 'var(--text-main)', letterSpacing: '-0.02em' }}>
+              {vehicle.brand} <span style={{ color: 'var(--text-muted)' }}>{vehicle.model}</span>
+            </h3>
+            <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{vehicle.year}</span>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div className="technical-data" style={{ fontSize: '1.5rem', fontWeight: 500, color: 'var(--text-main)', letterSpacing: '-0.03em' }}>
+              ₺{vehicle.dailyPrice.toLocaleString('tr-TR')}
+            </div>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              {t('fleet.dailyRate') || '/ Gün'}
+            </span>
           </div>
         </div>
 
-        {/* Features Row */}
-        <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1rem', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+        {/* Specs Row */}
+        <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 400 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Settings size={16} />
+            <Settings size={16} opacity={0.6} />
             <span>{vehicle.transmission === 'Manual' ? t('fleet.manual') || 'Manuel' : t('fleet.auto') || 'Otomatik'}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Fuel size={16} />
+            <Fuel size={16} opacity={0.6} />
             <span>{vehicle.fuelType === 'Diesel' ? t('fleet.diesel') || 'Dizel' : vehicle.fuelType === 'Petrol' ? t('fleet.petrol') || 'Benzin' : vehicle.fuelType}</span>
           </div>
         </div>
 
-        <div style={{ flexGrow: 1 }}></div>
-        <hr style={{ border: 'none', borderTop: '1px solid var(--glass-border)', margin: '1.25rem 0' }} />
-
-        {/* Price & Button */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-          <div>
-            <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>{t('fleet.dailyRate')}</span>
-            <div className="technical-data" style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-main)' }}>
-              ₺{vehicle.dailyPrice.toLocaleString('tr-TR')}
-            </div>
-          </div>
-          
+        {/* Action Button */}
+        <div style={{ marginTop: '2rem' }}>
           <button 
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="btn btn-primary" 
-            style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+            onClick={handleSelect}
+            className="btn btn-outline" 
+            style={{ 
+              width: '100%', 
+              padding: '1rem', 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              alignItems: 'center',
+              border: '1px solid var(--glass-border)',
+              borderRadius: 'var(--border-radius-soft)'
+            }}
           >
-            {isExpanded ? t('fleet.close') || 'Kapat' : t('fleet.rentNow') || 'Hemen Kirala'} 
-            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            <span>{t('fleet.rentNow') || 'Seç ve İlerle'}</span>
+            <ArrowRight size={18} />
           </button>
-        </div>
-
-        {/* Expanded Area */}
-        <div style={{ 
-          maxHeight: isExpanded ? '500px' : '0', 
-          overflow: 'hidden', 
-          transition: 'max-height 300ms ease-in-out',
-          opacity: isExpanded ? 1 : 0,
-        }}>
-          <div style={{ paddingTop: '1.5rem', marginTop: '1rem', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            
-            {/* Extra Specs */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <UserCheck size={16} />
-                <span>{t('fleet.minAge')}: {vehicle.minDriverAge}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Car size={16} />
-                <span>{t('fleet.bodyType')}: {vehicle.bodyType}</span>
-              </div>
-            </div>
-
-            {/* Insurance Selection */}
-            <div>
-              <h4 style={{ fontSize: '0.875rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>{t('fleet.insuranceType')}</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', cursor: 'pointer' }}>
-                  <input type="radio" name={`insurance-${vehicle.id}`} checked={insuranceType === 'standard'} onChange={() => setInsuranceType('standard')} />
-                  {t('fleet.standardInsurance')}
-                </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', cursor: 'pointer' }}>
-                  <input type="radio" name={`insurance-${vehicle.id}`} checked={insuranceType === 'premium'} onChange={() => setInsuranceType('premium')} />
-                  <ShieldCheck size={16} color="var(--primary)" />
-                  {t('fleet.premiumInsurance')}
-                </label>
-              </div>
-            </div>
-
-            {/* Checkout Button */}
-            <button 
-              onClick={() => {
-                const params = new URLSearchParams(searchParams.toString());
-                params.set('vehicleId', vehicle.id);
-                params.set('insurance', insuranceType);
-                navigate(`/checkout?${params.toString()}`);
-              }}
-              className="btn btn-primary" 
-              style={{ width: '100%', marginTop: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}
-            >
-              {t('fleet.proceedCheckout')} <ChevronRight size={16} />
-            </button>
-
-          </div>
         </div>
 
       </div>
