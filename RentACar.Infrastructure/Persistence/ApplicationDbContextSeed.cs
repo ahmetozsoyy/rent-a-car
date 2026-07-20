@@ -45,21 +45,32 @@ public static class ApplicationDbContextSeed
             await context.SaveChangesAsync();
         }
 
-        if (!await context.Vehicles.AnyAsync())
+        var allLocations = await context.Locations.ToListAsync();
+        foreach (var loc in allLocations)
         {
-            var ist = await context.Locations.FirstAsync(l => l.City == "İstanbul");
-            var ank = await context.Locations.FirstAsync(l => l.City == "Ankara");
-            
-            var v1 = new Vehicle("Fiat", "Egea", 2023, VehicleSegment.Economy, 2200, "Manuel", "Dizel", "Sedan", 21, "/images/vehicles/fiat-egea.png", ist.Id);
-            var v2 = new Vehicle("Volkswagen", "Polo", 2024, VehicleSegment.Economy, 2450, "Otomatik", "Benzin", "Hatchback", 21, "/images/vehicles/vw-polo.jpg", ist.Id);
-            var v3 = new Vehicle("Toyota", "Corolla", 2024, VehicleSegment.Standard, 3000, "Otomatik", "Hibrit", "Sedan", 25, "/images/vehicles/toyota-corolla.jpg", ank.Id);
-            var v4 = new Vehicle("BMW", "5.20 (G30)", 2023, VehicleSegment.Premium, 7500, "Otomatik", "Benzin", "Sedan", 27, "/images/vehicles/bmw-5.jpg", ist.Id);
-            var v5 = new Vehicle("Peugeot", "Rifter", 2023, VehicleSegment.Standard, 2850, "Otomatik", "Dizel", "Van", 25, "/images/vehicles/peugeot-rifter.jpg", ank.Id);
-            var v6 = new Vehicle("Volkswagen", "T-Roc", 2024, VehicleSegment.SUV, 3500, "Otomatik", "Benzin", "SUV", 25, "/images/vehicles/vw-troc.jpg", ist.Id);
+            var existingCount = await context.Vehicles.CountAsync(v => v.CurrentLocationId == loc.Id);
+            if (existingCount < 6)
+            {
+                if (!await context.Vehicles.AnyAsync(v => v.Brand == "Fiat" && v.CurrentLocationId == loc.Id))
+                    context.Vehicles.Add(new Vehicle("Fiat", "Egea", 2023, VehicleSegment.Economy, 2200, "Manuel", "Dizel", "Sedan", 21, "/images/vehicles/fiat-egea.png", loc.Id));
+                
+                if (!await context.Vehicles.AnyAsync(v => v.Brand == "Volkswagen" && v.Model == "Polo" && v.CurrentLocationId == loc.Id))
+                    context.Vehicles.Add(new Vehicle("Volkswagen", "Polo", 2024, VehicleSegment.Economy, 2450, "Otomatik", "Benzin", "Hatchback", 21, "/images/vehicles/vw-polo.jpg", loc.Id));
+                    
+                if (!await context.Vehicles.AnyAsync(v => v.Brand == "Toyota" && v.CurrentLocationId == loc.Id))
+                    context.Vehicles.Add(new Vehicle("Toyota", "Corolla", 2024, VehicleSegment.Standard, 3000, "Otomatik", "Hibrit", "Sedan", 25, "/images/vehicles/toyota-corolla.jpg", loc.Id));
 
-            context.Vehicles.AddRange(v1, v2, v3, v4, v5, v6);
-            await context.SaveChangesAsync();
+                if (!await context.Vehicles.AnyAsync(v => v.Brand == "BMW" && v.CurrentLocationId == loc.Id))
+                    context.Vehicles.Add(new Vehicle("BMW", "5.20 (G30)", 2023, VehicleSegment.Premium, 7500, "Otomatik", "Benzin", "Sedan", 27, "/images/vehicles/bmw-5.jpg", loc.Id));
+
+                if (!await context.Vehicles.AnyAsync(v => v.Brand == "Peugeot" && v.CurrentLocationId == loc.Id))
+                    context.Vehicles.Add(new Vehicle("Peugeot", "Rifter", 2023, VehicleSegment.Standard, 2850, "Otomatik", "Dizel", "Van", 25, "/images/vehicles/peugeot-rifter.jpg", loc.Id));
+
+                if (!await context.Vehicles.AnyAsync(v => v.Brand == "Volkswagen" && v.Model == "T-Roc" && v.CurrentLocationId == loc.Id))
+                    context.Vehicles.Add(new Vehicle("Volkswagen", "T-Roc", 2024, VehicleSegment.SUV, 3500, "Otomatik", "Benzin", "SUV", 25, "/images/vehicles/vw-troc.jpg", loc.Id));
+            }
         }
+        await context.SaveChangesAsync();
         
         // 4. Ekstralar (Rental Extras)
         if (!await context.RentalExtras.AnyAsync())
