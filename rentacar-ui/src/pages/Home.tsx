@@ -34,7 +34,7 @@ const Home: React.FC = () => {
       
       {/* Right Image Area */}
       <div style={{
-        backgroundImage: 'url(/images/vehicles/bmw-5.jpg)',
+        backgroundImage: 'url(https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&q=80&w=1600)',
         backgroundSize: 'cover',
         backgroundPosition: 'center right',
         minHeight: '100vh',
