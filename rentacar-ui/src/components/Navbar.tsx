@@ -57,14 +57,6 @@ const Navbar: React.FC = () => {
 
         {/* Auth Buttons and Lang Switcher */}
         <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
-          
-          {/* Language Switcher */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginRight: '0.5rem', cursor: 'pointer', minWidth: '40px', justifyContent: 'center' }} onClick={() => i18n.changeLanguage(i18n.language === 'tr' ? 'en' : 'tr')}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 500, color: mutedColor, textTransform: 'uppercase', letterSpacing: '0.05em', transition: 'color 0.3s ease' }}>
-              {i18n.language === 'tr' ? 'TR' : 'EN'}
-            </span>
-          </div>
-
           {isAuthenticated ? (
             <>
               <Link to="/dashboard" className="btn btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.9rem' }}>
