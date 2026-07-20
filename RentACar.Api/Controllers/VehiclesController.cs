@@ -14,27 +14,52 @@ public class VehiclesController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAvailableVehicles(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllVehicles(CancellationToken cancellationToken)
     {
-        // JSON Döngü hatası (Circular Reference) almamak için Entity yerine anonim tip dönüyoruz
         var vehicles = await _context.Vehicles
             .Select(v => new 
             { 
-                v.Id, 
-                v.Brand, 
-                v.Model, 
-                v.Year,
-                v.DailyPrice, 
-                v.Transmission,
-                v.FuelType,
-                v.BodyType,
-                v.MinDriverAge,
-                v.ImageUrl,
-                Segment = v.Segment.ToString() 
+                v.Id, v.Brand, v.Model, v.Year, v.DailyPrice, 
+                v.Transmission, v.FuelType, v.BodyType, v.MinDriverAge, 
+                v.ImageUrl, Segment = v.Segment.ToString() 
             })
             .ToListAsync(cancellationToken);
             
         return Ok(vehicles);
+    }
+
+    [HttpGet("available")]
+    public async Task<IActionResult> GetAvailableVehicles([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, CancellationToken cancellationToken)
+    {
+        startDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
+        endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
+
+        var reservedVehicleIds = await _context.Reservations
+            .Where(r => r.Status != RentACar.Domain.Enums.ReservationStatus.Cancelled && 
+                        r.Status != RentACar.Domain.Enums.ReservationStatus.Completed && 
+                        r.Status != RentACar.Domain.Enums.ReservationStatus.Expired)
+            .Where(r => r.StartDate <= endDate && r.EndDate >= startDate)
+            .Select(r => r.VehicleId)
+            .ToListAsync(cancellationToken);
+
+        var blockedVehicleIds = await _context.VehicleBlocks
+            .Where(b => b.StartDate <= endDate && b.EndDate >= startDate)
+            .Select(b => b.VehicleId)
+            .ToListAsync(cancellationToken);
+
+        var unavailableIds = reservedVehicleIds.Union(blockedVehicleIds).Distinct().ToList();
+
+        var availableVehicles = await _context.Vehicles
+            .Where(v => !unavailableIds.Contains(v.Id))
+            .Select(v => new 
+            { 
+                v.Id, v.Brand, v.Model, v.Year, v.DailyPrice, 
+                v.Transmission, v.FuelType, v.BodyType, v.MinDriverAge, 
+                v.ImageUrl, Segment = v.Segment.ToString() 
+            })
+            .ToListAsync(cancellationToken);
+
+        return Ok(availableVehicles);
     }
 
     [HttpGet("{id}")]

@@ -16,7 +16,17 @@ const SearchResults: React.FC = () => {
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
-        const data = await vehicleService.getAllVehicles();
+        const searchParams = new URLSearchParams(window.location.search);
+        const pickupDate = searchParams.get('pickupDate');
+        const dropoffDate = searchParams.get('dropoffDate');
+
+        let data;
+        if (pickupDate && dropoffDate) {
+          data = await vehicleService.getAvailableVehicles(pickupDate, dropoffDate);
+        } else {
+          data = await vehicleService.getAllVehicles();
+        }
+        
         setVehicles(data);
       } catch (err: any) {
         setError('Araçlar yüklenirken bir hata oluştu.');
