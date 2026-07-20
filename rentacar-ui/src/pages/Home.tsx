@@ -6,10 +6,10 @@ const Home: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="split-layout" style={{
+    <div className="split-layout home-split" style={{
       backgroundImage: 'url(/images/vehicles/mercedes.jpg)',
       backgroundSize: 'cover',
-      backgroundPosition: 'center',
+      backgroundPosition: '80% center',
       backgroundAttachment: 'fixed',
       minHeight: '100vh',
       position: 'relative'

@@ -186,6 +186,9 @@ p { color: var(--text-muted); font-size: 1.125rem; font-weight: 400; line-height
   .split-layout {
     grid-template-columns: 1fr 1fr;
   }
+  .split-layout.home-split {
+    grid-template-columns: 60% 40%;
+  }
 }
 
 /* Forms (Linear style) */
