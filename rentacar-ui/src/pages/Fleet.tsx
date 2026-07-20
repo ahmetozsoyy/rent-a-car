@@ -62,60 +62,68 @@ const Fleet: React.FC = () => {
                 flexDirection: isEven ? 'row' : 'row-reverse',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                marginBottom: '8rem',
-                gap: '4rem',
+                marginBottom: '6rem',
+                gap: '3rem',
                 padding: '0 5%'
               }}>
                 {/* Image Side */}
-                <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+                <div style={{ 
+                  flex: 1, 
+                  position: 'relative', 
+                  overflow: 'hidden',
+                  borderRadius: '16px',
+                  border: '10px solid #FFF',
+                  boxShadow: '0 15px 35px rgba(0,0,0,0.08)'
+                }}>
                   <img 
                     src={vehicle.imageUrl || '/images/vehicles/placeholder.jpg'} 
                     alt={`${vehicle.brand} ${vehicle.model}`} 
                     style={{ 
                       width: '100%', 
-                      height: '500px', 
+                      height: '380px', 
                       objectFit: 'cover',
-                      filter: 'grayscale(15%) contrast(110%)',
-                      transition: 'transform 0.7s var(--ease-spring)'
+                      filter: 'grayscale(5%) contrast(105%)',
+                      transition: 'transform 0.7s var(--ease-spring)',
+                      display: 'block'
                     }} 
-                    onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')}
+                    onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
                     onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                   />
                 </div>
 
                 {/* Content Side */}
-                <div style={{ flex: 1, padding: isEven ? '0 0 0 4rem' : '0 4rem 0 0' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                    <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)' }}>{vehicle.bodyType}</span>
-                    <div style={{ width: '30px', height: '1px', backgroundColor: 'var(--text-muted)', opacity: 0.5 }}></div>
-                    <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)' }}>{vehicle.transmission}</span>
+                <div style={{ flex: 1, padding: isEven ? '0 0 0 2rem' : '0 2rem 0 0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                    <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)' }}>{vehicle.bodyType}</span>
+                    <div style={{ width: '24px', height: '1px', backgroundColor: 'var(--text-muted)', opacity: 0.5 }}></div>
+                    <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)' }}>{vehicle.transmission}</span>
                   </div>
                   
-                  <h2 style={{ fontSize: '3.5rem', fontWeight: 600, letterSpacing: '-0.03em', lineHeight: 1, marginBottom: '1rem' }}>
+                  <h2 style={{ fontSize: '2.5rem', fontWeight: 600, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '0.75rem' }}>
                     {vehicle.brand} <span style={{ color: 'var(--text-muted)' }}>{vehicle.model}</span>
                   </h2>
                   
-                  <p style={{ color: 'var(--text-muted)', fontSize: '1.125rem', marginBottom: '3rem', maxWidth: '400px', lineHeight: 1.6 }}>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginBottom: '2.5rem', maxWidth: '400px', lineHeight: 1.6 }}>
                     Gelişmiş mühendislik ve seçkin tasarım detayları ile sınıfının en kaliteli deneyimini sunuyor.
                   </p>
 
                   {/* Technical Specs Grid */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                     <div>
-                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Motor</div>
-                      <div style={{ fontSize: '1.25rem', fontWeight: 500 }}>{specs.engine}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Motor</div>
+                      <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>{specs.engine}</div>
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Güç</div>
-                      <div style={{ fontSize: '1.25rem', fontWeight: 500 }}>{specs.hp}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Güç</div>
+                      <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>{specs.hp}</div>
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>0-100 km/s</div>
-                      <div style={{ fontSize: '1.25rem', fontWeight: 500 }}>{specs.accel}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>0-100 km/s</div>
+                      <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>{specs.accel}</div>
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Maks Hız</div>
-                      <div style={{ fontSize: '1.25rem', fontWeight: 500 }}>{specs.maxSpeed}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Maks Hız</div>
+                      <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>{specs.maxSpeed}</div>
                     </div>
                   </div>
                   
