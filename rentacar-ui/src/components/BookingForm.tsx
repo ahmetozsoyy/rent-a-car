@@ -85,9 +85,9 @@ const BookingForm: React.FC = () => {
   };
 
   return (
-    <div className="glass p-6" style={{ width: '100%' }}>
+    <div style={{ width: '100%' }}>
       <form onSubmit={handleSearch}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {/* Alış Yeri */}
           <div className="form-group mb-0">
@@ -171,9 +171,10 @@ const BookingForm: React.FC = () => {
 
         </div>
 
-        <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end' }}>
-          <button type="submit" className="btn btn-primary" style={{ padding: '0.875rem 3rem', fontSize: '1.1rem', gap: '0.5rem' }}>
-            <Search size={20} /> {t('booking.searchCars') || 'Araç Bul'}
+        <div style={{ marginTop: '2.5rem', display: 'flex' }}>
+          <button type="submit" className="btn btn-primary" style={{ padding: '1.25rem 3rem', fontSize: '1.1rem', gap: '0.75rem', width: '100%', justifyContent: 'space-between' }}>
+            <span>{t('booking.searchCars') || 'Araç Bul'}</span>
+            <Search size={20} /> 
           </button>
         </div>
       </form>

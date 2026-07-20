@@ -6,57 +6,50 @@ const Home: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div style={{ width: '100%', minHeight: '100vh', position: 'relative', marginTop: '-5rem' }}>
-      {/* Hero Background */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundImage: 'url(/images/vehicles/bmw-5.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        zIndex: -2
-      }} />
-      
-      {/* Overlay - Dark gradient to make text pop */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        background: 'linear-gradient(to right, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.1) 100%)',
-        zIndex: -1
-      }} />
-
-      {/* Content Container */}
-      <div className="container" style={{ 
-        position: 'relative', 
-        zIndex: 1, 
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        paddingTop: '6rem' 
+    <div className="split-layout">
+      {/* Left Content Area */}
+      <div style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        justifyContent: 'center', 
+        padding: '8rem 4rem 4rem 4rem',
+        backgroundColor: 'var(--bg-main)',
+        minHeight: '100vh',
+        zIndex: 1
       }}>
         
-        {/* Typography */}
-        <div style={{ maxWidth: '800px', marginBottom: '3rem' }}>
-          <h1 style={{ color: '#FFFFFF', textShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
-            {t('home.title')}
-          </h1>
-          <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '1.25rem', fontWeight: 400, maxWidth: '600px' }}>
+        <div style={{ maxWidth: '650px', marginBottom: '4rem' }}>
+          <h1 className="display-title">{t('home.title')}</h1>
+          <p style={{ marginTop: '1.5rem', maxWidth: '500px' }}>
             {t('home.subtitle')}
           </p>
         </div>
         
-        {/* Booking Form Area */}
-        <div style={{ width: '100%', maxWidth: '1000px' }}>
+        {/* Entegrasyon: Booking Form as a minimalist block */}
+        <div style={{ width: '100%', maxWidth: '750px' }}>
           <BookingForm />
         </div>
         
+      </div>
+      
+      {/* Right Image Area */}
+      <div style={{
+        backgroundImage: 'url(/images/vehicles/bmw-5.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center right',
+        minHeight: '100vh',
+        width: '100%',
+        position: 'relative'
+      }}>
+        {/* Subtle shadow on the edge where it meets the form */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '120px',
+          height: '100%',
+          background: 'linear-gradient(to right, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%)'
+        }}></div>
       </div>
     </div>
   );
