@@ -33,23 +33,23 @@ const Fleet: React.FC = () => {
   );
 
   return (
-    <div className="container mt-8 pb-8">
+    <div className="container pb-8" style={{ paddingTop: '8rem' }}>
       
       {/* Header & Search */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '3rem' }}>
-        <div className="text-center">
-          <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>{t('fleet.title')}</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.125rem' }}>{t('fleet.subtitle')}</p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginBottom: '4rem', alignItems: 'flex-start' }}>
+        <div>
+          <h1 style={{ fontSize: '4rem', marginBottom: '0.5rem', letterSpacing: '-0.04em' }}>{t('fleet.title')}</h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.25rem', maxWidth: '600px' }}>{t('fleet.subtitle')}</p>
         </div>
         
-        <div style={{ maxWidth: '600px', margin: '0 auto', width: '100%' }}>
-          <div className="form-group" style={{ position: 'relative' }}>
+        <div style={{ width: '100%', maxWidth: '400px' }}>
+          <div className="form-group" style={{ position: 'relative', marginBottom: 0 }}>
             <Search size={20} style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
             <input 
               type="text" 
               className="form-control" 
               placeholder={t('fleet.searchPlaceholder')}
-              style={{ paddingLeft: '3.5rem', borderRadius: '100px' }}
+              style={{ paddingLeft: '3.5rem' }}
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
             />
@@ -62,13 +62,19 @@ const Fleet: React.FC = () => {
       {/* Grid or Empty State */}
       <div className="fleet-grid">
         {loading ? (
-          Array.from({ length: 6 }).map((_, idx) => <VehicleCardSkeleton key={idx} />)
+          Array.from({ length: 6 }).map((_, idx) => (
+            <div key={idx} className={idx === 0 ? "md:col-span-2" : ""}>
+              <VehicleCardSkeleton />
+            </div>
+          ))
         ) : filteredVehicles.length > 0 ? (
-          filteredVehicles.map(vehicle => (
-            <VehicleCard key={vehicle.id} vehicle={vehicle} />
+          filteredVehicles.map((vehicle, idx) => (
+            <div key={vehicle.id} className={idx === 0 ? "md:col-span-2" : ""} style={idx === 0 ? { display: 'flex' } : {}}>
+              <VehicleCard vehicle={vehicle} />
+            </div>
           ))
         ) : (
-          <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+          <div style={{ gridColumn: '1 / -1', padding: '5rem 0', color: 'var(--text-muted)', fontSize: '1.25rem' }}>
             {t('fleet.noVehicles')}
           </div>
         )}
