@@ -29,7 +29,7 @@ public class VehiclesController : BaseController
     }
 
     [HttpGet("available")]
-    public async Task<IActionResult> GetAvailableVehicles([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAvailableVehicles([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] Guid pickupLocationId, CancellationToken cancellationToken)
     {
         startDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
         endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
@@ -50,7 +50,7 @@ public class VehiclesController : BaseController
         var unavailableIds = reservedVehicleIds.Union(blockedVehicleIds).Distinct().ToList();
 
         var availableVehicles = await _context.Vehicles
-            .Where(v => !unavailableIds.Contains(v.Id))
+            .Where(v => v.CurrentLocationId == pickupLocationId && !unavailableIds.Contains(v.Id))
             .Select(v => new 
             { 
                 v.Id, v.Brand, v.Model, v.Year, v.DailyPrice, 

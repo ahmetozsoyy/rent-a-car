@@ -7,8 +7,8 @@ export const vehicleService = {
     return response.data;
   },
 
-  getAvailableVehicles: async (startDate: string, endDate: string): Promise<IVehicle[]> => {
-    const response = await api.get<IVehicle[]>(`/vehicles/available?startDate=${startDate}&endDate=${endDate}`);
+  getAvailableVehicles: async (pickupLocationId: string, startDate: string, endDate: string): Promise<IVehicle[]> => {
+    const response = await api.get<IVehicle[]>(`/vehicles/available?pickupLocationId=${pickupLocationId}&startDate=${startDate}&endDate=${endDate}`);
     return response.data;
   },
 

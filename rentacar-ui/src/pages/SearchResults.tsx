@@ -17,12 +17,13 @@ const SearchResults: React.FC = () => {
     const fetchVehicles = async () => {
       try {
         const searchParams = new URLSearchParams(window.location.search);
+        const pickupLoc = searchParams.get('pickupLoc');
         const pickupDate = searchParams.get('pickupDate');
         const dropoffDate = searchParams.get('dropoffDate');
 
         let data;
-        if (pickupDate && dropoffDate) {
-          data = await vehicleService.getAvailableVehicles(pickupDate, dropoffDate);
+        if (pickupLoc && pickupDate && dropoffDate) {
+          data = await vehicleService.getAvailableVehicles(pickupLoc, pickupDate, dropoffDate);
         } else {
           data = await vehicleService.getAllVehicles();
         }
