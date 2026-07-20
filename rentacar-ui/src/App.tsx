@@ -18,7 +18,7 @@ function AppContent() {
   
   return (
     <>
-      <Toaster position="top-right" />
+      <Toaster position="top-right" containerStyle={{ top: 80, right: 20 }} />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

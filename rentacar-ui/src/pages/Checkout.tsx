@@ -158,13 +158,11 @@ const Checkout: React.FC = () => {
       window.scrollTo(0, 0);
     } catch (err: any) {
       console.error("API Hatası:", err);
-      // alert(err.response?.data?.message || 'Rezervasyon oluşturulurken hata oluştu.');
       
-      // Backend kapalıysa veya hata verdiyse bile, tasarımı görebilmeniz için başarılı kabul ediyoruz (Mock)
-      const generatedPnr = Math.random().toString(36).substring(2, 8).toUpperCase();
-      setPnrCode(generatedPnr);
-      setIsSuccess(true);
-      window.scrollTo(0, 0);
+      const errorMessage = err.response?.data?.details || err.response?.data?.message || err.response?.data?.error || err.message || 'Rezervasyon oluşturulurken hata oluştu.';
+      alert("Hata: " + JSON.stringify(errorMessage));
+      
+      // Hata durumunda isSuccess true yapmıyoruz, sayfada kalıyor.
     }
   };
 

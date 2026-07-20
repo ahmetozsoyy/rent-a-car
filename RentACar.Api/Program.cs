@@ -119,13 +119,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Use CORS before HttpsRedirection to ensure preflight requests don't fail
+app.UseCors("AllowFrontend");
+
 app.UseHttpsRedirection();
 
 // Hangfire Dashboard
 app.UseHangfireDashboard();
-
-// Use CORS
-app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
