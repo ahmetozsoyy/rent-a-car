@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useTranslation } from 'react-i18next';
 
@@ -7,7 +7,6 @@ const Navbar: React.FC = () => {
   const { isAuthenticated, logout } = useAuthStore();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {

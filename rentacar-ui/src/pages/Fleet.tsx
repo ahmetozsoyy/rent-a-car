@@ -85,7 +85,7 @@ const Fleet: React.FC = () => {
                 {/* Content Side */}
                 <div style={{ flex: 1, padding: isEven ? '0 0 0 4rem' : '0 4rem 0 0' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                    <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)' }}>{vehicle.type}</span>
+                    <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)' }}>{vehicle.bodyType}</span>
                     <div style={{ width: '30px', height: '1px', backgroundColor: 'var(--text-muted)', opacity: 0.5 }}></div>
                     <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)' }}>{vehicle.transmission}</span>
                   </div>
