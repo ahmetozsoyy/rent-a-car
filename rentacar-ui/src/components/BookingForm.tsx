@@ -85,13 +85,13 @@ const BookingForm: React.FC = () => {
   };
 
   return (
-    <div className="glass" style={{ padding: '2rem', marginTop: '2rem', maxWidth: '1000px', margin: '2rem auto' }}>
+    <div className="glass p-6" style={{ width: '100%' }}>
       <form onSubmit={handleSearch}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4" style={{ gap: '1.5rem' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           
           {/* Alış Yeri */}
           <div className="form-group mb-0">
-            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: 0.8 }}>
               <MapPin size={16} /> {t('booking.pickupLocation') || 'Alış Ofisi'}
             </label>
             <select className="form-control" value={pickupLoc} onChange={e => setPickupLoc(e.target.value)} required>
@@ -103,7 +103,7 @@ const BookingForm: React.FC = () => {
 
           {/* Teslim Yeri */}
           <div className="form-group mb-0">
-            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: 0.8 }}>
               <MapPin size={16} /> {t('booking.dropoffLocation') || 'Teslim Ofisi'}
             </label>
             <select className="form-control" value={dropoffLoc} onChange={e => setDropoffLoc(e.target.value)} required>
@@ -114,14 +114,15 @@ const BookingForm: React.FC = () => {
           </div>
 
           {/* Alış Tarih ve Saat */}
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             <div className="form-group mb-0">
-              <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Calendar size={16} /> {t('booking.pickupDate') || 'Alış Tarihi'}
+              <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: 0.8 }}>
+                <Calendar size={16} /> {t('booking.pickupDate') || 'Tarih'}
               </label>
               <input 
                 type="date" 
                 className="form-control" 
+                style={{ padding: '0.875rem 0.5rem' }}
                 min={getMinDate()}
                 value={pickupDate}
                 onChange={e => handleDateChange(e, setPickupDate)}
@@ -129,7 +130,7 @@ const BookingForm: React.FC = () => {
               />
             </div>
             <div className="form-group mb-0">
-              <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: 0.8 }}>
                 <Clock size={16} /> {t('booking.time') || 'Saat'}
               </label>
               <select className="form-control" value={pickupTime} onChange={e => setPickupTime(e.target.value)}>
@@ -141,14 +142,15 @@ const BookingForm: React.FC = () => {
           </div>
 
           {/* Teslim Tarih ve Saat */}
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             <div className="form-group mb-0">
-              <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Calendar size={16} /> {t('booking.dropoffDate') || 'Teslim Tarihi'}
+              <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: 0.8 }}>
+                <Calendar size={16} /> {t('booking.dropoffDate') || 'Tarih'}
               </label>
               <input 
                 type="date" 
                 className="form-control" 
+                style={{ padding: '0.875rem 0.5rem' }}
                 min={pickupDate || getMinDate()}
                 value={dropoffDate}
                 onChange={e => handleDateChange(e, setDropoffDate)}
@@ -156,7 +158,7 @@ const BookingForm: React.FC = () => {
               />
             </div>
             <div className="form-group mb-0">
-              <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: 0.8 }}>
                 <Clock size={16} /> {t('booking.time') || 'Saat'}
               </label>
               <select className="form-control" value={dropoffTime} onChange={e => setDropoffTime(e.target.value)}>
@@ -169,8 +171,8 @@ const BookingForm: React.FC = () => {
 
         </div>
 
-        <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
-          <button type="submit" className="btn btn-primary" style={{ padding: '0.75rem 2.5rem', fontSize: '1.125rem', gap: '0.5rem' }}>
+        <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end' }}>
+          <button type="submit" className="btn btn-primary" style={{ padding: '0.875rem 3rem', fontSize: '1.1rem', gap: '0.5rem' }}>
             <Search size={20} /> {t('booking.searchCars') || 'Araç Bul'}
           </button>
         </div>
