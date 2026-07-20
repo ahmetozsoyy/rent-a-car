@@ -107,25 +107,26 @@ const About: React.FC = () => {
             </div>
 
             <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-              {/* Dummy Map Area */}
+              {/* Google Map */}
               <div style={{
                 width: '100%',
                 maxWidth: '400px',
                 height: '300px',
-                backgroundColor: '#E5E7EB',
                 borderRadius: '16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                overflow: 'hidden',
                 border: '4px solid #FFF',
                 boxShadow: '0 10px 25px rgba(0,0,0,0.05)',
-                color: 'var(--text-muted)',
-                fontWeight: 500
               }}>
-                <div style={{ textAlign: 'center' }}>
-                  <MapPin size={32} style={{ margin: '0 auto 0.5rem auto', opacity: 0.5 }} />
-                  <div>Harita Görünümü</div>
-                </div>
+                <iframe 
+                  src="https://www.google.com/maps?q=Barbaros+Bulvarı,+Nispetiye+Mah.+No:45+Beşiktaş,+İstanbul&output=embed" 
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0 }} 
+                  allowFullScreen={false} 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Merkez Ofis Harita"
+                />
               </div>
             </div>
 
