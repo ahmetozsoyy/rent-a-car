@@ -20,7 +20,8 @@ const Home: React.FC = () => {
         flexDirection: 'column', 
         justifyContent: 'center', 
         padding: '8rem 4rem 4rem 4rem',
-        background: 'linear-gradient(to right, rgba(247,247,245,1) 0%, rgba(247,247,245,1) 85%, rgba(247,247,245,0) 100%)',
+        backgroundColor: 'var(--bg-main)',
+        boxShadow: '30px 0 60px rgba(0,0,0,0.15)',
         minHeight: '100vh',
         zIndex: 1
       }}>
