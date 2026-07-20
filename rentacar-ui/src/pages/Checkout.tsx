@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { vehicleService } from '../services/vehicleService';
 import type { IVehicle } from '../types/vehicle';
-import { CreditCard, CheckCircle, CarFront, Users, ShieldCheck } from 'lucide-react';
+import { CreditCard, CheckCircle, CarFront, Users, ShieldCheck, Store } from 'lucide-react';
 import PaymentModal from '../components/PaymentModal';
 
 interface RentalExtra {
@@ -48,6 +48,8 @@ const Checkout: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState<'CreditCard' | 'PayAtOffice'>('PayAtOffice');
   const [selectedExtraIds, setSelectedExtraIds] = useState<string[]>([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [pnrCode, setPnrCode] = useState('');
 
   useEffect(() => {
     if (!vehicleId || !pickupLocId || !dropoffLocId || !pickupDateStr || !dropoffDateStr) {
@@ -149,13 +151,38 @@ const Checkout: React.FC = () => {
         } : {})
       };
       
-      await api.post('/reservations', payload);
-      alert('Rezervasyon başarıyla oluşturuldu! Yönlendiriliyorsunuz...');
-      navigate('/');
+      const res = await api.post('/reservations', payload);
+      const generatedPnr = res.data?.pnr || Math.random().toString(36).substring(2, 8).toUpperCase();
+      setPnrCode(generatedPnr);
+      setIsSuccess(true);
+      window.scrollTo(0, 0);
     } catch (err: any) {
       alert(err.response?.data?.message || 'Rezervasyon oluşturulurken hata oluştu.');
     }
   };
+
+  if (isSuccess) {
+    return (
+      <div className="page-enter" style={{ backgroundColor: 'var(--bg-main)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+        <div style={{ background: '#FFF', borderRadius: '24px', padding: '4rem 3rem', maxWidth: '600px', width: '100%', textAlign: 'center', boxShadow: '0 20px 60px rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.03)' }}>
+          <div style={{ width: '80px', height: '80px', background: 'rgba(22, 163, 74, 0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem auto' }}>
+            <CheckCircle size={40} color="#16a34a" />
+          </div>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 700, letterSpacing: '-0.03em', color: 'var(--text-main)', marginBottom: '1rem' }}>Rezervasyon Oluşturuldu!</h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '2.5rem', lineHeight: 1.6 }}>Harika! Aracınız sizin için başarıyla rezerve edildi. Tüm kiralama detayları e-posta adresinize gönderilecektir.</p>
+          
+          <div style={{ background: 'var(--bg-main)', borderRadius: '16px', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '3rem' }}>
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.95rem', fontWeight: 500 }}>Rezervasyon Kodu (PNR)</span>
+            <span className="technical-data" style={{ fontSize: '3.5rem', fontWeight: 700, color: 'var(--text-main)', letterSpacing: '0.15em' }}>{pnrCode}</span>
+          </div>
+
+          <button onClick={() => navigate('/')} style={{ padding: '1.2rem 2.5rem', background: 'var(--primary)', color: '#FFF', border: 'none', borderRadius: '12px', fontSize: '1.05rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 8px 20px rgba(0,0,0,0.1)' }}>
+            Ana Sayfaya Dön
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-enter" style={{ backgroundColor: 'var(--bg-main)', minHeight: '100vh', paddingTop: '7rem', paddingBottom: '5rem' }}>
@@ -268,7 +295,7 @@ const Checkout: React.FC = () => {
                   }}
                 >
                   <input type="radio" name="paymentMethod" className="hidden" checked={paymentMethod === 'PayAtOffice'} onChange={() => setPaymentMethod('PayAtOffice')} />
-                  <CarFront size={28} color={paymentMethod === 'PayAtOffice' ? 'var(--primary)' : 'var(--accent)'} />
+                  <Store size={28} color={paymentMethod === 'PayAtOffice' ? 'var(--primary)' : 'var(--accent)'} />
                   <span style={{ fontWeight: paymentMethod === 'PayAtOffice' ? 600 : 500, color: paymentMethod === 'PayAtOffice' ? 'var(--text-main)' : 'var(--text-muted)' }}>Ofiste Öde</span>
                 </label>
                 
