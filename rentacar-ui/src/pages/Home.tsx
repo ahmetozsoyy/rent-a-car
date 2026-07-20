@@ -8,7 +8,7 @@ const Home: React.FC = () => {
   return (
     <div className="split-layout page-enter" style={{
       backgroundImage: 'url(/images/vehicles/mercedesyeni.jpg)',
-      backgroundSize: 'auto 100%',
+      backgroundSize: 'cover',
       backgroundPosition: 'right center',
       backgroundRepeat: 'no-repeat',
       minHeight: '100vh',
