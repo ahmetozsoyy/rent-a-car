@@ -9,8 +9,8 @@
     "logout": "Logout"
   },
   "home": {
-    "title": "Premium Vehicle Rentals",
-    "subtitle": "Experience the ultimate driving pleasure with our curated collection of premium vehicles.",
+    "title": "Reliable Vehicle Rentals",
+    "subtitle": "Experience comfortable driving with our wide range of vehicles.",
     "browseFleet": "Browse Fleet",
     "learnMore": "Learn More"
   },
@@ -24,7 +24,7 @@
   },
   "register": {
     "title": "Create Account",
-    "subtitle": "Join us to start renting premium vehicles.",
+    "subtitle": "Join us to start renting vehicles.",
     "firstName": "First Name",
     "lastName": "Last Name",
     "email": "Email",
@@ -39,7 +39,7 @@
   },
   "fleet": {
     "title": "Our Vehicle Fleet",
-    "subtitle": "Choose the premium vehicle that suits your needs and hit the road.",
+    "subtitle": "Choose the vehicle that suits your needs and hit the road.",
     "searchPlaceholder": "Search by brand or model...",
     "auto": "Auto",
     "manual": "Manual",

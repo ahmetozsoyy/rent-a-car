@@ -255,6 +255,15 @@ p { color: var(--text-muted); font-size: 1.125rem; font-weight: 400; line-height
   to { transform: translateX(0); opacity: 1; }
 }
 
+@keyframes pageFadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.page-enter {
+  animation: pageFadeIn 0.5s var(--ease-spring) forwards;
+}
+
 /* Additional Utilities for Checkout */
 .gap-3 { gap: 0.75rem; }
 .gap-6 { gap: 1.5rem; }

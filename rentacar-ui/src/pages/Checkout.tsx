@@ -94,7 +94,7 @@ const Checkout: React.FC = () => {
     );
   };
 
-  if (loading || !vehicle) return <div className="text-center" style={{ paddingTop: '10rem' }}>Yükleniyor...</div>;
+  if (loading || !vehicle) return <div className="container page-enter" style={{ paddingTop: '8rem', paddingBottom: '8rem' }}>Yükleniyor...</div>;
 
   const pickupDate = new Date(pickupDateStr!);
   const dropoffDate = new Date(dropoffDateStr!);
@@ -148,7 +148,7 @@ const Checkout: React.FC = () => {
   };
 
   return (
-    <div className="split-layout">
+    <div className="split-layout page-enter">
       
       {/* Sol Kolon - Formlar (Aydınlık ve Minimal) */}
       <div style={{ padding: '8rem 10% 4rem 10%', backgroundColor: 'var(--bg-main)', minHeight: '100vh' }}>

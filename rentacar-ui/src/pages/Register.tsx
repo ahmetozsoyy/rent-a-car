@@ -30,7 +30,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="split-layout">
+    <div className="split-layout page-enter">
       
       {/* Toast Notification for Success/Error */}
       {(error || success) && (

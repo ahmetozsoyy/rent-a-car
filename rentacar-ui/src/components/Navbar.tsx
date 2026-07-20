@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useTranslation } from 'react-i18next';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, logout } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -48,9 +49,9 @@ const Navbar: React.FC = () => {
           
           {/* Navigation Links */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
-            <Link to="/" style={{ color: textColor, textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, letterSpacing: '-0.01em', transition: 'color 0.3s ease' }}>{t('navbar.home')}</Link>
-            <Link to="/fleet" style={{ color: mutedColor, textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, letterSpacing: '-0.01em', transition: 'color 0.3s ease' }}>{t('navbar.fleet')}</Link>
-            <Link to="/about" style={{ color: mutedColor, textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, letterSpacing: '-0.01em', transition: 'color 0.3s ease' }}>{t('navbar.about')}</Link>
+            <Link to="/" style={{ color: location.pathname === '/' ? textColor : mutedColor, textDecoration: 'none', fontSize: '0.95rem', fontWeight: location.pathname === '/' ? 700 : 400, letterSpacing: '-0.01em', transition: 'all 0.3s ease' }}>{t('navbar.home')}</Link>
+            <Link to="/fleet" style={{ color: location.pathname === '/fleet' ? textColor : mutedColor, textDecoration: 'none', fontSize: '0.95rem', fontWeight: location.pathname === '/fleet' ? 700 : 400, letterSpacing: '-0.01em', transition: 'all 0.3s ease' }}>{t('navbar.fleet')}</Link>
+            <Link to="/about" style={{ color: location.pathname === '/about' ? textColor : mutedColor, textDecoration: 'none', fontSize: '0.95rem', fontWeight: location.pathname === '/about' ? 700 : 400, letterSpacing: '-0.01em', transition: 'all 0.3s ease' }}>{t('navbar.about')}</Link>
           </div>
         </div>
 

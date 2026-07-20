@@ -6,15 +6,16 @@ import type { IVehicle } from '../types/vehicle';
 const getTechnicalSpecs = (brand: string, model: string) => {
   const name = `${brand} ${model}`.toLowerCase();
   
-  if (name.includes('egea')) return { hp: '130 HP', engine: '1.6 Multijet', accel: '9.8s', maxSpeed: '200 km/s' };
+  if (name.includes('egea')) return { hp: '95 HP', engine: '1.3 Multijet', accel: '11.8s', maxSpeed: '181 km/s' };
   if (name.includes('corolla')) return { hp: '122 HP', engine: '1.8 Hybrid', accel: '10.9s', maxSpeed: '180 km/s' };
   if (name.includes('polo')) return { hp: '95 HP', engine: '1.0 TSI', accel: '10.8s', maxSpeed: '187 km/s' };
   if (name.includes('t-roc') || name.includes('troc')) return { hp: '150 HP', engine: '1.5 TSI', accel: '8.6s', maxSpeed: '205 km/s' };
-  if (name.includes('bmw 5')) return { hp: '252 HP', engine: '2.0 TwinPower', accel: '6.4s', maxSpeed: '250 km/s' };
+  if (name.includes('rifter') || name.includes('peugeot')) return { hp: '100 HP', engine: '1.5 BlueHDi', accel: '12.5s', maxSpeed: '170 km/s' };
+  if (name.includes('bmw')) return { hp: '170 HP', engine: '1.6 TwinPower', accel: '8.3s', maxSpeed: '226 km/s' };
   if (name.includes('mercedes')) return { hp: '286 HP', engine: '3.0 V6', accel: '6.0s', maxSpeed: '250 km/s' };
   if (name.includes('audi')) return { hp: '204 HP', engine: '40 TDI', accel: '7.4s', maxSpeed: '235 km/s' };
   
-  return { hp: '150 HP', engine: '2.0L', accel: '8.5s', maxSpeed: '210 km/s' };
+  return { hp: '110 HP', engine: '1.5L', accel: '10.5s', maxSpeed: '190 km/s' };
 };
 
 const Fleet: React.FC = () => {
@@ -36,7 +37,7 @@ const Fleet: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ backgroundColor: 'var(--bg-main)', minHeight: '100vh', paddingTop: '8rem', paddingBottom: '8rem' }}>
+    <div className="page-enter" style={{ backgroundColor: 'var(--bg-main)', minHeight: '100vh', paddingTop: '8rem', paddingBottom: '8rem' }}>
       
       {/* Header */}
       <div className="container" style={{ marginBottom: '6rem', textAlign: 'center' }}>
@@ -95,7 +96,7 @@ const Fleet: React.FC = () => {
                   </h2>
                   
                   <p style={{ color: 'var(--text-muted)', fontSize: '1.125rem', marginBottom: '3rem', maxWidth: '400px', lineHeight: 1.6 }}>
-                    Gelişmiş mühendislik ve premium tasarım detayları ile sınıfının en seçkin deneyimini sunuyor.
+                    Gelişmiş mühendislik ve seçkin tasarım detayları ile sınıfının en kaliteli deneyimini sunuyor.
                   </p>
 
                   {/* Technical Specs Grid */}

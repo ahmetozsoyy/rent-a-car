@@ -9,8 +9,8 @@
     "logout": "Çıkış Yap"
   },
   "home": {
-    "title": "Premium Araç Kiralama",
-    "subtitle": "Özenle seçilmiş premium araç koleksiyonumuzla üstün sürüş keyfini yaşayın.",
+    "title": "Güvenilir Araç Kiralama",
+    "subtitle": "Geniş araç yelpazemizle konforlu sürüş keyfini yaşayın.",
     "browseFleet": "Filoyu İncele",
     "learnMore": "Daha Fazla Bilgi"
   },
@@ -24,7 +24,7 @@
   },
   "register": {
     "title": "Hesap Oluştur",
-    "subtitle": "Premium araç kiralamaya başlamak için bize katılın.",
+    "subtitle": "Araç kiralamaya başlamak için bize katılın.",
     "firstName": "Ad",
     "lastName": "Soyad",
     "email": "E-posta",
@@ -39,7 +39,7 @@
   },
   "fleet": {
     "title": "Araç Filomuz",
-    "subtitle": "İhtiyacınıza uygun premium aracı seçin ve yola çıkın.",
+    "subtitle": "İhtiyacınıza uygun aracı seçin ve yola çıkın.",
     "searchPlaceholder": "Marka veya model arayın...",
     "auto": "Otomatik",
     "manual": "Manuel",

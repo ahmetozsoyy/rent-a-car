@@ -33,7 +33,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="split-layout">
+    <div className="split-layout page-enter">
       
       {/* Toast Notification for Error */}
       {error && (
@@ -78,9 +78,9 @@ const Login: React.FC = () => {
         zIndex: 1
       }}>
         
-        <div style={{ maxWidth: '450px', width: '100%' }}>
-          <h2 style={{ fontSize: '3rem', fontWeight: 500, letterSpacing: '-0.04em', marginBottom: '0.5rem' }}>{t('login.title') || 'Oturum Aç'}</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.125rem', marginBottom: '3rem' }}>{t('login.subtitle') || 'Premium deneyime kaldığınız yerden devam edin.'}</p>
+        <div style={{ maxWidth: '400px' }}>
+          <h2 style={{ fontSize: '3.5rem', fontWeight: 600, letterSpacing: '-0.04em', lineHeight: 1.1, marginBottom: '1rem' }}>Tekrar<br/>Hoş Geldiniz</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.125rem', marginBottom: '3rem' }}>{t('login.subtitle') || 'Harika deneyime kaldığınız yerden devam edin.'}</p>
           
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div className="form-group mb-0">

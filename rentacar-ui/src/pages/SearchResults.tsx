@@ -33,13 +33,13 @@ const SearchResults: React.FC = () => {
   );
 
   return (
-    <div className="container pb-8" style={{ paddingTop: '8rem' }}>
+    <div className="container pb-8 page-enter" style={{ paddingTop: '8rem' }}>
       
       {/* Header & Search */}
       <div style={{ marginBottom: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
           <h1 className="display-title" style={{ fontSize: '3.5rem', marginBottom: '0.5rem' }}>Müsait Araçlar</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.125rem' }}>Seçtiğiniz tarihlerde kiralamaya uygun lüks araçlarımız.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.125rem' }}>Seçtiğiniz tarihlerde kiralamaya uygun kaliteli araçlarımız.</p>
         </div>
         
         <div style={{ width: '100%', maxWidth: '400px' }}>
