@@ -31,20 +31,20 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
   return (
     <div className="glass" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Vehicle Image */}
-      <div style={{ width: '100%', height: '200px', overflow: 'hidden', position: 'relative' }}>
+      <div style={{ width: '100%', height: '260px', overflow: 'hidden', position: 'relative' }}>
         <img 
           src={imageUrl} 
           alt={`${vehicle.brand} ${vehicle.model}`} 
-          style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 250ms ease-in-out' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 350ms var(--ease-spring)' }}
           className="vehicle-img"
         />
-        <div style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'rgba(255,255,255,0.9)', padding: '0.25rem 0.75rem', borderRadius: '16px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--primary)' }}>
+        <div style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)', padding: '0.35rem 1rem', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main)', boxShadow: 'var(--shadow-sm)' }}>
           {segmentLabels[vehicle.segment]}
         </div>
       </div>
       
       {/* Content */}
-      <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+      <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
         
         {/* Title */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
