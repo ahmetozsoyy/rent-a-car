@@ -26,7 +26,13 @@ const Fleet: React.FC = () => {
     const fetchVehicles = async () => {
       try {
         const response = await api.get('/vehicles');
-        setVehicles(response.data);
+        // Sadece benzersiz marka/modelleri göster
+        const uniqueVehicles = response.data.reduce((acc: IVehicle[], current: IVehicle) => {
+          const exists = acc.find(item => item.brand === current.brand && item.model === current.model);
+          if (!exists) return acc.concat([current]);
+          return acc;
+        }, []);
+        setVehicles(uniqueVehicles);
       } catch (err) {
         console.error('Araçlar yüklenemedi', err);
       } finally {
