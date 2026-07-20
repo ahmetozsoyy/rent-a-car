@@ -12,8 +12,10 @@ export const useSignalR = () => {
     // Sadece Admin ve Moderator olanlar dinlesin
     if (role !== 'Admin' && role !== 'Moderator') return;
 
+    const API_BASE = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:5105';
+
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5105/notifications')
+      .withUrl(`${API_BASE}/notifications`)
       .withAutomaticReconnect()
       .build();
 
@@ -27,6 +29,8 @@ export const useSignalR = () => {
 
       if (role === 'Admin') {
         if (type === 'NEW_MESSAGE' && targetRole === 'Admin') {
+          shouldShow = true;
+        } else if (type === 'NEW_RESERVATION') {
           shouldShow = true;
         }
       } else if (role === 'Moderator') {

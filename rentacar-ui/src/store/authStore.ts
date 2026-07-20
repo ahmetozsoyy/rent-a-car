@@ -5,7 +5,7 @@ interface AuthState {
   isAuthenticated: boolean;
   role: string | null;
   email: string | null;
-  locationId: number | null;
+  locationId: string | null;
   login: (token: string) => void;
   logout: () => void;
 }
@@ -32,7 +32,7 @@ const getInitialState = () => {
     isAuthenticated: true,
     role: payload?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || payload?.role || null,
     email: payload?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || payload?.email || null,
-    locationId: payload?.LocationId ? parseInt(payload.LocationId) : null,
+    locationId: payload?.LocationId || null,
   };
 };
 
@@ -46,7 +46,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       isAuthenticated: true,
       role: payload?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || payload?.role || null,
       email: payload?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || payload?.email || null,
-      locationId: payload?.LocationId ? parseInt(payload.LocationId) : null,
+      locationId: payload?.LocationId || null,
     });
   },
   logout: () => {
