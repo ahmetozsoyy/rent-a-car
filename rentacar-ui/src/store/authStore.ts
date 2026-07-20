@@ -5,6 +5,7 @@ interface AuthState {
   isAuthenticated: boolean;
   role: string | null;
   email: string | null;
+  locationId: number | null;
   login: (token: string) => void;
   logout: () => void;
 }
@@ -24,13 +25,14 @@ const parseJwt = (token: string) => {
 
 const getInitialState = () => {
   const token = localStorage.getItem('token');
-  if (!token) return { token: null, isAuthenticated: false, role: null, email: null };
+  if (!token) return { token: null, isAuthenticated: false, role: null, email: null, locationId: null };
   const payload = parseJwt(token);
   return {
     token,
     isAuthenticated: true,
     role: payload?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || payload?.role || null,
     email: payload?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || payload?.email || null,
+    locationId: payload?.LocationId ? parseInt(payload.LocationId) : null,
   };
 };
 
@@ -44,6 +46,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       isAuthenticated: true,
       role: payload?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || payload?.role || null,
       email: payload?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || payload?.email || null,
+      locationId: payload?.LocationId ? parseInt(payload.LocationId) : null,
     });
   },
   logout: () => {

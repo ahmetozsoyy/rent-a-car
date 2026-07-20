@@ -3,6 +3,7 @@ using RentACar.Infrastructure.Persistence;
 using RentACar.Application;
 using RentACar.Application.Common.Interfaces;
 using RentACar.Api.Middlewares;
+using RentACar.Api.Hubs;
 using Hangfire;
 using Hangfire.PostgreSql;
 using StackExchange.Redis;
@@ -78,6 +79,7 @@ builder.Services.AddAuthentication(defaultScheme: JwtBearerDefaults.Authenticati
     });
 
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -128,6 +130,7 @@ app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<NotificationHub>("/notifications");
 
 using (var scope = app.Services.CreateScope())
 {

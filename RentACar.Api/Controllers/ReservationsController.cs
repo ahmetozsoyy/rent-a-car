@@ -6,6 +6,8 @@ using RentACar.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Microsoft.AspNetCore.SignalR;
+using RentACar.Api.Hubs;
 
 namespace RentACar.Api.Controllers;
 
@@ -13,11 +15,16 @@ public class ReservationsController : BaseController
 {
     private readonly IReservationService _reservationService;
     private readonly IValidator<CreateReservationRequest> _validator;
+    private readonly IHubContext<NotificationHub> _hubContext;
 
-    public ReservationsController(IReservationService reservationService, IValidator<CreateReservationRequest> validator)
+    public ReservationsController(
+        IReservationService reservationService, 
+        IValidator<CreateReservationRequest> validator,
+        IHubContext<NotificationHub> hubContext)
     {
         _reservationService = reservationService;
         _validator = validator;
+        _hubContext = hubContext;
     }
 
     [HttpPost]
@@ -39,6 +46,12 @@ public class ReservationsController : BaseController
 
         // 2. İş Mantığını Çalıştır (Çakışma Kontrolü ve Hangfire Kilidi)
         var result = await _reservationService.CreateReservationAsync(request, cancellationToken);
+        
+        await _hubContext.Clients.All.SendAsync("ReceiveNotification", new {
+            Type = "NEW_RESERVATION",
+            LocationId = request.PickupLocationId,
+            Message = "Şubenize yeni bir araç kiralama rezervasyonu geldi!"
+        });
         
         return Created("", result);
     }

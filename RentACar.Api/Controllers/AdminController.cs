@@ -6,6 +6,8 @@ using RentACar.Application.DTOs;
 using RentACar.Domain.Entities;
 using RentACar.Domain.Enums;
 using System.Security.Claims;
+using Microsoft.AspNetCore.SignalR;
+using RentACar.Api.Hubs;
 
 namespace RentACar.Api.Controllers;
 
@@ -13,10 +15,12 @@ namespace RentACar.Api.Controllers;
 public class AdminController : BaseController
 {
     private readonly IApplicationDbContext _context;
+    private readonly IHubContext<NotificationHub> _hubContext;
 
-    public AdminController(IApplicationDbContext context)
+    public AdminController(IApplicationDbContext context, IHubContext<NotificationHub> hubContext)
     {
         _context = context;
+        _hubContext = hubContext;
     }
 
     [HttpPost("assign-moderator")]
@@ -135,6 +139,13 @@ public class AdminController : BaseController
 
         _context.SupportMessages.Add(message);
         await _context.SaveChangesAsync(CancellationToken.None);
+
+        await _hubContext.Clients.All.SendAsync("ReceiveNotification", new {
+            Type = "NEW_MESSAGE",
+            LocationId = request.LocationId,
+            TargetRole = "Moderator",
+            Message = "Admin'den yeni bir mesajınız var!"
+        });
 
         return Ok(new { Message = "Mesaj gönderildi." });
     }
