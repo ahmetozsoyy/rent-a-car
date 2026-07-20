@@ -51,27 +51,26 @@ body {
 
 /* Glassmorphism / Soft Elevation utility */
 .glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--bg-card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-sm);
-  border-radius: 16px;
+  border-radius: var(--border-radius);
+  transition: all var(--transition-speed) var(--ease-spring);
 }
 
 .glass:hover .vehicle-img {
-  transform: scale(1.05);
+  transform: scale(1.02); /* Subtle zoom as per design spec */
 }
 
 .glass-nav {
-  background: rgba(248, 250, 252, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--glass-border);
+  background: transparent; /* Will be managed by scroll state */
+  border-bottom: 1px solid transparent;
   position: sticky;
   top: 0;
   z-index: 50;
-  transition: all var(--transition-speed) ease-in-out;
+  transition: all var(--transition-speed) var(--ease-spring);
 }
 
 .fleet-grid {
@@ -95,8 +94,8 @@ body {
 
 .glass:hover {
   box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-  border-color: rgba(148, 163, 184, 0.4);
+  transform: translateY(-4px); /* Slightly more elevation */
+  border-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Typography */
@@ -104,10 +103,12 @@ h1, h2, h3, h4 {
   font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--text-main);
+  line-height: 1.1;
 }
 
-h1 { font-size: 2.25rem; margin-bottom: 1rem; }
-h2 { font-size: 1.875rem; margin-bottom: 0.75rem; }
+h1 { font-size: 3.5rem; margin-bottom: 1.5rem; letter-spacing: -0.04em; } /* 56px */
+h2 { font-size: 2.5rem; margin-bottom: 1rem; letter-spacing: -0.03em; } /* 40px */
+h3 { font-size: 1.5rem; margin-bottom: 0.75rem; }
 
 p { color: var(--text-muted); }
 
