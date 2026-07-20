@@ -153,8 +153,8 @@ const Checkout: React.FC = () => {
   };
 
   return (
-    <div className="container mt-8 pb-8">
-      <h1 className="mb-4">{t('checkout.title') || 'Rezervasyon ve Ödeme'}</h1>
+    <div className="container mt-8 pb-8" style={{ paddingTop: '5rem' }}>
+      <h1 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>{t('checkout.title') || 'Rezervasyon ve Ödeme'}</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         
@@ -203,48 +203,59 @@ const Checkout: React.FC = () => {
 
           {/* Ekstra Güvence ve Paketler */}
           <div className="glass p-6">
-            <h3 className="mb-4 flex items-center gap-2"><ShieldCheck size={20}/> Ek Güvence & Paketler</h3>
+            <h3 className="mb-4 flex items-center gap-2" style={{ fontSize: '1.25rem' }}><ShieldCheck size={20} color="var(--accent)" /> Ek Güvence & Paketler</h3>
             <div className="flex flex-col gap-3">
-              {extras.map(extra => (
-                <label key={extra.id} className="flex items-center justify-between p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors" style={{ borderColor: 'var(--glass-border)' }}>
-                  <div className="flex items-center gap-3">
-                    <input 
-                      type="checkbox" 
-                      checked={selectedExtraIds.includes(extra.id)}
-                      onChange={() => toggleExtra(extra.id)}
-                    />
-                    <span>{extra.name}</span>
-                  </div>
-                  <span className="font-semibold">
-                    ₺{extra.price} {extra.priceType === 1 ? '/ gün' : '/ toplam'}
-                  </span>
-                </label>
-              ))}
+              {extras.map(extra => {
+                const isSelected = selectedExtraIds.includes(extra.id);
+                return (
+                  <label key={extra.id} className="flex items-center justify-between p-4 rounded-lg cursor-pointer transition-all" style={{ border: `1px solid ${isSelected ? 'var(--primary)' : 'var(--glass-border)'}`, background: isSelected ? 'rgba(0,0,0,0.02)' : 'transparent' }}>
+                    <div className="flex items-center gap-3">
+                      <input 
+                        type="checkbox" 
+                        checked={isSelected}
+                        onChange={() => toggleExtra(extra.id)}
+                        style={{ width: '1.125rem', height: '1.125rem', accentColor: 'var(--primary)' }}
+                      />
+                      <span style={{ fontWeight: isSelected ? 600 : 500 }}>{extra.name}</span>
+                    </div>
+                    <span className="font-semibold" style={{ color: isSelected ? 'var(--text-main)' : 'var(--text-muted)' }}>
+                      ₺{extra.price} {extra.priceType === 1 ? '/ gün' : '/ toplam'}
+                    </span>
+                  </label>
+                );
+              })}
               {extras.length === 0 && <div className="text-muted text-sm">Yükleniyor veya bulunamadı...</div>}
             </div>
           </div>
 
           {/* Ödeme Yöntemi */}
           <div className="glass p-6">
-            <h3 className="mb-4 flex items-center gap-2"><CreditCard size={20}/> Ödeme Yöntemi</h3>
+            <h3 className="mb-4 flex items-center gap-2" style={{ fontSize: '1.25rem' }}><CreditCard size={20} color="var(--accent)" /> Ödeme Yöntemi</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <label 
-                className={`p-4 border rounded-lg cursor-pointer flex flex-col items-center justify-center gap-2 transition-all ${paymentMethod === 'PayAtOffice' ? 'border-primary bg-primary/5' : 'border-gray-200'}`}
-                style={{ borderColor: paymentMethod === 'PayAtOffice' ? 'var(--primary)' : 'var(--glass-border)' }}
+                className="p-4 rounded-lg cursor-pointer flex flex-col items-center justify-center gap-3 transition-all"
+                style={{ 
+                  border: `1px solid ${paymentMethod === 'PayAtOffice' ? 'var(--primary)' : 'var(--glass-border)'}`,
+                  background: paymentMethod === 'PayAtOffice' ? 'rgba(0,0,0,0.02)' : 'transparent'
+                }}
               >
                 <input type="radio" name="paymentMethod" className="hidden" checked={paymentMethod === 'PayAtOffice'} onChange={() => setPaymentMethod('PayAtOffice')} />
-                <CarFront size={32} color={paymentMethod === 'PayAtOffice' ? 'var(--primary)' : 'gray'} />
-                <span className="font-semibold">Ofiste Öde</span>
+                <CarFront size={28} color={paymentMethod === 'PayAtOffice' ? 'var(--primary)' : 'var(--accent)'} />
+                <span style={{ fontWeight: paymentMethod === 'PayAtOffice' ? 600 : 500, color: paymentMethod === 'PayAtOffice' ? 'var(--text-main)' : 'var(--text-muted)' }}>Ofiste Öde</span>
               </label>
               
               <label 
-                className={`p-4 border rounded-lg cursor-pointer flex flex-col items-center justify-center gap-2 transition-all ${paymentMethod === 'CreditCard' ? 'border-primary bg-primary/5' : 'border-gray-200'}`}
-                style={{ borderColor: paymentMethod === 'CreditCard' ? 'var(--primary)' : 'var(--glass-border)', position: 'relative' }}
+                className="p-4 rounded-lg cursor-pointer flex flex-col items-center justify-center gap-3 transition-all"
+                style={{ 
+                  border: `1px solid ${paymentMethod === 'CreditCard' ? 'var(--primary)' : 'var(--glass-border)'}`,
+                  background: paymentMethod === 'CreditCard' ? 'rgba(0,0,0,0.02)' : 'transparent',
+                  position: 'relative'
+                }}
               >
-                <div style={{ position: 'absolute', top: '-10px', right: '-10px', background: '#10b981', color: 'white', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 'bold' }}>%15 İndirim</div>
+                <div style={{ position: 'absolute', top: '-10px', right: '-10px', background: '#111111', color: 'white', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 600, boxShadow: 'var(--shadow-sm)' }}>%15 İndirim</div>
                 <input type="radio" name="paymentMethod" className="hidden" checked={paymentMethod === 'CreditCard'} onChange={() => setPaymentMethod('CreditCard')} />
-                <CreditCard size={32} color={paymentMethod === 'CreditCard' ? 'var(--primary)' : 'gray'} />
-                <span className="font-semibold">Kredi Kartı ile Hemen Öde</span>
+                <CreditCard size={28} color={paymentMethod === 'CreditCard' ? 'var(--primary)' : 'var(--accent)'} />
+                <span style={{ fontWeight: paymentMethod === 'CreditCard' ? 600 : 500, color: paymentMethod === 'CreditCard' ? 'var(--text-main)' : 'var(--text-muted)' }}>Kredi Kartı ile Hemen Öde</span>
               </label>
             </div>
           </div>
@@ -253,14 +264,14 @@ const Checkout: React.FC = () => {
 
         {/* Sağ Kolon - Sepet Özeti */}
         <div>
-          <div className="glass p-6" style={{ position: 'sticky', top: '2rem' }}>
-            <h3 className="mb-4">Sepet Özeti</h3>
+          <div className="glass p-6" style={{ position: 'sticky', top: '7rem' }}>
+            <h3 className="mb-4" style={{ fontSize: '1.25rem' }}>Sepet Özeti</h3>
             
-            <div className="flex gap-4 mb-4 pb-4 border-b" style={{ borderColor: 'var(--glass-border)' }}>
-              <img src={vehicle.imageUrl || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=300'} alt={vehicle.model} className="w-24 h-16 object-cover rounded" />
-              <div>
-                <div className="font-bold">{vehicle.brand} {vehicle.model}</div>
-                <div className="text-sm text-muted">{days} Gün Kiralama</div>
+            <div className="flex gap-4 mb-5 pb-5 border-b" style={{ borderColor: 'var(--glass-border)' }}>
+              <img src={vehicle.imageUrl || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=300'} alt={vehicle.model} style={{ width: '6rem', height: '4rem', objectFit: 'cover', borderRadius: '8px' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div style={{ fontWeight: 600, fontSize: '1.1rem' }}>{vehicle.brand} {vehicle.model}</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>{days} Gün Kiralama</div>
               </div>
             </div>
 
