@@ -171,10 +171,10 @@ const BookingForm: React.FC = () => {
 
         </div>
 
-        <div style={{ marginTop: '2.5rem', display: 'flex' }}>
-          <button type="submit" className="btn btn-primary" style={{ padding: '1.25rem 3rem', fontSize: '1.1rem', gap: '0.75rem', width: '100%', justifyContent: 'space-between' }}>
+        <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center' }}>
+          <button type="submit" className="btn btn-primary" style={{ padding: '1rem 3rem', fontSize: '1.05rem', gap: '0.6rem', width: 'auto', minWidth: '220px', borderRadius: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: '0 8px 24px rgba(0,0,0,0.15)', transition: 'all 0.3s ease' }}>
             <span>{t('booking.searchCars') || 'Araç Bul'}</span>
-            <Search size={20} /> 
+            <Search size={18} /> 
           </button>
         </div>
       </form>

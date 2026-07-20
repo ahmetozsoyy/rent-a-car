@@ -6,16 +6,26 @@ const Home: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="split-layout">
-      {/* Left Content Area */}
+    <div className="split-layout" style={{
+      backgroundImage: 'url(/images/vehicles/mercedes.jpg)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+      minHeight: '100vh',
+      position: 'relative'
+    }}>
+      {/* Left Content Area (Glassmorphism Overlay) */}
       <div style={{ 
         display: 'flex', 
         flexDirection: 'column', 
         justifyContent: 'center', 
         padding: '8rem 4rem 4rem 4rem',
-        backgroundColor: 'var(--bg-main)',
+        backgroundColor: 'rgba(247, 247, 245, 0.82)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
         minHeight: '100vh',
-        zIndex: 1
+        zIndex: 1,
+        borderRight: '1px solid rgba(255,255,255,0.3)'
       }}>
         
         <div style={{ maxWidth: '650px', marginBottom: '4rem' }}>
@@ -32,24 +42,12 @@ const Home: React.FC = () => {
         
       </div>
       
-      {/* Right Image Area */}
+      {/* Right Image Area (Now just a transparent spacer since bg is on parent) */}
       <div style={{
-        backgroundImage: 'url(/images/vehicles/mercedes.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center right',
         minHeight: '100vh',
         width: '100%',
         position: 'relative'
       }}>
-        {/* Subtle shadow on the edge where it meets the form */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '120px',
-          height: '100%',
-          background: 'linear-gradient(to right, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%)'
-        }}></div>
       </div>
     </div>
   );
