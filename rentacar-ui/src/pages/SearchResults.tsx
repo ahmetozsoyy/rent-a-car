@@ -69,8 +69,8 @@ const SearchResults: React.FC = () => {
             </div>
           ))
         ) : filteredVehicles.length > 0 ? (
-          filteredVehicles.map((vehicle, index) => (
-            <div key={vehicle.id} style={{ animationDelay: `${index * 50}ms`, opacity: 0, animation: 'slideUp 0.6s var(--ease-spring) forwards' }}>
+          filteredVehicles.map((vehicle) => (
+            <div key={vehicle.id} style={{ transition: 'all 0.3s ease-in-out' }}>
               <VehicleCard vehicle={vehicle} />
             </div>
           ))
