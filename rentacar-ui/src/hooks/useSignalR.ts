@@ -11,7 +11,7 @@ export const useSignalR = () => {
     if (role !== 'Admin' && role !== 'Moderator') return;
 
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:7196/notifications')
+      .withUrl('http://localhost:5105/notifications')
       .withAutomaticReconnect()
       .build();
 
@@ -35,7 +35,7 @@ export const useSignalR = () => {
       if (shouldShow) {
         toast(notification.message, {
           icon: '🔔',
-          duration: 300000, // 5 dakika ekranda kalır
+          duration: Infinity, // Sürekli kalır
           style: {
             borderRadius: '12px',
             background: 'var(--glass-bg)',
