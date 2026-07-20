@@ -6,7 +6,7 @@ const Home: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="split-layout home-split" style={{
+    <div className="split-layout" style={{
       backgroundImage: 'url(/images/vehicles/mercedesyeni.jpg)',
       backgroundSize: 'auto 100%',
       backgroundPosition: 'right center',
@@ -20,9 +20,12 @@ const Home: React.FC = () => {
         flexDirection: 'column', 
         justifyContent: 'center', 
         padding: '8rem 4rem 4rem 4rem',
-        backgroundColor: 'var(--bg-main)',
+        backgroundColor: 'rgba(247, 247, 245, 0.82)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
         minHeight: '100vh',
-        zIndex: 1
+        zIndex: 1,
+        borderRight: '1px solid rgba(255,255,255,0.3)'
       }}>
         
         <div style={{ maxWidth: '650px', marginBottom: '4rem' }}>
