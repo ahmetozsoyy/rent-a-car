@@ -35,7 +35,7 @@ export const useSignalR = () => {
       if (shouldShow) {
         toast(notification.message, {
           icon: '🔔',
-          duration: 6000,
+          duration: 300000, // 5 dakika ekranda kalır
           style: {
             borderRadius: '12px',
             background: 'var(--glass-bg)',
