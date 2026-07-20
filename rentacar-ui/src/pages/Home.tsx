@@ -53,7 +53,7 @@ const Home: React.FC = () => {
       </div>
 
       {/* Signature at the bottom of the existing page (centered on the whole screen) */}
-      <div style={{ position: 'absolute', bottom: '0.5rem', left: 0, width: '100%', display: 'flex', justifyContent: 'center', pointerEvents: 'none', zIndex: 10 }}>
+      <div style={{ position: 'absolute', bottom: '1.25rem', left: 0, width: '100%', display: 'flex', justifyContent: 'center', pointerEvents: 'none', zIndex: 10 }}>
         <img src="/images/vehicles/imza.png" alt="İmza" style={{ maxHeight: '180px', opacity: 0.9 }} />
       </div>
     </div>
