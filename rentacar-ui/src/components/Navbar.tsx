@@ -45,7 +45,7 @@ const Navbar: React.FC = () => {
             <img 
               src="/images/vehicles/logo.png" 
               alt="RentACar Logo" 
-              style={{ height: '36px', objectFit: 'contain' }} 
+              style={{ height: '90px', objectFit: 'contain' }} 
             />
           </Link>
           
