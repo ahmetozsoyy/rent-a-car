@@ -20,7 +20,9 @@ const Home: React.FC = () => {
         flexDirection: 'column', 
         justifyContent: 'center', 
         padding: '8rem 4rem 4rem 4rem',
-        background: 'linear-gradient(to right, var(--bg-main) 0%, var(--bg-main) 75%, rgba(247,247,245,0) 100%)',
+        background: 'linear-gradient(to right, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.85) 75%, rgba(255,255,255,0) 100%)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
         width: '120%',
         minHeight: '100vh',
         zIndex: 2
