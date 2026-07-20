@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
-import { Building2, Check, X, CarFront, Calendar, AlertTriangle, CheckCircle2, Trash2 } from 'lucide-react';
+import { Building2, Check, X, CarFront, Calendar, AlertTriangle, CheckCircle2, Trash2, Send, MessageSquare } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,6 +21,11 @@ const ModeratorPanel: React.FC = () => {
   const [blockReason, setBlockReason] = useState('');
   const [blockMessage, setBlockMessage] = useState({ text: '', type: '' });
 
+  // Messages
+  const [messages, setMessages] = useState<any[]>([]);
+  const [newSenderName, setNewSenderName] = useState('');
+  const [newMessage, setNewMessage] = useState('');
+
   useEffect(() => {
     if (role !== 'Moderator') {
       navigate('/dashboard');
@@ -37,6 +42,9 @@ const ModeratorPanel: React.FC = () => {
         
         const bRes = await api.get('/moderator/blocked-vehicles');
         setBlockedVehicles(bRes.data);
+        
+        const mRes = await api.get('/moderator/messages');
+        setMessages(mRes.data);
       } catch (err) {
         console.error('Error fetching data for moderator panel', err);
       }
@@ -107,6 +115,26 @@ const ModeratorPanel: React.FC = () => {
       setReservations(rRes.data);
     } catch (err: any) {
       alert(err.response?.data || 'Hata oluştu.');
+    }
+  };
+
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newSenderName.trim() || !newMessage.trim()) {
+      alert('Lütfen adınızı ve mesajınızı girin.');
+      return;
+    }
+    try {
+      await api.post('/moderator/messages', {
+        senderName: newSenderName,
+        content: newMessage
+      });
+      setNewMessage('');
+      // Refresh messages
+      const mRes = await api.get('/moderator/messages');
+      setMessages(mRes.data);
+    } catch (err: any) {
+      alert(err.response?.data || 'Mesaj gönderilemedi.');
     }
   };
 
@@ -253,6 +281,66 @@ const ModeratorPanel: React.FC = () => {
                 </table>
               </div>
             )}
+          </div>
+
+          {/* Admin'e Mesajlar */}
+          <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)', gridColumn: '1 / -1' }}>
+            <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+               <MessageSquare size={22} className="text-primary" /> Admin İletişim & Destek
+            </h2>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', height: '400px', background: 'rgba(0,0,0,0.02)', borderRadius: '12px', overflow: 'hidden' }}>
+              {/* Mesaj Listesi */}
+              <div style={{ flex: 1, overflowY: 'auto', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {messages.length === 0 ? (
+                  <p style={{ color: 'var(--muted-color)', textAlign: 'center', margin: 'auto' }}>Henüz bir mesaj bulunmuyor.</p>
+                ) : (
+                  messages.map(m => (
+                    <div key={m.id} style={{ alignSelf: m.isFromAdmin ? 'flex-start' : 'flex-end', maxWidth: '75%' }}>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--muted-color)', marginBottom: '0.2rem', textAlign: m.isFromAdmin ? 'left' : 'right' }}>
+                        {m.senderName} • {new Date(m.createdAt).toLocaleString()}
+                      </div>
+                      <div style={{ 
+                        padding: '0.75rem 1rem', 
+                        borderRadius: '12px', 
+                        background: m.isFromAdmin ? 'var(--glass-bg)' : 'var(--primary-color)',
+                        color: m.isFromAdmin ? 'inherit' : 'white',
+                        border: m.isFromAdmin ? '1px solid var(--glass-border)' : 'none',
+                        borderBottomLeftRadius: m.isFromAdmin ? '0' : '12px',
+                        borderBottomRightRadius: m.isFromAdmin ? '12px' : '0',
+                      }}>
+                        {m.content}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Mesaj Gönderme Formu */}
+              <form onSubmit={handleSendMessage} style={{ padding: '1rem', background: 'var(--glass-bg)', borderTop: '1px solid var(--glass-border)', display: 'flex', gap: '0.5rem' }}>
+                <input 
+                  type="text" 
+                  className="input-field" 
+                  placeholder="Adınız (Örn: Ahmet - Satış)" 
+                  value={newSenderName} 
+                  onChange={e => setNewSenderName(e.target.value)}
+                  style={{ width: '200px' }}
+                  required
+                />
+                <input 
+                  type="text" 
+                  className="input-field" 
+                  placeholder="Mesajınızı yazın..." 
+                  value={newMessage} 
+                  onChange={e => setNewMessage(e.target.value)}
+                  style={{ flex: 1 }}
+                  required
+                />
+                <button type="submit" className="btn btn-primary" style={{ padding: '0 1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Send size={18} /> Gönder
+                </button>
+              </form>
+            </div>
           </div>
 
         </div>

@@ -169,4 +169,54 @@ public class ModeratorController : BaseController
 
         return Ok(new { Message = "Rezervasyon başarıyla silindi." });
     }
+
+    [HttpGet("messages")]
+    public async Task<IActionResult> GetMessages()
+    {
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(userIdStr, out var userId)) return Unauthorized();
+
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null || !user.ManagedLocationId.HasValue) return Forbid("Atanmış bir şubeniz bulunmuyor.");
+
+        var messages = await _context.SupportMessages
+            .Where(m => m.LocationId == user.ManagedLocationId)
+            .OrderBy(m => m.CreatedAt)
+            .Select(m => new SupportMessageDto(
+                m.Id,
+                m.LocationId,
+                m.Location.Name,
+                m.SenderName,
+                m.Content,
+                m.IsFromAdmin,
+                m.CreatedAt))
+            .ToListAsync();
+
+        return Ok(messages);
+    }
+
+    [HttpPost("messages")]
+    public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest request)
+    {
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(userIdStr, out var userId)) return Unauthorized();
+
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null || !user.ManagedLocationId.HasValue) return Forbid("Atanmış bir şubeniz bulunmuyor.");
+
+        if (string.IsNullOrWhiteSpace(request.SenderName) || string.IsNullOrWhiteSpace(request.Content))
+            return BadRequest("Ad ve mesaj içeriği boş olamaz.");
+
+        var message = new SupportMessage(
+            user.ManagedLocationId.Value,
+            request.SenderName,
+            request.Content,
+            false // Admin'den gelmiyor, şubeden gidiyor.
+        );
+
+        _context.SupportMessages.Add(message);
+        await _context.SaveChangesAsync(CancellationToken.None);
+
+        return Ok(new { Message = "Mesaj gönderildi." });
+    }
 }

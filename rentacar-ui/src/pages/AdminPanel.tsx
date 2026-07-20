@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
-import { Shield, ShieldPlus, CarFront, Calendar, MapPin, Mail, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { Shield, ShieldPlus, CarFront, Calendar, MapPin, Mail, AlertTriangle, CheckCircle2, Send, MessageSquare } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,6 +20,12 @@ const AdminPanel: React.FC = () => {
 
   // Blocked Vehicles List
   const [blockedVehicles, setBlockedVehicles] = useState<any[]>([]);
+
+  // Messaging
+  const [locationsWithMessages, setLocationsWithMessages] = useState<any[]>([]);
+  const [selectedLocationId, setSelectedLocationId] = useState<string | null>(null);
+  const [messages, setMessages] = useState<any[]>([]);
+  const [newMessage, setNewMessage] = useState('');
 
   // Block Vehicle form
   const [blockVehicleId, setBlockVehicleId] = useState('');
@@ -42,6 +48,8 @@ const AdminPanel: React.FC = () => {
         setLocations(lRes.data);
         const bRes = await api.get('/admin/blocked-vehicles');
         setBlockedVehicles(bRes.data);
+        const locMsgRes = await api.get('/admin/locations-with-messages');
+        setLocationsWithMessages(locMsgRes.data);
       } catch (err) {
         console.error('Error fetching data for admin panel', err);
       }
@@ -93,6 +101,31 @@ const AdminPanel: React.FC = () => {
     } catch (err: any) {
       const errMsg = typeof err.response?.data === 'string' ? err.response.data : err.response?.data?.title || 'Hata oluştu.';
       setBlockMessage({ text: errMsg, type: 'error' });
+    }
+  };
+
+  const fetchMessages = async (locationId: string) => {
+    setSelectedLocationId(locationId);
+    try {
+      const mRes = await api.get(`/admin/messages/${locationId}`);
+      setMessages(mRes.data);
+    } catch (err) {
+      console.error('Error fetching messages', err);
+    }
+  };
+
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedLocationId || !newMessage.trim()) return;
+    try {
+      await api.post('/admin/messages', {
+        locationId: selectedLocationId,
+        content: newMessage
+      });
+      setNewMessage('');
+      fetchMessages(selectedLocationId);
+    } catch (err: any) {
+      alert(err.response?.data || 'Mesaj gönderilemedi.');
     }
   };
 
@@ -219,6 +252,91 @@ const AdminPanel: React.FC = () => {
                 </table>
               </div>
             )}
+          </div>
+
+          {/* Şube Mesajları */}
+          <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)', gridColumn: '1 / -1' }}>
+            <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+               <MessageSquare size={22} className="text-primary" /> Şube İletişim & Destek
+            </h2>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '1rem', height: '400px' }}>
+              {/* Şube Listesi */}
+              <div style={{ borderRight: '1px solid var(--glass-border)', overflowY: 'auto', paddingRight: '1rem' }}>
+                <h3 style={{ fontSize: '1rem', color: 'var(--muted-color)', marginBottom: '1rem' }}>Şubeler</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {locationsWithMessages.map(loc => (
+                    <button 
+                      key={loc.id} 
+                      onClick={() => fetchMessages(loc.id)}
+                      style={{ 
+                        padding: '0.75rem 1rem', 
+                        borderRadius: '12px', 
+                        border: 'none', 
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        background: selectedLocationId === loc.id ? 'var(--primary-color)' : 'var(--glass-bg)',
+                        color: selectedLocationId === loc.id ? 'white' : 'inherit',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      {loc.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mesaj Listesi ve Gönderme Formu */}
+              <div style={{ display: 'flex', flexDirection: 'column', background: 'rgba(0,0,0,0.02)', borderRadius: '12px', overflow: 'hidden' }}>
+                {!selectedLocationId ? (
+                  <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted-color)' }}>
+                    Lütfen sol taraftan bir şube seçin.
+                  </div>
+                ) : (
+                  <>
+                    <div style={{ flex: 1, overflowY: 'auto', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      {messages.length === 0 ? (
+                        <p style={{ color: 'var(--muted-color)', textAlign: 'center', margin: 'auto' }}>Henüz bir mesaj bulunmuyor.</p>
+                      ) : (
+                        messages.map(m => (
+                          <div key={m.id} style={{ alignSelf: m.isFromAdmin ? 'flex-end' : 'flex-start', maxWidth: '75%' }}>
+                            <div style={{ fontSize: '0.8rem', color: 'var(--muted-color)', marginBottom: '0.2rem', textAlign: m.isFromAdmin ? 'right' : 'left' }}>
+                              {m.senderName} • {new Date(m.createdAt).toLocaleString()}
+                            </div>
+                            <div style={{ 
+                              padding: '0.75rem 1rem', 
+                              borderRadius: '12px', 
+                              background: m.isFromAdmin ? 'var(--primary-color)' : 'var(--glass-bg)',
+                              color: m.isFromAdmin ? 'white' : 'inherit',
+                              border: m.isFromAdmin ? 'none' : '1px solid var(--glass-border)',
+                              borderBottomLeftRadius: m.isFromAdmin ? '12px' : '0',
+                              borderBottomRightRadius: m.isFromAdmin ? '0' : '12px',
+                            }}>
+                              {m.content}
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                    
+                    <form onSubmit={handleSendMessage} style={{ padding: '1rem', background: 'var(--glass-bg)', borderTop: '1px solid var(--glass-border)', display: 'flex', gap: '0.5rem' }}>
+                      <input 
+                        type="text" 
+                        className="input-field" 
+                        placeholder="Mesajınızı yazın..." 
+                        value={newMessage} 
+                        onChange={e => setNewMessage(e.target.value)}
+                        style={{ flex: 1 }}
+                        required
+                      />
+                      <button type="submit" className="btn btn-primary" style={{ padding: '0 1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <Send size={18} /> Yanıtla
+                      </button>
+                    </form>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
 
         </div>

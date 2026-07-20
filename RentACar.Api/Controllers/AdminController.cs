@@ -82,4 +82,60 @@ public class AdminController : BaseController
 
         return Ok(new { Message = "Araç blokesi kaldırıldı." });
     }
+
+    [HttpGet("locations-with-messages")]
+    public async Task<IActionResult> GetLocationsWithMessages()
+    {
+        var locations = await _context.Locations
+            .OrderBy(l => l.Name)
+            .Select(l => new {
+                l.Id,
+                l.Name,
+                l.City
+            })
+            .ToListAsync();
+
+        return Ok(locations);
+    }
+
+    [HttpGet("messages/{locationId}")]
+    public async Task<IActionResult> GetMessages(Guid locationId)
+    {
+        var messages = await _context.SupportMessages
+            .Where(m => m.LocationId == locationId)
+            .OrderBy(m => m.CreatedAt)
+            .Select(m => new SupportMessageDto(
+                m.Id,
+                m.LocationId,
+                m.Location.Name,
+                m.SenderName,
+                m.Content,
+                m.IsFromAdmin,
+                m.CreatedAt))
+            .ToListAsync();
+
+        return Ok(messages);
+    }
+
+    [HttpPost("messages")]
+    public async Task<IActionResult> SendMessage([FromBody] AdminSendMessageRequest request)
+    {
+        var location = await _context.Locations.FindAsync(request.LocationId);
+        if (location == null) return NotFound("Şube bulunamadı.");
+
+        if (string.IsNullOrWhiteSpace(request.Content))
+            return BadRequest("Mesaj içeriği boş olamaz.");
+
+        var message = new SupportMessage(
+            request.LocationId,
+            "Admin",
+            request.Content,
+            true // Admin'den gidiyor
+        );
+
+        _context.SupportMessages.Add(message);
+        await _context.SaveChangesAsync(CancellationToken.None);
+
+        return Ok(new { Message = "Mesaj gönderildi." });
+    }
 }
