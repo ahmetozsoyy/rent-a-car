@@ -18,6 +18,9 @@ const AdminPanel: React.FC = () => {
   const [modLocation, setModLocation] = useState('');
   const [modMessage, setModMessage] = useState({ text: '', type: '' });
 
+  // Blocked Vehicles List
+  const [blockedVehicles, setBlockedVehicles] = useState<any[]>([]);
+
   // Block Vehicle form
   const [blockVehicleId, setBlockVehicleId] = useState('');
   const [blockStart, setBlockStart] = useState('');
@@ -37,6 +40,8 @@ const AdminPanel: React.FC = () => {
         setVehicles(vRes.data);
         const lRes = await api.get('/locations');
         setLocations(lRes.data);
+        const bRes = await api.get('/admin/blocked-vehicles');
+        setBlockedVehicles(bRes.data);
       } catch (err) {
         console.error('Error fetching data for admin panel', err);
       }
@@ -68,6 +73,21 @@ const AdminPanel: React.FC = () => {
       setBlockStart('');
       setBlockEnd('');
       setBlockReason('');
+      
+      // Listeyi yenile
+      const bRes = await api.get('/admin/blocked-vehicles');
+      setBlockedVehicles(bRes.data);
+    } catch (err: any) {
+      setBlockMessage({ text: err.response?.data || 'Hata oluştu.', type: 'error' });
+    }
+  };
+
+  const handleUnblockVehicle = async (id: string) => {
+    if (!window.confirm('Bu bloku kaldırmak istediğinize emin misiniz?')) return;
+    try {
+      await api.delete(`/admin/unblock-vehicle/${id}`);
+      setBlockedVehicles(prev => prev.filter(b => b.id !== id));
+      setBlockMessage({ text: 'Araç blokesi başarıyla kaldırıldı.', type: 'success' });
     } catch (err: any) {
       setBlockMessage({ text: err.response?.data || 'Hata oluştu.', type: 'error' });
     }
@@ -155,6 +175,47 @@ const AdminPanel: React.FC = () => {
 
               <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', background: '#EF4444', borderColor: '#EF4444' }}>Aracı Yayından Kaldır</button>
             </form>
+          </div>
+
+          {/* Bloklu Araçlar Listesi */}
+          <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)', gridColumn: '1 / -1' }}>
+            <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+               Bakımdaki / Bloklu Araçlar
+            </h2>
+            {blockedVehicles.length === 0 ? (
+              <p style={{ color: 'var(--muted-color)' }}>Yayından kaldırılmış araç bulunmuyor.</p>
+            ) : (
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--muted-color)' }}>
+                      <th style={{ padding: '1rem', fontWeight: 500 }}>Araç</th>
+                      <th style={{ padding: '1rem', fontWeight: 500 }}>Başlangıç</th>
+                      <th style={{ padding: '1rem', fontWeight: 500 }}>Bitiş</th>
+                      <th style={{ padding: '1rem', fontWeight: 500 }}>Sebep</th>
+                      <th style={{ padding: '1rem', fontWeight: 500 }}>İşlem</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {blockedVehicles.map(b => (
+                      <tr key={b.id} style={{ borderBottom: '1px solid var(--glass-border)' }}>
+                        <td style={{ padding: '1rem', fontWeight: 600 }}>{b.vehicle}</td>
+                        <td style={{ padding: '1rem' }}>{b.startDate}</td>
+                        <td style={{ padding: '1rem' }}>{b.endDate}</td>
+                        <td style={{ padding: '1rem' }}>
+                          <span style={{ padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 500, background: '#F59E0B15', color: '#F59E0B' }}>
+                            {b.reason}
+                          </span>
+                        </td>
+                        <td style={{ padding: '1rem' }}>
+                          <button onClick={() => handleUnblockVehicle(b.id)} className="btn btn-outline" style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', borderColor: '#EF4444', color: '#EF4444' }}>Bloku Kaldır</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
 
         </div>

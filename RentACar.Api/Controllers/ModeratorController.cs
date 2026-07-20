@@ -65,4 +65,35 @@ public class ModeratorController : BaseController
 
         return Ok(new { Message = "Araç başarıyla yayından kaldırıldı." });
     }
+
+    [HttpGet("blocked-vehicles")]
+    public async Task<IActionResult> GetBlockedVehicles()
+    {
+        var blocks = await _context.VehicleBlocks
+            .Include(b => b.Vehicle)
+            .OrderByDescending(b => b.CreatedAt)
+            .Select(b => new {
+                b.Id,
+                b.VehicleId,
+                Vehicle = b.Vehicle.Brand + " " + b.Vehicle.Model,
+                StartDate = b.StartDate.ToString("dd MMM yyyy"),
+                EndDate = b.EndDate.ToString("dd MMM yyyy"),
+                b.Reason
+            })
+            .ToListAsync();
+
+        return Ok(blocks);
+    }
+
+    [HttpDelete("unblock-vehicle/{id}")]
+    public async Task<IActionResult> UnblockVehicle(Guid id)
+    {
+        var block = await _context.VehicleBlocks.FindAsync(id);
+        if (block == null) return NotFound("Kayıt bulunamadı.");
+
+        _context.VehicleBlocks.Remove(block);
+        await _context.SaveChangesAsync(CancellationToken.None);
+
+        return Ok(new { Message = "Araç blokesi kaldırıldı." });
+    }
 }
