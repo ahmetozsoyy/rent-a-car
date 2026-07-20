@@ -333,7 +333,7 @@ const ModeratorPanel: React.FC = () => {
                       <div style={{ 
                         padding: '0.75rem 1rem', 
                         borderRadius: '12px', 
-                        background: m.isFromAdmin ? 'var(--glass-bg)' : 'var(--primary-color)',
+                        background: m.isFromAdmin ? 'var(--glass-bg)' : 'var(--primary)',
                         color: m.isFromAdmin ? 'inherit' : 'white',
                         border: m.isFromAdmin ? '1px solid var(--glass-border)' : 'none',
                         borderBottomLeftRadius: m.isFromAdmin ? '0' : '12px',

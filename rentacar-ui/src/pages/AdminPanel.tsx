@@ -304,7 +304,7 @@ const AdminPanel: React.FC = () => {
                         border: 'none', 
                         textAlign: 'left',
                         cursor: 'pointer',
-                        background: selectedLocationId === loc.id ? 'var(--primary-color)' : 'var(--glass-bg)',
+                        background: selectedLocationId === loc.id ? 'var(--primary)' : 'var(--glass-bg)',
                         color: selectedLocationId === loc.id ? 'white' : 'inherit',
                         transition: 'all 0.2s'
                       }}
@@ -335,7 +335,7 @@ const AdminPanel: React.FC = () => {
                             <div style={{ 
                               padding: '0.75rem 1rem', 
                               borderRadius: '12px', 
-                              background: m.isFromAdmin ? 'var(--primary-color)' : 'var(--glass-bg)',
+                              background: m.isFromAdmin ? 'var(--primary)' : 'var(--glass-bg)',
                               color: m.isFromAdmin ? 'white' : 'inherit',
                               border: m.isFromAdmin ? 'none' : '1px solid var(--glass-border)',
                               borderBottomLeftRadius: m.isFromAdmin ? '12px' : '0',
