@@ -130,7 +130,7 @@ const Dashboard: React.FC = () => {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--glass-border)', paddingBottom: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 500 }}>PNR Kodu:</span>
-                      <span className="technical-data" style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)', letterSpacing: '0.05em' }}>{res.pnr}</span>
+                      <span className="technical-data" style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)', letterSpacing: '0.05em' }}>{res.pnrCode}</span>
                     </div>
                     <div style={{ display: 'flex', gap: '0.75rem' }}>
                       <div style={{ background: activeTab === 'active' ? 'rgba(22, 163, 74, 0.1)' : 'rgba(107, 114, 128, 0.1)', color: activeTab === 'active' ? '#16a34a' : '#4b5563', padding: '0.4rem 1rem', borderRadius: '100px', fontSize: '0.8rem', fontWeight: 600 }}>
