@@ -6,6 +6,7 @@ import Fleet from './pages/Fleet';
 import SearchResults from './pages/SearchResults';
 import Navbar from './components/Navbar';
 import Checkout from './pages/Checkout';
+import About from './pages/About';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/fleet" element={<Fleet />} />
         <Route path="/search" element={<SearchResults />} />
+        <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/checkout" element={<Checkout />} />
