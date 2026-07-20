@@ -116,12 +116,12 @@ p { color: var(--text-muted); }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.625rem 1.25rem;
-  border-radius: 6px;
+  padding: 0.875rem 1.5rem; /* Medium height, more spacious */
+  border-radius: 100px; /* Fully rounded buttons */
   font-weight: 500;
   cursor: pointer;
   border: 1px solid transparent;
-  transition: all var(--transition-speed) ease-in-out;
+  transition: all var(--transition-speed) var(--ease-spring);
   font-size: 0.95rem;
   text-decoration: none;
 }
@@ -129,13 +129,13 @@ p { color: var(--text-muted); }
 .btn-primary {
   background-color: var(--primary);
   color: white;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  box-shadow: none; /* No flashy shadows, keep it minimal */
 }
 
 .btn-primary:hover {
   background-color: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-glow);
+  transform: translateY(-1px); /* Subtle hover */
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-outline {
@@ -145,8 +145,8 @@ p { color: var(--text-muted); }
 }
 
 .btn-outline:hover {
-  background: var(--bg-card);
-  border-color: var(--primary);
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.1);
   color: var(--primary-hover);
 }
 
@@ -160,7 +160,7 @@ p { color: var(--text-muted); }
 
 /* Forms */
 .form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem; /* More spacing */
 }
 
 .form-label {
@@ -168,24 +168,25 @@ p { color: var(--text-muted); }
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--primary);
+  color: var(--text-main); /* High contrast */
 }
 
 .form-control {
   width: 100%;
-  padding: 0.625rem 0.875rem;
-  background: white;
+  padding: 0.875rem 1rem; /* Spacious, Large touch targets */
+  background: var(--bg-card);
   border: 1px solid var(--glass-border);
-  border-radius: 6px;
+  border-radius: 12px;
   color: var(--text-main);
-  transition: all var(--transition-speed) ease-in-out;
+  transition: all var(--transition-speed) var(--ease-spring);
   font-family: 'Geist Sans', sans-serif;
+  box-shadow: var(--shadow-sm); /* Subtle depth */
 }
 
 .form-control:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary); /* Minimal, sharp focus */
 }
 
 /* Utilities */
