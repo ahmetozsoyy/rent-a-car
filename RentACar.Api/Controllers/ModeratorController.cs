@@ -74,8 +74,15 @@ public class ModeratorController : BaseController
     [HttpGet("blocked-vehicles")]
     public async Task<IActionResult> GetBlockedVehicles()
     {
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(userIdStr, out var userId)) return Unauthorized();
+
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null || !user.ManagedLocationId.HasValue) return Forbid("Atanmış bir şubeniz bulunmuyor.");
+
         var blocks = await _context.VehicleBlocks
             .Include(b => b.Vehicle)
+            .Where(b => b.Vehicle.CurrentLocationId == user.ManagedLocationId)
             .OrderByDescending(b => b.CreatedAt)
             .Select(b => new {
                 b.Id,
@@ -88,6 +95,30 @@ public class ModeratorController : BaseController
             .ToListAsync();
 
         return Ok(blocks);
+    }
+
+    [HttpGet("vehicles")]
+    public async Task<IActionResult> GetBranchVehicles()
+    {
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(userIdStr, out var userId)) return Unauthorized();
+
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null || !user.ManagedLocationId.HasValue) return Forbid("Atanmış bir şubeniz bulunmuyor.");
+
+        var vehicles = await _context.Vehicles
+            .Include(v => v.CurrentLocation)
+            .Where(v => v.CurrentLocationId == user.ManagedLocationId)
+            .Select(v => new 
+            { 
+                v.Id, v.Brand, v.Model, v.Year, v.DailyPrice, 
+                v.Transmission, v.FuelType, v.BodyType, v.MinDriverAge, 
+                v.ImageUrl, Segment = v.Segment.ToString(),
+                LocationName = v.CurrentLocation != null ? v.CurrentLocation.City + " Ofisi" : ""
+            })
+            .ToListAsync();
+
+        return Ok(vehicles);
     }
 
     [HttpDelete("unblock-vehicle/{id}")]

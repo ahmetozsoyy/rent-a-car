@@ -32,7 +32,7 @@ const ModeratorPanel: React.FC = () => {
         const rRes = await api.get('/moderator/reservations');
         setReservations(rRes.data);
         
-        const vRes = await api.get('/vehicles');
+        const vRes = await api.get('/moderator/vehicles');
         setVehicles(vRes.data);
         
         const bRes = await api.get('/moderator/blocked-vehicles');
