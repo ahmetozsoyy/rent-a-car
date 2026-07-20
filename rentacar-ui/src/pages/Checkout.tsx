@@ -47,6 +47,7 @@ const Checkout: React.FC = () => {
 
   const [paymentMethod, setPaymentMethod] = useState<'CreditCard' | 'PayAtOffice'>('PayAtOffice');
   const [selectedExtraIds, setSelectedExtraIds] = useState<string[]>([]);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   useEffect(() => {
     if (!vehicleId || !pickupLocId || !dropoffLocId || !pickupDateStr || !dropoffDateStr) {
@@ -119,8 +120,6 @@ const Checkout: React.FC = () => {
   let totalBeforeDiscount = basePrice + extrasTotal + (isOneWay ? 1000 : 0);
   let discount = paymentMethod === 'CreditCard' ? totalBeforeDiscount * 0.15 : 0;
   let finalPrice = totalBeforeDiscount - discount;
-
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const handleInitialSubmit = (e: React.FormEvent) => {
     e.preventDefault();
