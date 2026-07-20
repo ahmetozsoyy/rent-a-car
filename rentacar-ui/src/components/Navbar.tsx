@@ -41,10 +41,12 @@ const Navbar: React.FC = () => {
         {/* Left Side: Logo + Links */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '3.5rem' }}>
           {/* Logo */}
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', textDecoration: 'none' }}>
-            <span style={{ fontSize: '1.25rem', fontWeight: 600, color: textColor, letterSpacing: '-0.02em', transition: 'color 0.3s ease' }}>
-              Rent<span style={{ color: 'var(--accent)' }}>A</span>Car
-            </span>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+            <img 
+              src="/images/vehicles/logo.png" 
+              alt="RentACar Logo" 
+              style={{ height: '36px', objectFit: 'contain' }} 
+            />
           </Link>
           
           {/* Navigation Links */}
