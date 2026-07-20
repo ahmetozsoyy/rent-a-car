@@ -23,15 +23,13 @@ public static class ApplicationDbContextSeed
         }
 
         // 2. Lokasyonlar
-        if (!await context.Locations.AnyAsync())
+        var izmir = await context.Locations.FirstOrDefaultAsync(l => l.City == "İzmir");
+        if (izmir == null)
         {
-            var loc1 = new Location("İstanbul Havalimanı", "Arnavutköy", "İstanbul", 100);
-            var loc2 = new Location("Ankara Esenboğa", "Çubuk", "Ankara", 50);
             var loc3 = new Location("İzmir Adnan Menderes", "Gaziemir", "İzmir", 40);
             var loc4 = new Location("Bursa Şehir Merkezi", "Osmangazi", "Bursa", 30);
             var loc5 = new Location("Muğla Bodrum-Milas", "Milas", "Muğla", 25);
-            
-            context.Locations.AddRange(loc1, loc2, loc3, loc4, loc5);
+            context.Locations.AddRange(loc3, loc4, loc5);
             await context.SaveChangesAsync();
         }
 

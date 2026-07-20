@@ -96,4 +96,29 @@ public class ModeratorController : BaseController
 
         return Ok(new { Message = "Araç blokesi kaldırıldı." });
     }
+
+    [HttpPost("approve-reservation/{id}")]
+    public async Task<IActionResult> ApproveReservation(Guid id)
+    {
+        var reservation = await _context.Reservations.FindAsync(id);
+        if (reservation == null) return NotFound("Rezervasyon bulunamadı.");
+
+        // Onaylandığında Aktif yapalım (veya Confirmed)
+        reservation.UpdateStatus(ReservationStatus.Active);
+        await _context.SaveChangesAsync(CancellationToken.None);
+
+        return Ok(new { Message = "Rezervasyon onaylandı." });
+    }
+
+    [HttpPost("reject-reservation/{id}")]
+    public async Task<IActionResult> RejectReservation(Guid id)
+    {
+        var reservation = await _context.Reservations.FindAsync(id);
+        if (reservation == null) return NotFound("Rezervasyon bulunamadı.");
+
+        reservation.UpdateStatus(ReservationStatus.Cancelled);
+        await _context.SaveChangesAsync(CancellationToken.None);
+
+        return Ok(new { Message = "Rezervasyon reddedildi." });
+    }
 }

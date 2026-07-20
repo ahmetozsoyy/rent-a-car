@@ -76,6 +76,27 @@ const ModeratorPanel: React.FC = () => {
     }
   };
 
+  const handleApprove = async (id: string) => {
+    try {
+      await api.post(`/moderator/approve-reservation/${id}`);
+      const rRes = await api.get('/moderator/reservations');
+      setReservations(rRes.data);
+    } catch (err: any) {
+      alert(err.response?.data || 'Hata oluştu.');
+    }
+  };
+
+  const handleReject = async (id: string) => {
+    if (!window.confirm('Rezervasyonu reddetmek istediğinize emin misiniz?')) return;
+    try {
+      await api.post(`/moderator/reject-reservation/${id}`);
+      const rRes = await api.get('/moderator/reservations');
+      setReservations(rRes.data);
+    } catch (err: any) {
+      alert(err.response?.data || 'Hata oluştu.');
+    }
+  };
+
   if (role !== 'Moderator') return null;
 
   return (
@@ -198,15 +219,15 @@ const ModeratorPanel: React.FC = () => {
                         <td style={{ padding: '1rem' }}>{res.pickupDate}</td>
                         <td style={{ padding: '1rem' }}>{res.dropoffDate}</td>
                         <td style={{ padding: '1rem' }}>
-                          <span style={{ padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 500, background: res.status === 'Active' ? '#10B98115' : '#F59E0B15', color: res.status === 'Active' ? '#10B981' : '#F59E0B' }}>
-                            {res.status === 'Active' ? 'Aktif' : 'Beklemede'}
+                          <span style={{ padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 500, background: res.status === 'Active' || res.status === 'Confirmed' ? '#10B98115' : res.status === 'Cancelled' ? '#EF444415' : '#F59E0B15', color: res.status === 'Active' || res.status === 'Confirmed' ? '#10B981' : res.status === 'Cancelled' ? '#EF4444' : '#F59E0B' }}>
+                            {res.status === 'Pending' ? 'Onay Bekliyor' : res.status === 'Active' ? 'Aktif' : res.status === 'Confirmed' ? 'Onaylandı' : res.status === 'Cancelled' ? 'İptal Edildi' : res.status}
                           </span>
                         </td>
                         <td style={{ padding: '1rem', display: 'flex', gap: '0.5rem' }}>
-                          <button className="btn" style={{ padding: '0.4rem', borderRadius: '8px', background: '#10B98115', color: '#10B981', border: 'none', cursor: 'pointer' }} title="Onayla">
+                          <button onClick={() => handleApprove(res.id)} className="btn" style={{ padding: '0.4rem', borderRadius: '8px', background: '#10B98115', color: '#10B981', border: 'none', cursor: 'pointer' }} title="Onayla">
                             <Check size={18} />
                           </button>
-                          <button className="btn" style={{ padding: '0.4rem', borderRadius: '8px', background: '#EF444415', color: '#EF4444', border: 'none', cursor: 'pointer' }} title="Reddet">
+                          <button onClick={() => handleReject(res.id)} className="btn" style={{ padding: '0.4rem', borderRadius: '8px', background: '#EF444415', color: '#EF4444', border: 'none', cursor: 'pointer' }} title="Reddet">
                             <X size={18} />
                           </button>
                         </td>

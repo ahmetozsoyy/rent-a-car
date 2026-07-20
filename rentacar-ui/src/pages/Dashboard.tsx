@@ -132,8 +132,10 @@ const Dashboard: React.FC = () => {
                       <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 500 }}>PNR Kodu:</span>
                       <span className="technical-data" style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)', letterSpacing: '0.05em' }}>{res.pnr}</span>
                     </div>
-                    <div style={{ background: activeTab === 'active' ? 'rgba(22, 163, 74, 0.1)' : 'rgba(107, 114, 128, 0.1)', color: activeTab === 'active' ? '#16a34a' : '#4b5563', padding: '0.4rem 1rem', borderRadius: '100px', fontSize: '0.8rem', fontWeight: 600 }}>
-                      {res.status}
+                    <div style={{ display: 'flex', gap: '0.75rem' }}>
+                      <div style={{ background: activeTab === 'active' ? 'rgba(22, 163, 74, 0.1)' : 'rgba(107, 114, 128, 0.1)', color: activeTab === 'active' ? '#16a34a' : '#4b5563', padding: '0.4rem 1rem', borderRadius: '100px', fontSize: '0.8rem', fontWeight: 600 }}>
+                        {res.status === 'Pending' ? 'Onay Bekliyor' : res.status === 'Active' ? 'Aktif' : res.status === 'Confirmed' ? 'Onaylandı' : res.status === 'Cancelled' ? 'İptal Edildi' : res.status === 'Completed' ? 'Tamamlandı' : res.status === 'Expired' ? 'Süresi Doldu' : res.status}
+                      </div>
                     </div>
                   </div>
 
