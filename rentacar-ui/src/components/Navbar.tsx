@@ -41,11 +41,11 @@ const Navbar: React.FC = () => {
         {/* Left Side: Logo + Links */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '3.5rem' }}>
           {/* Logo */}
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', mixBlendMode: 'multiply' }}>
             <img 
               src="/images/vehicles/logo.png" 
               alt="RentACar Logo" 
-              style={{ height: '90px', objectFit: 'contain' }} 
+              style={{ height: '65px', objectFit: 'contain' }} 
             />
           </Link>
           
