@@ -211,13 +211,13 @@ p { color: var(--text-muted); }
 
 /* Skeleton Loading Animation */
 @keyframes skeleton-pulse {
-  0% { background-color: rgba(148, 163, 184, 0.1); }
-  50% { background-color: rgba(148, 163, 184, 0.3); }
-  100% { background-color: rgba(148, 163, 184, 0.1); }
+  0% { background-color: rgba(0, 0, 0, 0.03); }
+  50% { background-color: rgba(0, 0, 0, 0.08); }
+  100% { background-color: rgba(0, 0, 0, 0.03); }
 }
 .skeleton {
-  animation: skeleton-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  border-radius: 4px;
+  animation: skeleton-pulse 1.5s var(--ease-spring) infinite;
+  border-radius: var(--border-radius);
 }
 
 @keyframes slideIn {
@@ -258,8 +258,8 @@ p { color: var(--text-muted); }
 .text-green-600 { color: #16a34a; }
 .hidden { display: none; }
 .cursor-pointer { cursor: pointer; }
-.transition-all { transition: all var(--transition-speed) ease-in-out; }
-.transition-colors { transition: color var(--transition-speed) ease-in-out, background-color var(--transition-speed) ease-in-out; }
+.transition-all { transition: all var(--transition-speed) var(--ease-spring); }
+.transition-colors { transition: color var(--transition-speed) var(--ease-spring), background-color var(--transition-speed) var(--ease-spring); }
 
 .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (min-width: 768px) {
