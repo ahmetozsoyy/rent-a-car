@@ -144,19 +144,19 @@ const AdminPanel: React.FC = () => {
         <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '1rem' }}>
           <button 
             onClick={() => setActiveTab('moderators')} 
-            style={{ padding: '0.75rem 1.5rem', borderRadius: '12px', border: 'none', background: activeTab === 'moderators' ? 'var(--primary-color)' : 'var(--glass-bg)', color: activeTab === 'moderators' ? 'white' : 'inherit', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500, transition: 'all 0.2s' }}
+            className={`tab-btn ${activeTab === 'moderators' ? 'active' : ''}`}
           >
             <Users size={18} /> Moderatör Ata
           </button>
           <button 
             onClick={() => setActiveTab('vehicles')} 
-            style={{ padding: '0.75rem 1.5rem', borderRadius: '12px', border: 'none', background: activeTab === 'vehicles' ? 'var(--primary-color)' : 'var(--glass-bg)', color: activeTab === 'vehicles' ? 'white' : 'inherit', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500, transition: 'all 0.2s' }}
+            className={`tab-btn ${activeTab === 'vehicles' ? 'active' : ''}`}
           >
             <Wrench size={18} /> Araç Yönetimi
           </button>
           <button 
             onClick={() => setActiveTab('messages')} 
-            style={{ padding: '0.75rem 1.5rem', borderRadius: '12px', border: 'none', background: activeTab === 'messages' ? 'var(--primary-color)' : 'var(--glass-bg)', color: activeTab === 'messages' ? 'white' : 'inherit', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500, transition: 'all 0.2s' }}
+            className={`tab-btn ${activeTab === 'messages' ? 'active' : ''}`}
           >
             <MessageSquare size={18} /> Şube İletişim
           </button>
