@@ -76,25 +76,6 @@ const Dashboard: React.FC = () => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><User size={18} /> Profil Bilgilerim</div>
                 </button>
 
-                {role === 'Admin' && (
-                  <button 
-                    onClick={() => navigate('/admin')}
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', borderRadius: '10px', background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.2)', cursor: 'pointer', transition: 'all 0.2s', fontWeight: 600, color: '#3b82f6', marginTop: '0.5rem' }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Shield size={18} /> Yönetici Paneli</div>
-                    <ChevronRight size={16} />
-                  </button>
-                )}
-
-                {role === 'Moderator' && (
-                  <button 
-                    onClick={() => navigate('/moderator')}
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.2)', cursor: 'pointer', transition: 'all 0.2s', fontWeight: 600, color: '#10b981', marginTop: '0.5rem' }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Building2 size={18} /> Şube Yönetimi</div>
-                    <ChevronRight size={16} />
-                  </button>
-                )}
 
                 <div style={{ height: '1px', background: 'var(--glass-border)', margin: '1rem 0' }} />
 

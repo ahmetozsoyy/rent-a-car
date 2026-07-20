@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { User } from 'lucide-react';
 
 const Navbar: React.FC = () => {
-  const { isAuthenticated, logout } = useAuthStore();
+  const { isAuthenticated, logout, role } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation();
@@ -61,9 +61,21 @@ const Navbar: React.FC = () => {
         {/* Auth Buttons and Lang Switcher */}
         <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
           {isAuthenticated ? (
-            <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.25rem', fontSize: '0.9rem', background: 'var(--text-main)', color: '#FFF', borderRadius: '8px', textDecoration: 'none', fontWeight: 500 }}>
-              <User size={16} /> Panelim
-            </Link>
+            <>
+              {role === 'Admin' && (
+                <Link to="/admin" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.25rem', fontSize: '0.9rem', background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: '8px', textDecoration: 'none', fontWeight: 600 }}>
+                  Yönetici Paneli
+                </Link>
+              )}
+              {role === 'Moderator' && (
+                <Link to="/moderator" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.25rem', fontSize: '0.9rem', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.2)', borderRadius: '8px', textDecoration: 'none', fontWeight: 600 }}>
+                  Şube Yönetimi
+                </Link>
+              )}
+              <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.25rem', fontSize: '0.9rem', background: 'var(--text-main)', color: '#FFF', borderRadius: '8px', textDecoration: 'none', fontWeight: 500 }}>
+                <User size={16} /> Detaylarım
+              </Link>
+            </>
           ) : (
             <>
               <Link to="/login" className="btn btn-outline" style={{ padding: '0.5rem 1.25rem', fontSize: '0.9rem', borderColor: 'var(--glass-border)', color: 'var(--primary)' }}>{t('navbar.login')}</Link>
