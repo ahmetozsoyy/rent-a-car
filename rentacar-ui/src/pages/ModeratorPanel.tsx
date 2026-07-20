@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
-import { Building2, Check, X, CarFront, Calendar, AlertTriangle, CheckCircle2, Trash2, Send, MessageSquare } from 'lucide-react';
+import { Building2, Check, X, CarFront, Calendar, AlertTriangle, CheckCircle2, Trash2, Send, MessageSquare, List, Wrench } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,6 +25,9 @@ const ModeratorPanel: React.FC = () => {
   const [messages, setMessages] = useState<any[]>([]);
   const [newSenderName, setNewSenderName] = useState('');
   const [newMessage, setNewMessage] = useState('');
+
+  // Tabs
+  const [activeTab, setActiveTab] = useState<'reservations' | 'vehicles' | 'messages'>('reservations');
 
   useEffect(() => {
     if (role !== 'Moderator') {
@@ -147,9 +150,32 @@ const ModeratorPanel: React.FC = () => {
           <Building2 size={32} color="var(--primary)" /> Şube Yönetimi
         </h1>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '1rem' }}>
+          <button 
+            onClick={() => setActiveTab('reservations')} 
+            style={{ padding: '0.75rem 1.5rem', borderRadius: '12px', border: 'none', background: activeTab === 'reservations' ? 'var(--primary-color)' : 'var(--glass-bg)', color: activeTab === 'reservations' ? 'white' : 'inherit', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500, transition: 'all 0.2s' }}
+          >
+            <List size={18} /> Rezervasyonlar
+          </button>
+          <button 
+            onClick={() => setActiveTab('vehicles')} 
+            style={{ padding: '0.75rem 1.5rem', borderRadius: '12px', border: 'none', background: activeTab === 'vehicles' ? 'var(--primary-color)' : 'var(--glass-bg)', color: activeTab === 'vehicles' ? 'white' : 'inherit', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500, transition: 'all 0.2s' }}
+          >
+            <Wrench size={18} /> Araç Yönetimi
+          </button>
+          <button 
+            onClick={() => setActiveTab('messages')} 
+            style={{ padding: '0.75rem 1.5rem', borderRadius: '12px', border: 'none', background: activeTab === 'messages' ? 'var(--primary-color)' : 'var(--glass-bg)', color: activeTab === 'messages' ? 'white' : 'inherit', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500, transition: 'all 0.2s' }}
+          >
+            <MessageSquare size={18} /> Admin İletişim
+          </button>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           
-          {/* Araç Bloklama Bölümü */}
+          {activeTab === 'vehicles' && (
+            <>
+              {/* Araç Bloklama Bölümü */}
           <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}>
             <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <AlertTriangle size={20} /> Aracı Yayından Kaldır (Şube)
@@ -230,10 +256,13 @@ const ModeratorPanel: React.FC = () => {
               </div>
             )}
           </div>
+          </>
+          )}
 
-          {/* Şubeye Gelen Rezervasyonlar */}
+          {activeTab === 'reservations' && (
           <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}>
             <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              Şubeye Düşen Rezervasyonlar
                Şubeye Düşen Rezervasyonlar
             </h2>
 
@@ -282,8 +311,9 @@ const ModeratorPanel: React.FC = () => {
               </div>
             )}
           </div>
+          )}
 
-          {/* Admin'e Mesajlar */}
+          {activeTab === 'messages' && (
           <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)', gridColumn: '1 / -1' }}>
             <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                <MessageSquare size={22} className="text-primary" /> Admin İletişim & Destek
@@ -317,31 +347,33 @@ const ModeratorPanel: React.FC = () => {
               </div>
 
               {/* Mesaj Gönderme Formu */}
-              <form onSubmit={handleSendMessage} style={{ padding: '1rem', background: 'var(--glass-bg)', borderTop: '1px solid var(--glass-border)', display: 'flex', gap: '0.5rem' }}>
+              <form onSubmit={handleSendMessage} style={{ padding: '1.5rem', background: 'var(--glass-bg)', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <input 
                   type="text" 
                   className="input-field" 
                   placeholder="Adınız (Örn: Ahmet - Satış)" 
                   value={newSenderName} 
                   onChange={e => setNewSenderName(e.target.value)}
-                  style={{ width: '200px' }}
+                  style={{ width: '100%', maxWidth: '300px', padding: '0.75rem' }}
                   required
                 />
-                <input 
-                  type="text" 
-                  className="input-field" 
-                  placeholder="Mesajınızı yazın..." 
-                  value={newMessage} 
-                  onChange={e => setNewMessage(e.target.value)}
-                  style={{ flex: 1 }}
-                  required
-                />
-                <button type="submit" className="btn btn-primary" style={{ padding: '0 1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <Send size={18} /> Gönder
-                </button>
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+                  <textarea 
+                    className="input-field" 
+                    placeholder="Mesajınızı yazın..." 
+                    value={newMessage} 
+                    onChange={e => setNewMessage(e.target.value)}
+                    style={{ flex: 1, minHeight: '80px', padding: '1rem', resize: 'vertical', borderRadius: '12px' }}
+                    required
+                  />
+                  <button type="submit" className="btn btn-primary" style={{ padding: '0 2rem', height: '50px', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}>
+                    <Send size={18} /> Gönder
+                  </button>
+                </div>
               </form>
             </div>
           </div>
+          )}
 
         </div>
       </div>

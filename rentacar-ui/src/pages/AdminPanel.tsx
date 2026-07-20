@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
-import { Shield, ShieldPlus, CarFront, Calendar, MapPin, Mail, AlertTriangle, CheckCircle2, Send, MessageSquare } from 'lucide-react';
+import { Shield, ShieldPlus, CarFront, Calendar, MapPin, Mail, AlertTriangle, CheckCircle2, Send, MessageSquare, List, Wrench, Users } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,6 +33,9 @@ const AdminPanel: React.FC = () => {
   const [blockEnd, setBlockEnd] = useState('');
   const [blockReason, setBlockReason] = useState('');
   const [blockMessage, setBlockMessage] = useState({ text: '', type: '' });
+
+  // Tabs
+  const [activeTab, setActiveTab] = useState<'moderators' | 'vehicles' | 'messages'>('messages');
 
   useEffect(() => {
     if (role !== 'Admin') {
@@ -138,9 +141,30 @@ const AdminPanel: React.FC = () => {
           <Shield size={32} color="var(--primary)" /> Yönetim Paneli
         </h1>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '1rem' }}>
+          <button 
+            onClick={() => setActiveTab('moderators')} 
+            style={{ padding: '0.75rem 1.5rem', borderRadius: '12px', border: 'none', background: activeTab === 'moderators' ? 'var(--primary-color)' : 'var(--glass-bg)', color: activeTab === 'moderators' ? 'white' : 'inherit', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500, transition: 'all 0.2s' }}
+          >
+            <Users size={18} /> Moderatör Ata
+          </button>
+          <button 
+            onClick={() => setActiveTab('vehicles')} 
+            style={{ padding: '0.75rem 1.5rem', borderRadius: '12px', border: 'none', background: activeTab === 'vehicles' ? 'var(--primary-color)' : 'var(--glass-bg)', color: activeTab === 'vehicles' ? 'white' : 'inherit', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500, transition: 'all 0.2s' }}
+          >
+            <Wrench size={18} /> Araç Yönetimi
+          </button>
+          <button 
+            onClick={() => setActiveTab('messages')} 
+            style={{ padding: '0.75rem 1.5rem', borderRadius: '12px', border: 'none', background: activeTab === 'messages' ? 'var(--primary-color)' : 'var(--glass-bg)', color: activeTab === 'messages' ? 'white' : 'inherit', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500, transition: 'all 0.2s' }}
+          >
+            <MessageSquare size={18} /> Şube İletişim
+          </button>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           
-          {/* Moderatör Ata */}
+          {activeTab === 'moderators' && (
           <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}>
             <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <ShieldPlus size={20} /> Şube Yetkilisi (Moderatör) Ata
@@ -169,7 +193,10 @@ const AdminPanel: React.FC = () => {
               <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem' }}>Yetki Ver</button>
             </form>
           </div>
+          )}
 
+          {activeTab === 'vehicles' && (
+            <>
           {/* Aracı Yayından Kaldır */}
           <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}>
             <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -253,8 +280,10 @@ const AdminPanel: React.FC = () => {
               </div>
             )}
           </div>
+          </>
+          )}
 
-          {/* Şube Mesajları */}
+          {activeTab === 'messages' && (
           <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)', gridColumn: '1 / -1' }}>
             <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                <MessageSquare size={22} className="text-primary" /> Şube İletişim & Destek
@@ -319,17 +348,16 @@ const AdminPanel: React.FC = () => {
                       )}
                     </div>
                     
-                    <form onSubmit={handleSendMessage} style={{ padding: '1rem', background: 'var(--glass-bg)', borderTop: '1px solid var(--glass-border)', display: 'flex', gap: '0.5rem' }}>
-                      <input 
-                        type="text" 
+                    <form onSubmit={handleSendMessage} style={{ padding: '1.5rem', background: 'var(--glass-bg)', borderTop: '1px solid var(--glass-border)', display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+                      <textarea 
                         className="input-field" 
                         placeholder="Mesajınızı yazın..." 
                         value={newMessage} 
                         onChange={e => setNewMessage(e.target.value)}
-                        style={{ flex: 1 }}
+                        style={{ flex: 1, minHeight: '80px', padding: '1rem', resize: 'vertical', borderRadius: '12px' }}
                         required
                       />
-                      <button type="submit" className="btn btn-primary" style={{ padding: '0 1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <button type="submit" className="btn btn-primary" style={{ padding: '0 2rem', height: '50px', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}>
                         <Send size={18} /> Yanıtla
                       </button>
                     </form>
@@ -338,6 +366,7 @@ const AdminPanel: React.FC = () => {
               </div>
             </div>
           </div>
+          )}
 
         </div>
       </div>
