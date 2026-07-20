@@ -53,7 +53,7 @@ const Register: React.FC = () => {
 
       {/* Left Image Area */}
       <div style={{
-        backgroundImage: 'url(/images/vehicles/audi-a8.jpg)',
+        backgroundImage: 'url(/images/vehicles/toyota-corolla.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         minHeight: '100vh',

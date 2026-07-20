@@ -56,7 +56,7 @@ const Login: React.FC = () => {
 
       {/* Left Image Area */}
       <div style={{
-        backgroundImage: 'url(/images/vehicles/mercedes-s.jpg)',
+        backgroundImage: 'url(/images/vehicles/bmw-5.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         minHeight: '100vh',
