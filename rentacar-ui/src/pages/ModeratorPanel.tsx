@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
-import { Building2, Check, X, CarFront, Calendar, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { Building2, Check, X, CarFront, Calendar, AlertTriangle, CheckCircle2, Trash2 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -92,6 +92,17 @@ const ModeratorPanel: React.FC = () => {
     if (!window.confirm('Rezervasyonu reddetmek istediğinize emin misiniz?')) return;
     try {
       await api.post(`/moderator/reject-reservation/${id}`);
+      const rRes = await api.get('/moderator/reservations');
+      setReservations(rRes.data);
+    } catch (err: any) {
+      alert(err.response?.data || 'Hata oluştu.');
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!window.confirm('Rezervasyonu tamamen silmek (veritabanından kaldırmak) istediğinize emin misiniz? Bu işlem geri alınamaz!')) return;
+    try {
+      await api.delete(`/moderator/delete-reservation/${id}`);
       const rRes = await api.get('/moderator/reservations');
       setReservations(rRes.data);
     } catch (err: any) {
@@ -229,8 +240,11 @@ const ModeratorPanel: React.FC = () => {
                           <button onClick={() => handleApprove(res.id)} className="btn" style={{ padding: '0.4rem', borderRadius: '8px', background: '#10B98115', color: '#10B981', border: 'none', cursor: 'pointer' }} title="Onayla">
                             <Check size={18} />
                           </button>
-                          <button onClick={() => handleReject(res.id)} className="btn" style={{ padding: '0.4rem', borderRadius: '8px', background: '#EF444415', color: '#EF4444', border: 'none', cursor: 'pointer' }} title="Reddet">
+                          <button onClick={() => handleReject(res.id)} className="btn" style={{ padding: '0.4rem', borderRadius: '8px', background: '#F59E0B15', color: '#F59E0B', border: 'none', cursor: 'pointer' }} title="Reddet">
                             <X size={18} />
+                          </button>
+                          <button onClick={() => handleDelete(res.id)} className="btn" style={{ padding: '0.4rem', borderRadius: '8px', background: '#EF444415', color: '#EF4444', border: 'none', cursor: 'pointer' }} title="Tamamen Sil">
+                            <Trash2 size={18} />
                           </button>
                         </td>
                       </tr>

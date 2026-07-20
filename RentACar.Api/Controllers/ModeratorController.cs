@@ -157,4 +157,16 @@ public class ModeratorController : BaseController
 
         return Ok(new { Message = "Rezervasyon reddedildi." });
     }
+
+    [HttpDelete("delete-reservation/{id}")]
+    public async Task<IActionResult> DeleteReservation(Guid id)
+    {
+        var reservation = await _context.Reservations.FindAsync(id);
+        if (reservation == null) return NotFound("Rezervasyon bulunamadı.");
+
+        _context.Reservations.Remove(reservation);
+        await _context.SaveChangesAsync(CancellationToken.None);
+
+        return Ok(new { Message = "Rezervasyon başarıyla silindi." });
+    }
 }
