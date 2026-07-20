@@ -2,49 +2,38 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import { User, CalendarDays, History, Settings, LogOut, ChevronRight, MapPin, Clock, CreditCard } from 'lucide-react';
+import { User, CalendarDays, History, Settings, LogOut, ChevronRight, MapPin, Clock, CreditCard, Shield, Building2 } from 'lucide-react';
+import api from '../services/api';
 
 const Dashboard: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { logout } = useAuthStore();
+  const { logout, role, email } = useAuthStore();
   const [activeTab, setActiveTab] = useState<'active' | 'history'>('active');
+  const [reservations, setReservations] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const res = await api.get('/reservations/my');
+        setReservations(res.data);
+      } catch (error) {
+        console.error('Failed to fetch reservations', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReservations();
+  }, []);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
-  // Mock Data
-  const activeReservations = [
-    {
-      id: '1',
-      pnr: 'X7A9B2',
-      vehicle: 'Mercedes S-Class',
-      image: '/images/vehicles/mercedesyeni.jpg',
-      pickupDate: '24 Tem 2026 09:00',
-      dropoffDate: '27 Tem 2026 09:00',
-      pickupLocation: 'İstanbul Havalimanı',
-      dropoffLocation: 'İstanbul Havalimanı',
-      status: 'Onaylandı',
-      price: '18.500'
-    }
-  ];
-
-  const pastReservations = [
-    {
-      id: '2',
-      pnr: 'M4C1Z8',
-      vehicle: 'BMW 5 Series',
-      image: '/images/vehicles/bmw-5.jpg',
-      pickupDate: '10 Haz 2026 10:00',
-      dropoffDate: '12 Haz 2026 10:00',
-      pickupLocation: 'Sabiha Gökçen Havalimanı',
-      dropoffLocation: 'Sabiha Gökçen Havalimanı',
-      status: 'Tamamlandı',
-      price: '8.200'
-    }
-  ];
+  const activeReservations = reservations.filter(r => r.status === 'Active' || r.status === 'Pending');
+  const pastReservations = reservations.filter(r => r.status !== 'Active' && r.status !== 'Pending');
 
   return (
     <div className="page-enter" style={{ backgroundColor: 'var(--bg-main)', minHeight: '100vh', paddingTop: '8rem', paddingBottom: '5rem' }}>
@@ -60,8 +49,8 @@ const Dashboard: React.FC = () => {
                 <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary) 0%, #000 100%)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', fontWeight: 600, marginBottom: '1rem', boxShadow: '0 8px 20px rgba(0,0,0,0.15)' }}>
                   A
                 </div>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 600, margin: 0, color: 'var(--text-main)' }}>Ahmet Özsoy</h2>
-                <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.2rem' }}>ahmet@example.com</span>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 600, margin: 0, color: 'var(--text-main)' }}>{email ? email.split('@')[0] : 'Kullanıcı'}</h2>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.2rem' }}>{email}</span>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -87,6 +76,26 @@ const Dashboard: React.FC = () => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><User size={18} /> Profil Bilgilerim</div>
                 </button>
 
+                {role === 'Admin' && (
+                  <button 
+                    onClick={() => navigate('/admin')}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', borderRadius: '10px', background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.2)', cursor: 'pointer', transition: 'all 0.2s', fontWeight: 600, color: '#3b82f6', marginTop: '0.5rem' }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Shield size={18} /> Yönetici Paneli</div>
+                    <ChevronRight size={16} />
+                  </button>
+                )}
+
+                {role === 'Moderator' && (
+                  <button 
+                    onClick={() => navigate('/moderator')}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.2)', cursor: 'pointer', transition: 'all 0.2s', fontWeight: 600, color: '#10b981', marginTop: '0.5rem' }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Building2 size={18} /> Şube Yönetimi</div>
+                    <ChevronRight size={16} />
+                  </button>
+                )}
+
                 <div style={{ height: '1px', background: 'var(--glass-border)', margin: '1rem 0' }} />
 
                 <button 
@@ -108,6 +117,9 @@ const Dashboard: React.FC = () => {
             </div>
 
             {/* Rezervasyon Kartları */}
+            {loading ? (
+              <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>Yükleniyor...</div>
+            ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               {(activeTab === 'active' ? activeReservations : pastReservations).map((res) => (
                 <div key={res.id} style={{ background: '#FFF', borderRadius: '20px', padding: '1.5rem', boxShadow: '0 12px 40px rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column', gap: '1.5rem', transition: 'transform 0.3s ease, box-shadow 0.3s ease' }}
@@ -169,7 +181,14 @@ const Dashboard: React.FC = () => {
 
                 </div>
               ))}
+              
+              {(activeTab === 'active' ? activeReservations : pastReservations).length === 0 && (
+                <div style={{ textAlign: 'center', padding: '3rem', background: '#FFF', borderRadius: '20px', border: '1px solid rgba(0,0,0,0.03)' }}>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Bu kategoride rezervasyonunuz bulunmuyor.</p>
+                </div>
+              )}
             </div>
+            )}
 
           </div>
         </div>

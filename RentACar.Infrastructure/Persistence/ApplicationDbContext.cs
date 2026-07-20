@@ -17,6 +17,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<RentalExtra> RentalExtras { get; set; }
     public DbSet<Reservation> Reservations { get; set; }
     public DbSet<ReservationExtra> ReservationExtras { get; set; }
+    public DbSet<VehicleBlock> VehicleBlocks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

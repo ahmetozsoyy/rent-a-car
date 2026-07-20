@@ -8,6 +8,8 @@ import Navbar from './components/Navbar';
 import Checkout from './pages/Checkout';
 import About from './pages/About';
 import Dashboard from './pages/Dashboard';
+import AdminPanel from './pages/AdminPanel';
+import ModeratorPanel from './pages/ModeratorPanel';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/moderator" element={<ModeratorPanel />} />
       </Routes>
     </Router>
   );

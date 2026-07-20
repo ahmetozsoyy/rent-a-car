@@ -10,17 +10,25 @@ public class User : BaseEntity
     public string Email { get; private set; }
     public string PasswordHash { get; private set; }
     public UserRole Role { get; private set; }
+    public Guid? ManagedLocationId { get; private set; } // Sadece Moderatörler için
 
     public ICollection<Reservation> Reservations { get; private set; } = new List<Reservation>();
 
     protected User() { } // EF Core requires parameterless constructor
 
-    public User(string firstName, string lastName, string email, string passwordHash, UserRole role)
+    public User(string firstName, string lastName, string email, string passwordHash, UserRole role, Guid? managedLocationId = null)
     {
         FirstName = firstName;
         LastName = lastName;
         Email = email;
         PasswordHash = passwordHash;
         Role = role;
+        ManagedLocationId = managedLocationId;
+    }
+
+    public void UpdateRole(UserRole role, Guid? managedLocationId = null)
+    {
+        Role = role;
+        ManagedLocationId = managedLocationId;
     }
 }

@@ -9,10 +9,10 @@ public static class ApplicationDbContextSeed
     public static async Task SeedAsync(ApplicationDbContext context)
     {
         // 1. Kullanıcılar
-        if (!await context.Users.AnyAsync())
+        if (!await context.Users.AnyAsync(u => u.Email == "ozsoyyahmett@gmail.com"))
         {
-            var user = new User("Test", "Müşterisi", "test@mercedes.com", "dummy_hash_123", UserRole.Customer);
-            context.Users.Add(user);
+            var adminUser = new User("Ahmet", "Özsoy", "ozsoyyahmett@gmail.com", "admin_hash_123", UserRole.Admin);
+            context.Users.Add(adminUser);
             await context.SaveChangesAsync();
         }
 
@@ -23,8 +23,9 @@ public static class ApplicationDbContextSeed
             var loc2 = new Location("Ankara Esenboğa", "Çubuk", "Ankara", 50);
             var loc3 = new Location("İzmir Adnan Menderes", "Gaziemir", "İzmir", 40);
             var loc4 = new Location("Bursa Şehir Merkezi", "Osmangazi", "Bursa", 30);
+            var loc5 = new Location("Muğla Bodrum-Milas", "Milas", "Muğla", 25);
             
-            context.Locations.AddRange(loc1, loc2, loc3, loc4);
+            context.Locations.AddRange(loc1, loc2, loc3, loc4, loc5);
             await context.SaveChangesAsync();
         }
 

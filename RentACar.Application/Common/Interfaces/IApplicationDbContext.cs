@@ -11,5 +11,6 @@ public interface IApplicationDbContext
     DbSet<RentalExtra> RentalExtras { get; }
     DbSet<Reservation> Reservations { get; }
     DbSet<ReservationExtra> ReservationExtras { get; }
+    DbSet<VehicleBlock> VehicleBlocks { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
