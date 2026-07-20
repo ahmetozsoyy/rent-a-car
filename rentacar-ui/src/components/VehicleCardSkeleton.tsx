@@ -4,10 +4,10 @@ const VehicleCardSkeleton: React.FC = () => {
   return (
     <div className="glass" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Image Skeleton */}
-      <div className="skeleton" style={{ width: '100%', height: '200px', borderRadius: '12px 12px 0 0' }}></div>
+      <div className="skeleton" style={{ width: '100%', height: '260px' }}></div>
       
       {/* Content Skeleton */}
-      <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         
         {/* Title & Badge */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
