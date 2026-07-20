@@ -61,7 +61,8 @@ const ModeratorPanel: React.FC = () => {
       const bRes = await api.get('/moderator/blocked-vehicles');
       setBlockedVehicles(bRes.data);
     } catch (err: any) {
-      setBlockMessage({ text: err.response?.data || 'Hata oluştu.', type: 'error' });
+      const errMsg = typeof err.response?.data === 'string' ? err.response.data : err.response?.data?.title || 'Hata oluştu.';
+      setBlockMessage({ text: errMsg, type: 'error' });
     }
   };
 
@@ -72,7 +73,8 @@ const ModeratorPanel: React.FC = () => {
       setBlockedVehicles(prev => prev.filter(b => b.id !== id));
       setBlockMessage({ text: 'Araç blokesi başarıyla kaldırıldı.', type: 'success' });
     } catch (err: any) {
-      setBlockMessage({ text: err.response?.data || 'Hata oluştu.', type: 'error' });
+      const errMsg = typeof err.response?.data === 'string' ? err.response.data : err.response?.data?.title || 'Hata oluştu.';
+      setBlockMessage({ text: errMsg, type: 'error' });
     }
   };
 
@@ -123,7 +125,7 @@ const ModeratorPanel: React.FC = () => {
             <form onSubmit={handleBlockVehicle} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end', flexWrap: 'wrap' }}>
               <div className="form-group" style={{ flex: '1 1 200px' }}>
                 <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><CarFront size={16} /> Araç Seçimi</label>
-                <select className="form-input" required value={blockVehicleId} onChange={e => setBlockVehicleId(e.target.value)}>
+                <select className="form-control" required value={blockVehicleId} onChange={e => setBlockVehicleId(e.target.value)}>
                   <option value="">Araç Seçin</option>
                   {vehicles.map(v => (
                     <option key={v.id} value={v.id}>{v.brand} {v.model}</option>
@@ -133,16 +135,16 @@ const ModeratorPanel: React.FC = () => {
               
               <div className="form-group" style={{ flex: '1 1 150px' }}>
                 <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Calendar size={16} /> Başlangıç</label>
-                <input type="date" className="form-input" required value={blockStart} onChange={e => setBlockStart(e.target.value)} />
+                <input type="date" className="form-control" required value={blockStart} onChange={e => setBlockStart(e.target.value)} />
               </div>
               <div className="form-group" style={{ flex: '1 1 150px' }}>
                 <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Calendar size={16} /> Bitiş</label>
-                <input type="date" className="form-input" required value={blockEnd} onChange={e => setBlockEnd(e.target.value)} />
+                <input type="date" className="form-control" required value={blockEnd} onChange={e => setBlockEnd(e.target.value)} />
               </div>
 
               <div className="form-group" style={{ flex: '2 1 200px' }}>
                 <label>Sebep / Açıklama</label>
-                <input type="text" className="form-input" required value={blockReason} onChange={e => setBlockReason(e.target.value)} placeholder="Örn: Bakım" />
+                <input type="text" className="form-control" required value={blockReason} onChange={e => setBlockReason(e.target.value)} placeholder="Örn: Periyodik Bakım, Kaza vb." />
               </div>
 
               <button type="submit" className="btn btn-primary" style={{ background: '#EF4444', borderColor: '#EF4444', height: '42px', padding: '0 1.5rem' }}>Yayından Kaldır</button>

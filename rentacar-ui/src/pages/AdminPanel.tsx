@@ -56,7 +56,8 @@ const AdminPanel: React.FC = () => {
       setModMessage({ text: 'Yetki başarıyla atandı.', type: 'success' });
       setModEmail('');
     } catch (err: any) {
-      setModMessage({ text: err.response?.data || 'Hata oluştu.', type: 'error' });
+      const errMsg = typeof err.response?.data === 'string' ? err.response.data : err.response?.data?.title || 'Hata oluştu.';
+      setModMessage({ text: errMsg, type: 'error' });
     }
   };
 
@@ -78,7 +79,8 @@ const AdminPanel: React.FC = () => {
       const bRes = await api.get('/admin/blocked-vehicles');
       setBlockedVehicles(bRes.data);
     } catch (err: any) {
-      setBlockMessage({ text: err.response?.data || 'Hata oluştu.', type: 'error' });
+      const errMsg = typeof err.response?.data === 'string' ? err.response.data : err.response?.data?.title || 'Hata oluştu.';
+      setBlockMessage({ text: errMsg, type: 'error' });
     }
   };
 
@@ -89,7 +91,8 @@ const AdminPanel: React.FC = () => {
       setBlockedVehicles(prev => prev.filter(b => b.id !== id));
       setBlockMessage({ text: 'Araç blokesi başarıyla kaldırıldı.', type: 'success' });
     } catch (err: any) {
-      setBlockMessage({ text: err.response?.data || 'Hata oluştu.', type: 'error' });
+      const errMsg = typeof err.response?.data === 'string' ? err.response.data : err.response?.data?.title || 'Hata oluştu.';
+      setBlockMessage({ text: errMsg, type: 'error' });
     }
   };
 
@@ -119,11 +122,11 @@ const AdminPanel: React.FC = () => {
             <form onSubmit={handleAssignModerator} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div className="form-group">
                 <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Mail size={16} /> Kullanıcı E-posta</label>
-                <input type="email" className="form-input" required value={modEmail} onChange={e => setModEmail(e.target.value)} placeholder="ornek@mail.com" />
+                <input type="email" className="form-control" required value={modEmail} onChange={e => setModEmail(e.target.value)} placeholder="ornek@mail.com" />
               </div>
               <div className="form-group">
                 <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><MapPin size={16} /> Sorumlu Şube</label>
-                <select className="form-input" required value={modLocation} onChange={e => setModLocation(e.target.value)}>
+                <select className="form-control" required value={modLocation} onChange={e => setModLocation(e.target.value)}>
                   <option value="">Şube Seçin</option>
                   {locations.map(loc => (
                     <option key={loc.id} value={loc.id}>{loc.name} ({loc.city})</option>
@@ -149,7 +152,7 @@ const AdminPanel: React.FC = () => {
             <form onSubmit={handleBlockVehicle} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div className="form-group">
                 <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><CarFront size={16} /> Araç Seçimi</label>
-                <select className="form-input" required value={blockVehicleId} onChange={e => setBlockVehicleId(e.target.value)}>
+                <select className="form-control" required value={blockVehicleId} onChange={e => setBlockVehicleId(e.target.value)}>
                   <option value="">Araç Seçin</option>
                   {vehicles.map(v => (
                     <option key={v.id} value={v.id}>{v.brand} {v.model} - {v.plate || v.year}</option>
@@ -160,17 +163,17 @@ const AdminPanel: React.FC = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div className="form-group">
                   <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Calendar size={16} /> Başlangıç</label>
-                  <input type="date" className="form-input" required value={blockStart} onChange={e => setBlockStart(e.target.value)} />
+                  <input type="date" className="form-control" required value={blockStart} onChange={e => setBlockStart(e.target.value)} />
                 </div>
                 <div className="form-group">
                   <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Calendar size={16} /> Bitiş</label>
-                  <input type="date" className="form-input" required value={blockEnd} onChange={e => setBlockEnd(e.target.value)} />
+                  <input type="date" className="form-control" required value={blockEnd} onChange={e => setBlockEnd(e.target.value)} />
                 </div>
               </div>
 
               <div className="form-group">
                 <label>Sebep / Açıklama</label>
-                <input type="text" className="form-input" required value={blockReason} onChange={e => setBlockReason(e.target.value)} placeholder="Örn: Periyodik Bakım, Kaza vb." />
+                <input type="text" className="form-control" required value={blockReason} onChange={e => setBlockReason(e.target.value)} placeholder="Örn: Periyodik Bakım, Kaza vb." />
               </div>
 
               <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', background: '#EF4444', borderColor: '#EF4444' }}>Aracı Yayından Kaldır</button>
