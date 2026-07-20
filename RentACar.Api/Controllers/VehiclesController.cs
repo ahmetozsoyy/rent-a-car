@@ -32,19 +32,19 @@ public class VehiclesController : BaseController
     [HttpGet("available")]
     public async Task<IActionResult> GetAvailableVehicles([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] Guid pickupLocationId, CancellationToken cancellationToken)
     {
-        startDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
-        endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
+        startDate = startDate.ToUniversalTime();
+        endDate = endDate.ToUniversalTime();
 
         var reservedVehicleIds = await _context.Reservations
             .Where(r => r.Status != RentACar.Domain.Enums.ReservationStatus.Cancelled && 
                         r.Status != RentACar.Domain.Enums.ReservationStatus.Completed && 
                         r.Status != RentACar.Domain.Enums.ReservationStatus.Expired)
-            .Where(r => r.StartDate <= endDate && r.EndDate >= startDate)
+            .Where(r => r.StartDate < endDate && r.EndDate > startDate)
             .Select(r => r.VehicleId)
             .ToListAsync(cancellationToken);
 
         var blockedVehicleIds = await _context.VehicleBlocks
-            .Where(b => b.StartDate <= endDate && b.EndDate >= startDate)
+            .Where(b => b.StartDate < endDate && b.EndDate > startDate)
             .Select(b => b.VehicleId)
             .ToListAsync(cancellationToken);
 

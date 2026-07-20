@@ -44,11 +44,11 @@ public class ReservationService : IReservationService
                            r.Status != ReservationStatus.Cancelled &&
                            r.Status != ReservationStatus.Expired &&
                            r.Status != ReservationStatus.Completed &&
-                           r.StartDate <= request.EndDate && r.EndDate >= request.StartDate, cancellationToken);
+                           r.StartDate < request.EndDate && r.EndDate > request.StartDate, cancellationToken);
 
         var isBlocked = await _context.VehicleBlocks
             .AnyAsync(b => b.VehicleId == request.VehicleId &&
-                           b.StartDate <= request.EndDate && b.EndDate >= request.StartDate, cancellationToken);
+                           b.StartDate < request.EndDate && b.EndDate > request.StartDate, cancellationToken);
 
         if (hasConflict || isBlocked)
             throw new ConflictException("Bu araç belirtilen tarihler arasında başkası tarafından rezerve edilmiştir veya bakımdadır.");

@@ -61,8 +61,8 @@ public class ModeratorController : BaseController
 
         var block = new VehicleBlock(
             request.VehicleId, 
-            DateTime.SpecifyKind(request.StartDate, DateTimeKind.Utc), 
-            DateTime.SpecifyKind(request.EndDate, DateTimeKind.Utc), 
+            request.StartDate.ToUniversalTime(), 
+            request.EndDate.ToUniversalTime(), 
             request.Reason
         );
         _context.VehicleBlocks.Add(block);
