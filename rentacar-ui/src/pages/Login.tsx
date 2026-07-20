@@ -24,7 +24,7 @@ const Login: React.FC = () => {
       const token = response.data.token;
       
       loginFn(token);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: any) {
       setError(t('toast.loginError') || 'Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin.');
     } finally {

@@ -7,6 +7,7 @@ import SearchResults from './pages/SearchResults';
 import Navbar from './components/Navbar';
 import Checkout from './pages/Checkout';
 import About from './pages/About';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );

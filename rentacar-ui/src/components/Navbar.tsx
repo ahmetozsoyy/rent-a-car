@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useTranslation } from 'react-i18next';
+import { User } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, logout } = useAuthStore();
@@ -60,14 +61,9 @@ const Navbar: React.FC = () => {
         {/* Auth Buttons and Lang Switcher */}
         <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
           {isAuthenticated ? (
-            <>
-              <Link to="/dashboard" className="btn btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.9rem' }}>
-                {t('navbar.dashboard')}
-              </Link>
-              <button onClick={handleLogout} className="btn btn-outline" style={{ padding: '0.5rem 1.25rem', fontSize: '0.9rem' }}>
-                {t('navbar.logout')}
-              </button>
-            </>
+            <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.25rem', fontSize: '0.9rem', background: 'var(--text-main)', color: '#FFF', borderRadius: '8px', textDecoration: 'none', fontWeight: 500 }}>
+              <User size={16} /> Panelim
+            </Link>
           ) : (
             <>
               <Link to="/login" className="btn btn-outline" style={{ padding: '0.5rem 1.25rem', fontSize: '0.9rem', borderColor: 'var(--glass-border)', color: 'var(--primary)' }}>{t('navbar.login')}</Link>
