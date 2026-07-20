@@ -133,7 +133,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ onClose, onSubmit, amount }
                 className="form-control" 
                 style={{ background: '#FFF' }}
                 value={cardHolder} 
-                onChange={e => setCardHolder(e.target.value.toUpperCase())}
+                onChange={e => setCardHolder(e.target.value.replace(/[^a-zA-ZğüşıöçĞÜŞİÖÇ\s]/g, '').toUpperCase())}
                 onFocus={() => setIsFlipped(false)}
                 required
                 maxLength={30}
