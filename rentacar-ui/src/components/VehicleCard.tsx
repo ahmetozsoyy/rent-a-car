@@ -2,7 +2,7 @@ import React from 'react';
 import { VehicleSegment } from '../types/vehicle';
 import type { IVehicle } from '../types/vehicle';
 import { useTranslation } from 'react-i18next';
-import { Settings, Fuel, ArrowRight } from 'lucide-react';
+import { Settings, Fuel, ArrowRight, Car, User } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 interface VehicleCardProps {
@@ -89,7 +89,7 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
         </div>
 
         {/* Specs Row */}
-        <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 400 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginTop: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 400 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Settings size={16} opacity={0.6} />
             <span>{vehicle.transmission === 'Manual' ? t('fleet.manual') || 'Manuel' : t('fleet.auto') || 'Otomatik'}</span>
@@ -97,6 +97,14 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Fuel size={16} opacity={0.6} />
             <span>{vehicle.fuelType === 'Diesel' ? t('fleet.diesel') || 'Dizel' : vehicle.fuelType === 'Petrol' ? t('fleet.petrol') || 'Benzin' : vehicle.fuelType}</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Car size={16} opacity={0.6} />
+            <span>{vehicle.bodyType}</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <User size={16} opacity={0.6} />
+            <span>Min {vehicle.minDriverAge} Yaş</span>
           </div>
         </div>
 
