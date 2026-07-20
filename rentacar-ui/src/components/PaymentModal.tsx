@@ -80,7 +80,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ onClose, onSubmit, amount }
                 <div className="card-chip"></div>
                 
                 <div style={{ marginTop: 'auto' }}>
-                  <div style={{ fontSize: '1.6rem', letterSpacing: '0.15em', fontFamily: 'monospace', textShadow: '0 2px 4px rgba(0,0,0,0.3)', marginBottom: '1rem' }}>
+                  <div style={{ fontSize: '1.35rem', letterSpacing: '0.1em', fontFamily: 'monospace', textShadow: '0 2px 4px rgba(0,0,0,0.3)', marginBottom: '1rem', whiteSpace: 'nowrap' }}>
                     {cardNumber || '#### #### #### ####'}
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', textTransform: 'uppercase' }}>
