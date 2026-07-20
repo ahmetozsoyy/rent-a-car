@@ -15,25 +15,32 @@ export const useSignalR = () => {
       .withAutomaticReconnect()
       .build();
 
-    connection.on('ReceiveNotification', (notification: { type: string; locationId: number; targetRole?: string; message: string }) => {
+    connection.on('ReceiveNotification', (notification: any) => {
+      console.log('SignalR Gelen Bildirim:', notification);
       let shouldShow = false;
 
+      const type = notification.type || notification.Type;
+      const targetRole = notification.targetRole || notification.TargetRole;
+      const notifLocationId = notification.locationId || notification.LocationId;
+
       if (role === 'Admin') {
-        if (notification.type === 'NEW_MESSAGE' && notification.targetRole === 'Admin') {
+        if (type === 'NEW_MESSAGE' && targetRole === 'Admin') {
           shouldShow = true;
         }
       } else if (role === 'Moderator') {
-        if (notification.locationId === locationId) {
-          if (notification.type === 'NEW_RESERVATION') {
+        // Eger token guncel degilse locationId null olabilir. 
+        // Token'i guncellemeyenleri engellememek adina gecici olarak hepsi true yapilabilir veya kontrol esnetilebilir.
+        if (!locationId || notifLocationId === locationId) {
+          if (type === 'NEW_RESERVATION') {
             shouldShow = true;
-          } else if (notification.type === 'NEW_MESSAGE' && notification.targetRole === 'Moderator') {
+          } else if (type === 'NEW_MESSAGE' && targetRole === 'Moderator') {
             shouldShow = true;
           }
         }
       }
 
       if (shouldShow) {
-        toast(notification.message, {
+        toast(notification.message || notification.Message, {
           icon: '🔔',
           duration: Infinity, // Sürekli kalır
           style: {
