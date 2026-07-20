@@ -6,7 +6,7 @@ const Home: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="split-layout" style={{
+    <div className="split-layout page-enter" style={{
       backgroundImage: 'url(/images/vehicles/mercedesyeni.jpg)',
       backgroundSize: 'auto 100%',
       backgroundPosition: 'right center',
