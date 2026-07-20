@@ -41,7 +41,7 @@ const Fleet: React.FC = () => {
       
       {/* Header */}
       <div className="container" style={{ marginBottom: '6rem', textAlign: 'center' }}>
-        <h1 className="display-title" style={{ fontSize: '4rem', marginBottom: '1.5rem', letterSpacing: '-0.04em' }}>The Gallery</h1>
+        <h1 className="display-title" style={{ fontSize: '4rem', marginBottom: '1.5rem', letterSpacing: '-0.04em' }}>Filomuz</h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.25rem', maxWidth: '600px', margin: '0 auto' }}>
           Şirketimize ait seçkin araç koleksiyonunu inceleyin. Her bir araç, mükemmeliyet tutkumuzun bir yansımasıdır.
         </p>
