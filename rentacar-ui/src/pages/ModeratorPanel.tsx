@@ -26,6 +26,9 @@ const ModeratorPanel: React.FC = () => {
   const [newSenderName, setNewSenderName] = useState('');
   const [newMessage, setNewMessage] = useState('');
 
+  // Tabs
+  const [activeTab, setActiveTab] = useState<'reservations' | 'vehicles' | 'messages'>('reservations');
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,9 +38,6 @@ const ModeratorPanel: React.FC = () => {
       }, 100);
     }
   }, [messages, activeTab]);
-
-  // Tabs
-  const [activeTab, setActiveTab] = useState<'reservations' | 'vehicles' | 'messages'>('reservations');
 
   useEffect(() => {
     if (role !== 'Moderator') {

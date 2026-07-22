@@ -26,6 +26,9 @@ const AdminPanel: React.FC = () => {
   const [selectedLocationId, setSelectedLocationId] = useState<string | null>(null);
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  
+  // Tabs
+  const [activeTab, setActiveTab] = useState<'moderators' | 'vehicles' | 'messages'>('messages');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -43,9 +46,6 @@ const AdminPanel: React.FC = () => {
   const [blockEnd, setBlockEnd] = useState('');
   const [blockReason, setBlockReason] = useState('');
   const [blockMessage, setBlockMessage] = useState({ text: '', type: '' });
-
-  // Tabs
-  const [activeTab, setActiveTab] = useState<'moderators' | 'vehicles' | 'messages'>('messages');
 
   useEffect(() => {
     if (role !== 'Admin') {
