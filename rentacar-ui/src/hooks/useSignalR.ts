@@ -6,7 +6,7 @@ import { useNotificationStore } from '../store/useNotificationStore';
 
 export const useSignalR = () => {
   const { role, locationId } = useAuthStore();
-  const incrementUnread = useNotificationStore((state) => state.incrementUnread);
+  const { addNotification } = useNotificationStore.getState();
 
   useEffect(() => {
     // Sadece Admin ve Moderator olanlar dinlesin
@@ -53,10 +53,11 @@ export const useSignalR = () => {
       console.log('SignalR shouldShow?', shouldShow, 'type:', type, 'targetRole:', targetRole, 'userRole:', role);
 
       if (shouldShow) {
-        incrementUnread();
-        toast(notification.message || notification.Message || 'Yeni Bildirim', {
+        const msg = notification.message || notification.Message || 'Yeni Bildirim';
+        addNotification(msg);
+        toast(msg, {
           icon: '🔔',
-          duration: Infinity, // Sürekli kalır
+          duration: 5000, // 5 saniye sonra kapanır
           style: {
             borderRadius: '12px',
             background: 'var(--glass-bg)',

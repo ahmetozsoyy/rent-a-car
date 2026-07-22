@@ -7,11 +7,12 @@ import { User, Bell } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, logout, role } = useAuthStore();
-  const { unreadCount, clearUnread } = useNotificationStore();
+  const { unreadCount, notifications, markAllAsRead } = useNotificationStore();
   const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showNotifDropdown, setShowNotifDropdown] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -79,16 +80,60 @@ const Navbar: React.FC = () => {
                 <User size={16} /> Detaylarım
               </Link>
               
-              <div 
-                onClick={clearUnread}
-                style={{ position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)', marginLeft: '0.5rem' }}
-                title="Bildirimleri Temizle"
-              >
-                <Bell size={20} color="var(--text-main)" />
-                {unreadCount > 0 && (
-                  <span style={{ position: 'absolute', top: -2, right: -2, background: 'red', color: 'white', fontSize: '0.7rem', fontWeight: 'bold', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>
-                    {unreadCount > 9 ? '9+' : unreadCount}
-                  </span>
+              <div style={{ position: 'relative' }}>
+                <div 
+                  onClick={() => {
+                    setShowNotifDropdown(!showNotifDropdown);
+                    if (!showNotifDropdown && unreadCount > 0) {
+                      markAllAsRead();
+                    }
+                  }}
+                  style={{ position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)', marginLeft: '0.5rem' }}
+                  title="Bildirim Geçmişi"
+                >
+                  <Bell size={20} color="var(--text-main)" />
+                  {unreadCount > 0 && (
+                    <span style={{ position: 'absolute', top: -2, right: -2, background: 'red', color: 'white', fontSize: '0.7rem', fontWeight: 'bold', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                  )}
+                </div>
+
+                {showNotifDropdown && (
+                  <div style={{ 
+                    position: 'absolute', 
+                    top: '120%', 
+                    right: 0, 
+                    width: '320px', 
+                    background: 'var(--glass-bg)', 
+                    backdropFilter: 'blur(16px)', 
+                    border: '1px solid var(--glass-border)', 
+                    borderRadius: '16px', 
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.1)', 
+                    overflow: 'hidden',
+                    zIndex: 1000 
+                  }}>
+                    <div style={{ padding: '1rem', borderBottom: '1px solid var(--glass-border)', fontWeight: 600, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      Bildirim Geçmişi
+                      {notifications.length > 0 && (
+                        <span style={{ fontSize: '0.75rem', color: 'var(--primary)', cursor: 'pointer' }} onClick={() => setShowNotifDropdown(false)}>Kapat</span>
+                      )}
+                    </div>
+                    <div style={{ maxHeight: '350px', overflowY: 'auto' }}>
+                      {notifications.length === 0 ? (
+                        <div style={{ padding: '2rem 1rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                          Henüz bir bildirim yok
+                        </div>
+                      ) : (
+                        notifications.map((n) => (
+                          <div key={n.id} style={{ padding: '1rem', borderBottom: '1px solid rgba(0,0,0,0.02)', background: n.read ? 'transparent' : 'rgba(59, 130, 246, 0.05)', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                            <div style={{ fontSize: '0.9rem', color: 'var(--text-main)' }}>{n.message}</div>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{new Date(n.date).toLocaleString()}</div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
                 )}
               </div>
             </>
