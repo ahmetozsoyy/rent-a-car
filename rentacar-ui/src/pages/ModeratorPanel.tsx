@@ -21,16 +21,16 @@ const ModeratorPanel: React.FC = () => {
   const [blockReason, setBlockReason] = useState('');
   const [blockMessage, setBlockMessage] = useState({ text: '', type: '' });
 
+  // Messages
+  const [messages, setMessages] = useState<any[]>([]);
+  const [newSenderName, setNewSenderName] = useState('');
+  const [newMessage, setNewMessage] = useState('');
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  // Messages
-  const [messages, setMessages] = useState<any[]>([]);
-  const [newSenderName, setNewSenderName] = useState('');
-  const [newMessage, setNewMessage] = useState('');
 
   // Tabs
   const [activeTab, setActiveTab] = useState<'reservations' | 'vehicles' | 'messages'>('reservations');

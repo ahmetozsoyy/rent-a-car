@@ -18,12 +18,6 @@ const AdminPanel: React.FC = () => {
   const [modLocation, setModLocation] = useState('');
   const [modMessage, setModMessage] = useState({ text: '', type: '' });
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
   // Blocked Vehicles List
   const [blockedVehicles, setBlockedVehicles] = useState<any[]>([]);
 
@@ -32,6 +26,12 @@ const AdminPanel: React.FC = () => {
   const [selectedLocationId, setSelectedLocationId] = useState<string | null>(null);
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   // Block Vehicle form
   const [blockVehicleId, setBlockVehicleId] = useState('');
