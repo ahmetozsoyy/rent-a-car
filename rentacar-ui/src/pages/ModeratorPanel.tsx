@@ -246,25 +246,25 @@ const ModeratorPanel: React.FC = () => {
                 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                   <thead>
                     <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--muted-color)' }}>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>Araç</th>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>Başlangıç</th>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>Bitiş</th>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>Sebep</th>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>İşlem</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Araç</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Başlangıç</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Bitiş</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Sebep</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>İşlem</th>
                     </tr>
                   </thead>
                   <tbody>
                     {blockedVehicles.map(b => (
                       <tr key={b.id} style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                        <td style={{ padding: '1rem', fontWeight: 600 }}>{b.vehicle}</td>
-                        <td style={{ padding: '1rem' }}>{b.startDate}</td>
-                        <td style={{ padding: '1rem' }}>{b.endDate}</td>
-                        <td style={{ padding: '1rem' }}>
+                        <td style={{ padding: '1rem', fontWeight: 600, whiteSpace: 'nowrap' }}>{b.vehicle}</td>
+                        <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>{b.startDate}</td>
+                        <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>{b.endDate}</td>
+                        <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>
                           <span style={{ padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 500, background: '#F59E0B15', color: '#F59E0B' }}>
                             {b.reason}
                           </span>
                         </td>
-                        <td style={{ padding: '1rem' }}>
+                        <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>
                           <button onClick={() => handleUnblockVehicle(b.id)} className="btn btn-outline" style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', borderColor: '#EF4444', color: '#EF4444' }}>Bloku Kaldır</button>
                         </td>
                       </tr>
@@ -291,27 +291,27 @@ const ModeratorPanel: React.FC = () => {
                 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                   <thead>
                     <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--muted-color)' }}>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>PNR Kodu</th>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>Araç</th>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>Alış Tarihi</th>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>Teslim Tarihi</th>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>Durum</th>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>İşlem</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>PNR Kodu</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Araç</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Alış Tarihi</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Teslim Tarihi</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Durum</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>İşlem</th>
                     </tr>
                   </thead>
                   <tbody>
                     {reservations.map(res => (
                       <tr key={res.id} style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                        <td style={{ padding: '1rem', fontWeight: 600 }}>{res.pnrCode}</td>
-                        <td style={{ padding: '1rem' }}>{res.vehicle}</td>
-                        <td style={{ padding: '1rem' }}>{res.pickupDate}</td>
-                        <td style={{ padding: '1rem' }}>{res.dropoffDate}</td>
-                        <td style={{ padding: '1rem' }}>
+                        <td style={{ padding: '1rem', fontWeight: 600, whiteSpace: 'nowrap' }}>{res.pnrCode}</td>
+                        <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>{res.vehicle}</td>
+                        <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>{res.pickupDate}</td>
+                        <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>{res.dropoffDate}</td>
+                        <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>
                           <span style={{ padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 500, background: res.status === 'Active' || res.status === 'Confirmed' ? '#10B98115' : res.status === 'Cancelled' ? '#EF444415' : res.status === 'Expired' ? '#6B728015' : '#F59E0B15', color: res.status === 'Active' || res.status === 'Confirmed' ? '#10B981' : res.status === 'Cancelled' ? '#EF4444' : res.status === 'Expired' ? '#6B7280' : '#F59E0B' }}>
                             {res.status === 'Pending' ? 'Onay Bekliyor' : res.status === 'Active' ? 'Onaylandı' : res.status === 'Confirmed' ? 'Onaylandı' : res.status === 'Cancelled' ? 'İptal Edildi' : res.status === 'Expired' ? 'Süresi Doldu' : res.status}
                           </span>
                         </td>
-                        <td style={{ padding: '1rem', display: 'flex', gap: '0.5rem' }}>
+                        <td style={{ padding: '1rem', display: 'flex', gap: '0.5rem', whiteSpace: 'nowrap' }}>
                           <button 
                             onClick={() => handleApprove(res.id)} 
                             disabled={res.status === 'Expired' || res.status === 'Cancelled'}

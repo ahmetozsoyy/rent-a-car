@@ -1,12 +1,21 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
-import { Shield, ShieldPlus, CarFront, Calendar, MapPin, Mail, AlertTriangle, CheckCircle2, Send, MessageSquare, List, Wrench, Users } from 'lucide-react';
+import { Shield, ShieldPlus, CarFront, Calendar, MapPin, Mail, AlertTriangle, CheckCircle2, Send, MessageSquare, List, Wrench, Users, Ban } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useNotificationStore } from '../store/useNotificationStore';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { customConfirm } from '../utils/customConfirm';
+
+const FLEET_MODELS = [
+  { brand: 'Fiat', model: 'Egea', year: 2023, segment: 1, dailyPrice: 2200, transmission: 'Manuel', fuelType: 'Dizel', bodyType: 'Sedan', minDriverAge: 21, imageUrl: '/images/vehicles/fiat-egea.png' },
+  { brand: 'Volkswagen', model: 'Polo', year: 2024, segment: 1, dailyPrice: 2450, transmission: 'Otomatik', fuelType: 'Benzin', bodyType: 'Hatchback', minDriverAge: 21, imageUrl: '/images/vehicles/vw-polo.jpg' },
+  { brand: 'Toyota', model: 'Corolla', year: 2024, segment: 3, dailyPrice: 3000, transmission: 'Otomatik', fuelType: 'Hibrit', bodyType: 'Sedan', minDriverAge: 25, imageUrl: '/images/vehicles/toyota-corolla.jpg' },
+  { brand: 'BMW', model: '5.20 (G30)', year: 2023, segment: 4, dailyPrice: 7500, transmission: 'Otomatik', fuelType: 'Benzin', bodyType: 'Sedan', minDriverAge: 27, imageUrl: '/images/vehicles/bmw-5.jpg' },
+  { brand: 'Peugeot', model: 'Rifter', year: 2023, segment: 3, dailyPrice: 2850, transmission: 'Otomatik', fuelType: 'Dizel', bodyType: 'Van', minDriverAge: 25, imageUrl: '/images/vehicles/peugeot-rifter.jpg' },
+  { brand: 'Volkswagen', model: 'T-Roc', year: 2024, segment: 6, dailyPrice: 3500, transmission: 'Otomatik', fuelType: 'Benzin', bodyType: 'SUV', minDriverAge: 25, imageUrl: '/images/vehicles/vw-troc.jpg' },
+];
 
 const AdminPanel: React.FC = () => {
   const { t } = useTranslation();
@@ -21,8 +30,8 @@ const AdminPanel: React.FC = () => {
   const [reservations, setReservations] = useState<any[]>([]);
 
   // Add Vehicle form
-  const [newVehicleBrand, setNewVehicleBrand] = useState('');
-  const [newVehicleModel, setNewVehicleModel] = useState('');
+  const [vehicleSubTab, setVehicleSubTab] = useState<'add' | 'block'>('add');
+  const [selectedFleetModelIndex, setSelectedFleetModelIndex] = useState<string>('');
   const [newVehiclePlate, setNewVehiclePlate] = useState('');
   const [newVehicleLocationId, setNewVehicleLocationId] = useState('');
   const [addVehicleMessage, setAddVehicleMessage] = useState<{ text: string, type: 'success' | 'error' }>({ text: '', type: 'success' });
@@ -123,31 +132,39 @@ const AdminPanel: React.FC = () => {
 
   const handleAddVehicle = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!selectedFleetModelIndex) {
+      setAddVehicleMessage({ text: 'Lütfen filodan bir model seçin.', type: 'error' });
+      return;
+    }
+    const selectedModel = FLEET_MODELS[parseInt(selectedFleetModelIndex)];
+
     try {
       await api.post('/admin/vehicles', {
-        brand: newVehicleBrand,
-        model: newVehicleModel,
+        brand: selectedModel.brand,
+        model: selectedModel.model,
         licensePlate: newVehiclePlate,
         locationId: newVehicleLocationId,
-        year: new Date().getFullYear(),
-        segment: 1, // Economy default
-        dailyPrice: 1000,
-        transmission: "Otomatik",
-        fuelType: "Benzin",
-        bodyType: "Sedan",
-        minDriverAge: 21,
-        imageUrl: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=600"
+        year: selectedModel.year,
+        segment: selectedModel.segment,
+        dailyPrice: selectedModel.dailyPrice,
+        transmission: selectedModel.transmission,
+        fuelType: selectedModel.fuelType,
+        bodyType: selectedModel.bodyType,
+        minDriverAge: selectedModel.minDriverAge,
+        imageUrl: selectedModel.imageUrl
       });
       setAddVehicleMessage({ text: 'Araç başarıyla eklendi.', type: 'success' });
-      setNewVehicleBrand('');
-      setNewVehicleModel('');
+      setSelectedFleetModelIndex('');
       setNewVehiclePlate('');
       
       // refresh vehicles
       const vRes = await api.get('/vehicles');
       setVehicles(vRes.data);
     } catch (err: any) {
-      setAddVehicleMessage({ text: err.response?.data || 'Araç eklenemedi.', type: 'error' });
+      const errMsg = typeof err.response?.data === 'string' 
+        ? err.response.data 
+        : err.response?.data?.title || err.response?.data?.Message || 'Araç eklenemedi.';
+      setAddVehicleMessage({ text: errMsg, type: 'error' });
     }
   };
 
@@ -260,7 +277,25 @@ const AdminPanel: React.FC = () => {
 
           {activeTab === 'vehicles' && (
             <>
-          {/* Araç Ekle Formu */}
+              {/* Alt Sekmeler */}
+              <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
+                <button 
+                  onClick={() => setVehicleSubTab('add')} 
+                  className={`tab-btn ${vehicleSubTab === 'add' ? 'active' : ''}`}
+                  style={{ flex: 1, padding: '1rem', borderRadius: '12px', background: vehicleSubTab === 'add' ? 'var(--primary)' : 'var(--glass-bg)', color: vehicleSubTab === 'add' ? '#fff' : 'var(--text-main)', border: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'center', gap: '0.5rem', alignItems: 'center', fontWeight: 500, fontSize: '1.1rem', transition: 'all 0.2s', cursor: 'pointer' }}
+                >
+                  <CarFront size={20} /> Sisteme Yeni Araç Ekle
+                </button>
+                <button 
+                  onClick={() => setVehicleSubTab('block')} 
+                  className={`tab-btn ${vehicleSubTab === 'block' ? 'active' : ''}`}
+                  style={{ flex: 1, padding: '1rem', borderRadius: '12px', background: vehicleSubTab === 'block' ? '#EF4444' : 'var(--glass-bg)', color: vehicleSubTab === 'block' ? '#fff' : 'var(--text-main)', border: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'center', gap: '0.5rem', alignItems: 'center', fontWeight: 500, fontSize: '1.1rem', transition: 'all 0.2s', cursor: 'pointer' }}
+                >
+                  <Ban size={20} /> Aracı Yayından Kaldır
+                </button>
+              </div>
+
+          {vehicleSubTab === 'add' && (
           <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <CarFront size={20} /> Yeni Araç Ekle
@@ -283,14 +318,14 @@ const AdminPanel: React.FC = () => {
                 </select>
               </div>
 
-              <div className="form-group">
-                <label>Marka</label>
-                <input type="text" className="form-control" required value={newVehicleBrand} onChange={e => setNewVehicleBrand(e.target.value)} placeholder="Örn: Fiat" />
-              </div>
-
-              <div className="form-group">
-                <label>Model</label>
-                <input type="text" className="form-control" required value={newVehicleModel} onChange={e => setNewVehicleModel(e.target.value)} placeholder="Örn: Egea" />
+              <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                <label>Filodaki Araç Modeli</label>
+                <select className="form-control" required value={selectedFleetModelIndex} onChange={e => setSelectedFleetModelIndex(e.target.value)}>
+                  <option value="">Araç Modeli Seçin</option>
+                  {FLEET_MODELS.map((m, idx) => (
+                    <option key={idx} value={idx}>{m.brand} {m.model} ({m.year} - {m.transmission})</option>
+                  ))}
+                </select>
               </div>
 
               <div className="form-group" style={{ gridColumn: '1 / -1' }}>
@@ -301,9 +336,12 @@ const AdminPanel: React.FC = () => {
               <button type="submit" className="btn btn-primary" style={{ gridColumn: '1 / -1', marginTop: '0.5rem' }}>Aracı Sisteme Ekle</button>
             </form>
           </div>
+          )}
 
+          {vehicleSubTab === 'block' && (
+            <>
           {/* Aracı Yayından Kaldır */}
-          <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}>
+          <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <AlertTriangle size={20} /> Aracı Yayından Kaldır (Bakım/Bloke)
             </h2>
@@ -367,25 +405,25 @@ const AdminPanel: React.FC = () => {
                 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                   <thead>
                     <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--muted-color)' }}>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>Araç</th>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>Başlangıç</th>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>Bitiş</th>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>Sebep</th>
-                      <th style={{ padding: '1rem', fontWeight: 500 }}>İşlem</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Araç</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Başlangıç</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Bitiş</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Sebep</th>
+                      <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>İşlem</th>
                     </tr>
                   </thead>
                   <tbody>
                     {blockedVehicles.map(b => (
                       <tr key={b.id} style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                        <td style={{ padding: '1rem', fontWeight: 600 }}>{b.vehicle}</td>
-                        <td style={{ padding: '1rem' }}>{b.startDate}</td>
-                        <td style={{ padding: '1rem' }}>{b.endDate}</td>
-                        <td style={{ padding: '1rem' }}>
+                        <td style={{ padding: '1rem', fontWeight: 600, whiteSpace: 'nowrap' }}>{b.vehicle}</td>
+                        <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>{b.startDate}</td>
+                        <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>{b.endDate}</td>
+                        <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>
                           <span style={{ padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 500, background: '#F59E0B15', color: '#F59E0B' }}>
                             {b.reason}
                           </span>
                         </td>
-                        <td style={{ padding: '1rem' }}>
+                        <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>
                           <button onClick={() => handleUnblockVehicle(b.id)} className="btn btn-outline" style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', borderColor: '#EF4444', color: '#EF4444' }}>Bloku Kaldır</button>
                         </td>
                       </tr>
@@ -397,6 +435,9 @@ const AdminPanel: React.FC = () => {
           </div>
           </>
           )}
+          </>
+          )}
+
 
           {activeTab === 'reservations' && (
             <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}>
@@ -411,29 +452,29 @@ const AdminPanel: React.FC = () => {
                   <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                     <thead>
                       <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--muted-color)' }}>
-                        <th style={{ padding: '1rem', fontWeight: 500 }}>PNR Kodu</th>
-                        <th style={{ padding: '1rem', fontWeight: 500 }}>Kullanıcı</th>
-                        <th style={{ padding: '1rem', fontWeight: 500 }}>Araç</th>
-                        <th style={{ padding: '1rem', fontWeight: 500 }}>Ofis Bilgisi (Alış/İade)</th>
-                        <th style={{ padding: '1rem', fontWeight: 500 }}>Tarih (Alış/İade)</th>
-                        <th style={{ padding: '1rem', fontWeight: 500 }}>Durum</th>
+                        <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>PNR Kodu</th>
+                        <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Kullanıcı</th>
+                        <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Araç</th>
+                        <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Ofis Bilgisi (Alış/İade)</th>
+                        <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Tarih (Alış/İade)</th>
+                        <th style={{ padding: '1rem', fontWeight: 500, whiteSpace: 'nowrap' }}>Durum</th>
                       </tr>
                     </thead>
                     <tbody>
                       {reservations.map(res => (
                         <tr key={res.id} style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                          <td style={{ padding: '1rem', fontWeight: 600 }}>{res.pnrCode}</td>
-                          <td style={{ padding: '1rem' }}>{res.user}</td>
-                          <td style={{ padding: '1rem', fontWeight: 600 }}>{res.vehicle}</td>
-                          <td style={{ padding: '1rem' }}>
+                          <td style={{ padding: '1rem', fontWeight: 600, whiteSpace: 'nowrap' }}>{res.pnrCode}</td>
+                          <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>{res.user}</td>
+                          <td style={{ padding: '1rem', fontWeight: 600, whiteSpace: 'nowrap' }}>{res.vehicle}</td>
+                          <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>
                             <div style={{ fontSize: '0.85rem' }}>Alış: {res.pickupLocation}</div>
                             <div style={{ fontSize: '0.85rem' }}>İade: {res.dropoffLocation}</div>
                           </td>
-                          <td style={{ padding: '1rem' }}>
+                          <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>
                             <div style={{ fontSize: '0.85rem' }}>{res.pickupDate}</div>
                             <div style={{ fontSize: '0.85rem' }}>{res.dropoffDate}</div>
                           </td>
-                          <td style={{ padding: '1rem' }}>
+                          <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>
                             <span style={{ padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 500, background: res.status === 'Completed' || res.status === 'Active' || res.status === 'Confirmed' ? '#10B98115' : res.status === 'Pending' ? '#F59E0B15' : '#EF444415', color: res.status === 'Completed' || res.status === 'Active' || res.status === 'Confirmed' ? '#10B981' : res.status === 'Pending' ? '#F59E0B' : '#EF4444' }}>
                               {res.status === 'Pending' ? 'Onay Bekliyor' : res.status === 'Active' ? 'Onaylandı' : res.status === 'Confirmed' ? 'Onaylandı' : res.status === 'Cancelled' ? 'İptal Edildi' : res.status === 'Expired' ? 'Süresi Doldu' : res.status === 'Completed' ? 'Tamamlandı' : res.status}
                             </span>

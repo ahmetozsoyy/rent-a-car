@@ -32,6 +32,9 @@ api.interceptors.response.use(
       // 401 hatası alındığında token geçersizdir, temizle
       localStorage.removeItem('token');
       // Auth Store resetlenebilir (bu kısmı authStore içerisinde handle edeceğiz veya buradan window.location ile yönlendireceğiz)
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }
