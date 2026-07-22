@@ -132,6 +132,9 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHub<NotificationHub>("/notifications");
 
+// Health check endpoint for UptimeRobot (Ping)
+app.MapGet("/health", () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow }));
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
