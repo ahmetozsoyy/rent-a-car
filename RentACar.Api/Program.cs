@@ -119,7 +119,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Use CORS before HttpsRedirection to ensure preflight requests don't fail
+// Use CORS properly after Routing but before Auth
+app.UseRouting();
 app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
