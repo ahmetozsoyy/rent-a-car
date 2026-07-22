@@ -5,7 +5,7 @@ Bu proje, modern web teknolojileri kullanilarak gelistirilmis kapsamli bir arac 
 ## Kullanilan Teknolojiler ve Araclar
 
 ### Backend
-- **.NET 8 (C#)
+- **.NET 8 (C#)**
 - **ASP.NET Core Web API** RESTful API
 - **Entity Framework Core** Veritabani islemleri icin kullanilan ORM (Object-Relational Mapper) araci. Code-First yaklasimi benimsenmistir.
 - **PostgreSQL** 
