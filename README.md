@@ -1,4 +1,4 @@
-# Rent A Car Management System
+# Rent A Car Yönetim ve Müşteri Hizmeti
 
 Bu proje, modern web teknolojileri kullanilarak gelistirilmis kapsamli bir arac kiralama ve yonetim sistemidir. Sistem; yoneticiler (Admin), sube yoneticileri (Moderator) ve musteriler (User) icin ozel olarak tasarlanmis yetki tabanli bir yapi sunmaktadir.
 
