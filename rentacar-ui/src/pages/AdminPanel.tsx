@@ -221,7 +221,7 @@ const AdminPanel: React.FC = () => {
 
   return (
     <div style={{ padding: '6rem 2rem 2rem 2rem', minHeight: '100vh', background: 'var(--bg-main)' }}>
-      <div className="container" style={{ maxWidth: '1200px' }}>
+      <div className="container" style={{ maxWidth: '1400px' }}>
         <h1 style={{ fontSize: '2rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <Shield size={32} color="var(--primary)" /> Yönetim Paneli
         </h1>

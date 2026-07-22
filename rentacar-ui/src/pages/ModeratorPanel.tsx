@@ -181,7 +181,7 @@ const ModeratorPanel: React.FC = () => {
 
   return (
     <div style={{ padding: '6rem 2rem 2rem 2rem', minHeight: '100vh', background: 'var(--bg-main)' }}>
-      <div className="container" style={{ maxWidth: '1200px' }}>
+      <div className="container" style={{ maxWidth: '1400px' }}>
         <h1 style={{ fontSize: '2rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <Building2 size={32} color="var(--primary)" /> Şube Yönetimi
         </h1>
@@ -303,7 +303,6 @@ const ModeratorPanel: React.FC = () => {
           <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}>
             <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               Şubeye Düşen Rezervasyonlar
-               Şubeye Düşen Rezervasyonlar
             </h2>
 
             {reservations.length === 0 ? (
