@@ -29,8 +29,12 @@ const ModeratorPanel: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    if (activeTab === 'messages') {
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }, [messages, activeTab]);
 
   // Tabs
   const [activeTab, setActiveTab] = useState<'reservations' | 'vehicles' | 'messages'>('reservations');
