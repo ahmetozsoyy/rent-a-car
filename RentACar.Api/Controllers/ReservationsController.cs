@@ -70,20 +70,24 @@ public class ReservationsController : BaseController
             .Include(r => r.DropoffLocation)
             .Where(r => r.UserId == userId)
             .OrderByDescending(r => r.CreatedAt)
-            .Select(r => new {
-                r.Id,
-                PnrCode = r.Id.ToString().Substring(0, 8).ToUpper(),
-                Vehicle = r.Vehicle.Brand + " " + r.Vehicle.Model,
-                Image = r.Vehicle.ImageUrl,
-                PickupDate = r.StartDate.ToString("dd MMM yyyy HH:mm"),
-                DropoffDate = r.EndDate.ToString("dd MMM yyyy HH:mm"),
-                PickupLocation = r.PickupLocation.Name,
-                DropoffLocation = r.DropoffLocation.Name,
-                Status = r.Status.ToString(),
-                Price = r.TotalPrice
-            })
             .ToListAsync();
 
-        return Ok(reservations);
+        var mapped = reservations.Select(r => new {
+            r.Id,
+            PnrCode = r.Id.ToString().Substring(0, 8).ToUpper(),
+            Vehicle = r.Vehicle.Brand + " " + r.Vehicle.Model,
+            Image = r.Vehicle.ImageUrl,
+            PickupDate = r.StartDate.ToString("dd MMM yyyy HH:mm"),
+            DropoffDate = r.EndDate.ToString("dd MMM yyyy HH:mm"),
+            PickupLocation = r.PickupLocation.Name,
+            DropoffLocation = r.DropoffLocation.Name,
+            Status = (r.EndDate < DateTime.UtcNow) ? 
+                     ((r.Status == RentACar.Domain.Enums.ReservationStatus.Confirmed || r.Status == RentACar.Domain.Enums.ReservationStatus.Active) ? "Completed" :
+                      r.Status == RentACar.Domain.Enums.ReservationStatus.Pending ? "Expired" :
+                      r.Status.ToString()) : r.Status.ToString(),
+            Price = r.TotalPrice
+        });
+
+        return Ok(mapped);
     }
 }
