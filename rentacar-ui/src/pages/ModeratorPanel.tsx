@@ -335,13 +335,30 @@ const ModeratorPanel: React.FC = () => {
                           </span>
                         </td>
                         <td style={{ padding: '1rem', display: 'flex', gap: '0.5rem' }}>
-                          <button onClick={() => handleApprove(res.id)} className="btn" style={{ padding: '0.4rem', borderRadius: '8px', background: '#10B98115', color: '#10B981', border: 'none', cursor: 'pointer' }} title="Onayla">
+                          <button 
+                            onClick={() => handleApprove(res.id)} 
+                            disabled={res.status === 'Expired' || res.status === 'Cancelled'}
+                            className="btn" 
+                            style={{ padding: '0.4rem', borderRadius: '8px', background: '#10B98115', color: '#10B981', border: 'none', cursor: res.status === 'Expired' || res.status === 'Cancelled' ? 'not-allowed' : 'pointer', opacity: res.status === 'Expired' || res.status === 'Cancelled' ? 0.5 : 1 }} 
+                            title="Onayla"
+                          >
                             <Check size={18} />
                           </button>
-                          <button onClick={() => handleReject(res.id)} className="btn" style={{ padding: '0.4rem', borderRadius: '8px', background: '#F59E0B15', color: '#F59E0B', border: 'none', cursor: 'pointer' }} title="Reddet">
+                          <button 
+                            onClick={() => handleReject(res.id)} 
+                            disabled={res.status === 'Expired' || res.status === 'Cancelled'}
+                            className="btn" 
+                            style={{ padding: '0.4rem', borderRadius: '8px', background: '#F59E0B15', color: '#F59E0B', border: 'none', cursor: res.status === 'Expired' || res.status === 'Cancelled' ? 'not-allowed' : 'pointer', opacity: res.status === 'Expired' || res.status === 'Cancelled' ? 0.5 : 1 }} 
+                            title="Reddet"
+                          >
                             <X size={18} />
                           </button>
-                          <button onClick={() => handleDelete(res.id)} className="btn" style={{ padding: '0.4rem', borderRadius: '8px', background: '#EF444415', color: '#EF4444', border: 'none', cursor: 'pointer' }} title="Tamamen Sil">
+                          <button 
+                            onClick={() => handleDelete(res.id)} 
+                            className="btn" 
+                            style={{ padding: '0.4rem', borderRadius: '8px', background: '#EF444415', color: '#EF4444', border: 'none', cursor: 'pointer' }} 
+                            title="Tamamen Sil"
+                          >
                             <Trash2 size={18} />
                           </button>
                         </td>
