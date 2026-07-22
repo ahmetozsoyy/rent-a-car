@@ -3,11 +3,13 @@ import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { Building2, Check, X, CarFront, Calendar, AlertTriangle, CheckCircle2, Trash2, Send, MessageSquare, List, Wrench } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { useNotificationStore } from '../store/useNotificationStore';
 import { useNavigate } from 'react-router-dom';
 
 const ModeratorPanel: React.FC = () => {
   const { t } = useTranslation();
   const { role } = useAuthStore();
+  const { markAsReadByReservation } = useNotificationStore();
   const navigate = useNavigate();
 
   const [reservations, setReservations] = useState<any[]>([]);
@@ -102,6 +104,7 @@ const ModeratorPanel: React.FC = () => {
   const handleApprove = async (id: string) => {
     try {
       await api.post(`/moderator/approve-reservation/${id}`);
+      markAsReadByReservation(id);
       const rRes = await api.get('/moderator/reservations');
       setReservations(rRes.data);
     } catch (err: any) {
@@ -113,6 +116,7 @@ const ModeratorPanel: React.FC = () => {
     if (!window.confirm('Rezervasyonu reddetmek istediğinize emin misiniz?')) return;
     try {
       await api.post(`/moderator/reject-reservation/${id}`);
+      markAsReadByReservation(id);
       const rRes = await api.get('/moderator/reservations');
       setReservations(rRes.data);
     } catch (err: any) {
@@ -124,6 +128,7 @@ const ModeratorPanel: React.FC = () => {
     if (!window.confirm('Rezervasyonu tamamen silmek (veritabanından kaldırmak) istediğinize emin misiniz? Bu işlem geri alınamaz!')) return;
     try {
       await api.delete(`/moderator/delete-reservation/${id}`);
+      markAsReadByReservation(id);
       const rRes = await api.get('/moderator/reservations');
       setReservations(rRes.data);
     } catch (err: any) {

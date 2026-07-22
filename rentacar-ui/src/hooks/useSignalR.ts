@@ -29,6 +29,8 @@ export const useSignalR = () => {
       
       const notifLocationId = notification.locationId || notification.LocationId;
 
+      const notifReservationId = notification.reservationId || notification.ReservationId;
+
       const normalizedNotifLoc = notifLocationId ? notifLocationId.toString().toLowerCase() : null;
       const normalizedUserLoc = locationId ? locationId.toString().toLowerCase() : null;
       const normalizedUserRole = role ? role.toLowerCase() : '';
@@ -54,7 +56,7 @@ export const useSignalR = () => {
 
       if (shouldShow) {
         const msg = notification.message || notification.Message || 'Yeni Bildirim';
-        addNotification(msg, notifLocationId);
+        addNotification(msg, notifLocationId, notifReservationId);
         toast(msg, {
           icon: '🔔',
           duration: 5000, // 5 saniye sonra kapanır

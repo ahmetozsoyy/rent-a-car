@@ -50,6 +50,7 @@ public class ReservationsController : BaseController
         await _hubContext.Clients.All.SendAsync("ReceiveNotification", new {
             Type = "NEW_RESERVATION",
             LocationId = request.PickupLocationId,
+            ReservationId = result.ReservationId,
             Message = "Şubenize yeni bir araç kiralama rezervasyonu geldi!"
         });
         
