@@ -52,38 +52,46 @@ public static class ApplicationDbContextSeed
             "16 LKM 159", "16 PDS 753", "16 BNH 426", "16 FDS 814", "16 DGT 369", "16 DXC 567",
             "48 CAA 951", "48 ACC 357", "48 ASA 248", "48 AEA 654", "48 ARE 123", "48 AAE 890"
         };
-        int plateIndex = 0;
-
         var allLocations = await context.Locations.OrderBy(l => l.Id).ToListAsync();
         foreach (var loc in allLocations)
         {
+            var cityPlates = plates.Where(p => {
+                if (loc.City == "İstanbul") return p.StartsWith("34");
+                if (loc.City == "Ankara") return p.StartsWith("06");
+                if (loc.City == "İzmir") return p.StartsWith("35");
+                if (loc.City == "Bursa") return p.StartsWith("16");
+                if (loc.City == "Muğla") return p.StartsWith("48");
+                return false;
+            }).ToArray();
+
             var existingVehicles = await context.Vehicles.Where(v => v.CurrentLocationId == loc.Id).OrderBy(v => v.Id).ToListAsync();
             
             if (existingVehicles.Count == 0)
             {
-                context.Vehicles.Add(new Vehicle("Fiat", "Egea", 2023, VehicleSegment.Economy, 2200, "Manuel", "Dizel", "Sedan", 21, "/images/vehicles/fiat-egea.png", plates[plateIndex++], loc.Id));
-                context.Vehicles.Add(new Vehicle("Volkswagen", "Polo", 2024, VehicleSegment.Economy, 2450, "Otomatik", "Benzin", "Hatchback", 21, "/images/vehicles/vw-polo.jpg", plates[plateIndex++], loc.Id));
-                context.Vehicles.Add(new Vehicle("Toyota", "Corolla", 2024, VehicleSegment.Standard, 3000, "Otomatik", "Hibrit", "Sedan", 25, "/images/vehicles/toyota-corolla.jpg", plates[plateIndex++], loc.Id));
-                context.Vehicles.Add(new Vehicle("BMW", "5.20 (G30)", 2023, VehicleSegment.Premium, 7500, "Otomatik", "Benzin", "Sedan", 27, "/images/vehicles/bmw-5.jpg", plates[plateIndex++], loc.Id));
-                context.Vehicles.Add(new Vehicle("Peugeot", "Rifter", 2023, VehicleSegment.Standard, 2850, "Otomatik", "Dizel", "Van", 25, "/images/vehicles/peugeot-rifter.jpg", plates[plateIndex++], loc.Id));
-                context.Vehicles.Add(new Vehicle("Volkswagen", "T-Roc", 2024, VehicleSegment.SUV, 3500, "Otomatik", "Benzin", "SUV", 25, "/images/vehicles/vw-troc.jpg", plates[plateIndex++], loc.Id));
+                context.Vehicles.Add(new Vehicle("Fiat", "Egea", 2023, VehicleSegment.Economy, 2200, "Manuel", "Dizel", "Sedan", 21, "/images/vehicles/fiat-egea.png", cityPlates.Length > 0 ? cityPlates[0] : "", loc.Id));
+                context.Vehicles.Add(new Vehicle("Volkswagen", "Polo", 2024, VehicleSegment.Economy, 2450, "Otomatik", "Benzin", "Hatchback", 21, "/images/vehicles/vw-polo.jpg", cityPlates.Length > 1 ? cityPlates[1] : "", loc.Id));
+                context.Vehicles.Add(new Vehicle("Toyota", "Corolla", 2024, VehicleSegment.Standard, 3000, "Otomatik", "Hibrit", "Sedan", 25, "/images/vehicles/toyota-corolla.jpg", cityPlates.Length > 2 ? cityPlates[2] : "", loc.Id));
+                context.Vehicles.Add(new Vehicle("BMW", "5.20 (G30)", 2023, VehicleSegment.Premium, 7500, "Otomatik", "Benzin", "Sedan", 27, "/images/vehicles/bmw-5.jpg", cityPlates.Length > 3 ? cityPlates[3] : "", loc.Id));
+                context.Vehicles.Add(new Vehicle("Peugeot", "Rifter", 2023, VehicleSegment.Standard, 2850, "Otomatik", "Dizel", "Van", 25, "/images/vehicles/peugeot-rifter.jpg", cityPlates.Length > 4 ? cityPlates[4] : "", loc.Id));
+                context.Vehicles.Add(new Vehicle("Volkswagen", "T-Roc", 2024, VehicleSegment.SUV, 3500, "Otomatik", "Benzin", "SUV", 25, "/images/vehicles/vw-troc.jpg", cityPlates.Length > 5 ? cityPlates[5] : "", loc.Id));
             }
             else
             {
-                // Mevcut araçların plakalarını güncelle (migration sonrası null ise)
+                // Mevcut araçların plakalarını güncelle
+                int plateIndex = 0;
                 foreach (var ev in existingVehicles)
                 {
-                    if (string.IsNullOrEmpty(ev.LicensePlate) && plateIndex < plates.Length)
+                    if (plateIndex < cityPlates.Length)
                     {
                         var prop = ev.GetType().GetProperty("LicensePlate");
                         if (prop != null && prop.CanWrite)
                         {
-                            prop.SetValue(ev, plates[plateIndex]);
+                            prop.SetValue(ev, cityPlates[plateIndex]);
                         }
                         else
                         {
                             // Backing field update for EF Core if private setter
-                            context.Entry(ev).Property(e => e.LicensePlate).CurrentValue = plates[plateIndex];
+                            context.Entry(ev).Property(e => e.LicensePlate).CurrentValue = cityPlates[plateIndex];
                         }
                     }
                     plateIndex++;
