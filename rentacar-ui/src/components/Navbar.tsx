@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
       backdropFilter: 'blur(12px)', 
       borderBottom: '1px solid rgba(0,0,0,0.05)' 
     }}>
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '5rem', transition: 'all 0.3s ease' }}>
+      <div style={{ width: '100%', padding: '0 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '5rem', transition: 'all 0.3s ease' }}>
         
         {/* Left Side: Logo + Links */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '3.5rem' }}>

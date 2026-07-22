@@ -60,6 +60,7 @@ export const useSignalR = () => {
         toast(msg, {
           icon: '🔔',
           duration: 5000, // 5 saniye sonra kapanır
+          position: 'top-right',
           style: {
             borderRadius: '12px',
             background: '#FFFFFF',
