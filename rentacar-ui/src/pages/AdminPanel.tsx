@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
-import { Shield, ShieldPlus, CarFront, Calendar, MapPin, Mail, AlertTriangle, CheckCircle2, Send, MessageSquare, List, Wrench, Users } from 'lucide-react';
+import { CarFront, Calendar, MapPin, Mail, AlertTriangle, CheckCircle2, Send, MessageSquare, List, Wrench, Users } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { useNotificationStore } from '../store/useNotificationStore';
 import { useNavigate } from 'react-router-dom';
 
 const AdminPanel: React.FC = () => {
   const { t } = useTranslation();
   const { role } = useAuthStore();
+  const { notifications, markAsReadByLocation } = useNotificationStore();
   const navigate = useNavigate();
 
   const [vehicles, setVehicles] = useState<any[]>([]);
@@ -304,24 +306,36 @@ const AdminPanel: React.FC = () => {
               <div style={{ borderRight: '1px solid var(--glass-border)', overflowY: 'auto', paddingRight: '1rem' }}>
                 <h3 style={{ fontSize: '1rem', color: 'var(--muted-color)', marginBottom: '1rem' }}>Şubeler</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  {locationsWithMessages.map(loc => (
-                    <button 
-                      key={loc.id} 
-                      onClick={() => fetchMessages(loc.id)}
-                      style={{ 
-                        padding: '0.75rem 1rem', 
-                        borderRadius: '12px', 
-                        border: 'none', 
-                        textAlign: 'left',
-                        cursor: 'pointer',
-                        background: selectedLocationId === loc.id ? 'var(--primary)' : 'var(--glass-bg)',
-                        color: selectedLocationId === loc.id ? 'white' : 'inherit',
-                        transition: 'all 0.2s'
-                      }}
-                    >
-                      {loc.name}
-                    </button>
-                  ))}
+                  {locationsWithMessages.map(loc => {
+                    const hasUnread = notifications.some(n => !n.read && n.locationId === loc.id);
+                    return (
+                      <button 
+                        key={loc.id} 
+                        onClick={() => {
+                          fetchMessages(loc.id);
+                          markAsReadByLocation(loc.id);
+                        }}
+                        style={{ 
+                          padding: '0.75rem 1rem', 
+                          borderRadius: '12px', 
+                          border: 'none', 
+                          textAlign: 'left',
+                          cursor: 'pointer',
+                          background: selectedLocationId === loc.id ? 'var(--primary)' : 'var(--glass-bg)',
+                          color: selectedLocationId === loc.id ? 'white' : 'inherit',
+                          transition: 'all 0.2s',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between'
+                        }}
+                      >
+                        <span>{loc.name}</span>
+                        {hasUnread && (
+                          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'red' }}></span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 

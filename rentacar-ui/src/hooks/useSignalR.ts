@@ -54,7 +54,7 @@ export const useSignalR = () => {
 
       if (shouldShow) {
         const msg = notification.message || notification.Message || 'Yeni Bildirim';
-        addNotification(msg);
+        addNotification(msg, notifLocationId);
         toast(msg, {
           icon: '🔔',
           duration: 5000, // 5 saniye sonra kapanır
