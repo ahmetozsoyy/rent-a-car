@@ -225,14 +225,22 @@ const AdminPanel: React.FC = () => {
           <button 
             onClick={() => setActiveTab('reservations')} 
             className={`tab-btn ${activeTab === 'reservations' ? 'active' : ''}`}
+            style={{ position: 'relative' }}
           >
             <List size={18} /> Rezervasyon Yönetimi
+            {notifications.some(n => !n.read && n.type === 'NEW_RESERVATION') && (
+              <span style={{ position: 'absolute', top: '-4px', right: '-4px', width: '12px', height: '12px', background: '#EF4444', borderRadius: '50%', border: '2px solid var(--bg-main)' }}></span>
+            )}
           </button>
           <button 
             onClick={() => setActiveTab('messages')} 
             className={`tab-btn ${activeTab === 'messages' ? 'active' : ''}`}
+            style={{ position: 'relative' }}
           >
             <MessageSquare size={18} /> Şube İletişim
+            {notifications.some(n => !n.read && n.type === 'NEW_MESSAGE') && (
+              <span style={{ position: 'absolute', top: '-4px', right: '-4px', width: '12px', height: '12px', background: '#EF4444', borderRadius: '50%', border: '2px solid var(--bg-main)' }}></span>
+            )}
           </button>
           <button 
             onClick={() => setActiveTab('moderators')} 

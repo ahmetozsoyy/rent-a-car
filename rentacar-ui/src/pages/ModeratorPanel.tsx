@@ -176,8 +176,12 @@ const ModeratorPanel: React.FC = () => {
           <button 
             onClick={() => setActiveTab('reservations')} 
             className={`tab-btn ${activeTab === 'reservations' ? 'active' : ''}`}
+            style={{ position: 'relative' }}
           >
             <List size={18} /> Rezervasyonlar
+            {notifications.some(n => !n.read && n.type === 'NEW_RESERVATION') && (
+              <span style={{ position: 'absolute', top: '-4px', right: '-4px', width: '12px', height: '12px', background: '#EF4444', borderRadius: '50%', border: '2px solid var(--bg-main)' }}></span>
+            )}
           </button>
           <button 
             onClick={() => setActiveTab('vehicles')} 
@@ -188,8 +192,12 @@ const ModeratorPanel: React.FC = () => {
           <button 
             onClick={() => setActiveTab('messages')} 
             className={`tab-btn ${activeTab === 'messages' ? 'active' : ''}`}
+            style={{ position: 'relative' }}
           >
             <MessageSquare size={18} /> Admin İletişim
+            {notifications.some(n => !n.read && n.type === 'NEW_MESSAGE') && (
+              <span style={{ position: 'absolute', top: '-4px', right: '-4px', width: '12px', height: '12px', background: '#EF4444', borderRadius: '50%', border: '2px solid var(--bg-main)' }}></span>
+            )}
           </button>
         </div>
 
@@ -392,15 +400,10 @@ const ModeratorPanel: React.FC = () => {
 
               {/* Mesaj Gönderme Formu */}
               <form onSubmit={handleSendMessage} style={{ padding: '1.5rem', background: 'var(--glass-bg)', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <input 
-                  type="text" 
-                  className="input-field" 
-                  placeholder="Adınız (Örn: Ahmet - Satış)" 
-                  value={newSenderName} 
-                  onChange={e => setNewSenderName(e.target.value)}
-                  style={{ width: '100%', maxWidth: '300px', padding: '0.75rem' }}
-                  required
-                />
+                <div className="form-group">
+                  <label>Konu</label>
+                  <input type="text" className="input-field" required placeholder="Mesajınızın konusu" value={newSenderName} onChange={e => setNewSenderName(e.target.value)} style={{ width: '100%', maxWidth: '300px', padding: '0.75rem' }} />
+                </div>
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
                   <textarea 
                     className="input-field" 
