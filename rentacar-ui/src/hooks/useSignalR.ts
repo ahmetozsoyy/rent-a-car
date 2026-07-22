@@ -76,5 +76,5 @@ export const useSignalR = () => {
     return () => {
       connection.stop();
     };
-  }, [role, locationId, incrementUnread]);
+  }, [role, locationId, addNotification]);
 };
