@@ -339,7 +339,7 @@ const ModeratorPanel: React.FC = () => {
                             onClick={() => handleApprove(res.id)} 
                             disabled={res.status === 'Expired' || res.status === 'Cancelled'}
                             className="btn" 
-                            style={{ padding: '0.4rem', borderRadius: '8px', background: '#10B98115', color: '#10B981', border: 'none', cursor: res.status === 'Expired' || res.status === 'Cancelled' ? 'not-allowed' : 'pointer', opacity: res.status === 'Expired' || res.status === 'Cancelled' ? 0.5 : 1 }} 
+                            style={{ padding: '0.4rem', borderRadius: '8px', background: res.status === 'Expired' || res.status === 'Cancelled' ? '#F3F4F6' : '#10B98115', color: res.status === 'Expired' || res.status === 'Cancelled' ? '#9CA3AF' : '#10B981', border: 'none', cursor: res.status === 'Expired' || res.status === 'Cancelled' ? 'not-allowed' : 'pointer' }} 
                             title="Onayla"
                           >
                             <Check size={18} />
@@ -348,7 +348,7 @@ const ModeratorPanel: React.FC = () => {
                             onClick={() => handleReject(res.id)} 
                             disabled={res.status === 'Expired' || res.status === 'Cancelled'}
                             className="btn" 
-                            style={{ padding: '0.4rem', borderRadius: '8px', background: '#F59E0B15', color: '#F59E0B', border: 'none', cursor: res.status === 'Expired' || res.status === 'Cancelled' ? 'not-allowed' : 'pointer', opacity: res.status === 'Expired' || res.status === 'Cancelled' ? 0.5 : 1 }} 
+                            style={{ padding: '0.4rem', borderRadius: '8px', background: res.status === 'Expired' || res.status === 'Cancelled' ? '#F3F4F6' : '#F59E0B15', color: res.status === 'Expired' || res.status === 'Cancelled' ? '#9CA3AF' : '#F59E0B', border: 'none', cursor: res.status === 'Expired' || res.status === 'Cancelled' ? 'not-allowed' : 'pointer' }} 
                             title="Reddet"
                           >
                             <X size={18} />
