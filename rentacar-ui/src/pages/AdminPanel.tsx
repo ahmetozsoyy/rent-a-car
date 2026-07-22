@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { Shield, ShieldPlus, CarFront, Calendar, MapPin, Mail, AlertTriangle, CheckCircle2, Send, MessageSquare, List, Wrench, Users } from 'lucide-react';
@@ -17,6 +17,12 @@ const AdminPanel: React.FC = () => {
   const [modEmail, setModEmail] = useState('');
   const [modLocation, setModLocation] = useState('');
   const [modMessage, setModMessage] = useState({ text: '', type: '' });
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   // Blocked Vehicles List
   const [blockedVehicles, setBlockedVehicles] = useState<any[]>([]);
@@ -346,6 +352,7 @@ const AdminPanel: React.FC = () => {
                           </div>
                         ))
                       )}
+                      <div ref={messagesEndRef} />
                     </div>
                     
                     <form onSubmit={handleSendMessage} style={{ padding: '1.5rem', background: 'var(--glass-bg)', borderTop: '1px solid var(--glass-border)', display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>

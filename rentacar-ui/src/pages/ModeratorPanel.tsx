@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { Building2, Check, X, CarFront, Calendar, AlertTriangle, CheckCircle2, Trash2, Send, MessageSquare, List, Wrench } from 'lucide-react';
@@ -20,6 +20,12 @@ const ModeratorPanel: React.FC = () => {
   const [blockEnd, setBlockEnd] = useState('');
   const [blockReason, setBlockReason] = useState('');
   const [blockMessage, setBlockMessage] = useState({ text: '', type: '' });
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   // Messages
   const [messages, setMessages] = useState<any[]>([]);
@@ -344,6 +350,7 @@ const ModeratorPanel: React.FC = () => {
                     </div>
                   ))
                 )}
+                <div ref={messagesEndRef} />
               </div>
 
               {/* Mesaj Gönderme Formu */}
