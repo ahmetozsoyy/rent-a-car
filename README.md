@@ -42,6 +42,13 @@ Bu proje, modern web teknolojileri kullanilarak gelistirilmis kapsamli bir arac 
    - Hassas veriler (Sifreler) dogrudan veritabaninda saklanmaz, hashlenerek tutulur.
    - Yetkisiz istekler (401 Unauthorized) ve yetki disi istekler (403 Forbidden) HTTP standartlarina uygun olarak yonetilir.
 
-## Ozet
+## Ozet ve Temel Algoritmalar
 
 Sistem, hem sirket ici operasyonlarin yonetimini (arac bloklama, sube bazli raporlama) hem de musteri deneyimini (hizli kiralama, ek hizmetler secimi) sorunsuz bir sekilde entegre etmeyi hedefler. Tamamen modern ve olceklenmeye musait bir altyapi ile kurgulanmistir.
+
+Projenin altyapisinda kullanilan bazi kritik algoritmalar ve is mantiklari sunlardir:
+
+- **Cakisan Rezervasyon Engelleme (Conflict Prevention):** Bir kullanici bir araci belirli tarihler arasi icin ayirdiginda, baska bir kullanicinin arama sonuclarinda veya kiralama asamasinda bu araci ayni tarihlerde gormesi engellenir. Veritabani seviyesindeki kontroller (Concurrency/Check) ile ayni aracin ayni anda iki kisi tarafindan tutulmasi (Double Booking) tamamen onlenmistir.
+- **Dinamik Fiyatlandirma ve Ek Hizmetler:** Kullanicinin sectigi gun sayisina bagli olarak total ucret dinamik olarak hesaplanir. Ekstra kiralama hizmetleri (Bebek Koltugu, Ek Sigorta vb.) secildiginde, secilen gun sayisiyla carpilarak sepete (Checkout) es zamanli olarak yansitilir.
+- **Arac Blokaj ve Bakim Algoritmasi:** Yoneticiler ve sube calisanlari bir araci periyodik bakim veya ariza sebebiyle belirli tarihler arasinda "Yayindan Kaldirabilir". Bu durumda arac blokaj tablolarinda isaretlenir ve musteri arama sonuclarinda gosterilmez.
+- **Lokasyon Bazli Arac Takibi:** Aracin "Alis" lokasyonunun aracin anlik bulundugu lokasyonla (CurrentLocationId) eslesmesi zorunlulugu vardir. Eger kullanici araci kiralayip baska bir sehirdeki subeye (Iade) teslim ederse, sistem aracin yeni konumunu otomatik guncelleyerek baska musteriler icin yeni lokasyonundan rezerve edilebilir hale getirir.
