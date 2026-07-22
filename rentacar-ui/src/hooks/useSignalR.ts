@@ -24,24 +24,27 @@ export const useSignalR = () => {
       let shouldShow = false;
 
       const type = notification.type || notification.Type;
-      const targetRole = notification.targetRole || notification.TargetRole;
+      const rawTargetRole = notification.targetRole || notification.TargetRole || '';
+      const targetRole = rawTargetRole.toString().toLowerCase();
+      
       const notifLocationId = notification.locationId || notification.LocationId;
 
       const normalizedNotifLoc = notifLocationId ? notifLocationId.toString().toLowerCase() : null;
       const normalizedUserLoc = locationId ? locationId.toString().toLowerCase() : null;
+      const normalizedUserRole = role ? role.toLowerCase() : '';
 
-      if (role === 'Admin') {
-        if (type === 'NEW_MESSAGE' && targetRole === 'Admin') {
+      if (normalizedUserRole === 'admin') {
+        if (type === 'NEW_MESSAGE' && targetRole === 'admin') {
           shouldShow = true;
         } else if (type === 'NEW_RESERVATION') {
           shouldShow = true;
         }
-      } else if (role === 'Moderator') {
+      } else if (normalizedUserRole === 'moderator') {
         // Eger token guncel degilse locationId null olabilir. 
         if (!normalizedUserLoc || normalizedNotifLoc === normalizedUserLoc) {
           if (type === 'NEW_RESERVATION') {
             shouldShow = true;
-          } else if (type === 'NEW_MESSAGE' && targetRole === 'Moderator') {
+          } else if (type === 'NEW_MESSAGE' && targetRole === 'moderator') {
             shouldShow = true;
           }
         }
