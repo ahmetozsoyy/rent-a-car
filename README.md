@@ -8,7 +8,7 @@ Bu proje, modern web teknolojileri kullanilarak gelistirilmis kapsamli bir arac 
 - **.NET 8 (C#)**
 - **ASP.NET Core Web API** RESTful API
 - **Entity Framework Core** Veritabani islemleri icin kullanilan ORM (Object-Relational Mapper) araci. Code-First yaklasimi benimsenmistir.
-- **PostgreSQL** 
+- **PostgreSQL-Docker**
 - **SignalR** Gercek zamanli cift yonlu iletisim saglamak icin (canli destek hatti ve anlik bildirimler) kullanilmistir.
 - **JWT (JSON Web Token)** Kimlik dogrulama (Authentication) ve yetkilendirme (Authorization) islemleri icin guvenli token tabanli yapi.
 - **BCrypt.Net-Next** Kullanici sifrelerinin guvenli bir sekilde hashlendigi kutuphane.
