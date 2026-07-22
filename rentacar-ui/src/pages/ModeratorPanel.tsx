@@ -379,7 +379,7 @@ const ModeratorPanel: React.FC = () => {
                   messages.map(m => (
                     <div key={m.id} style={{ alignSelf: m.isFromAdmin ? 'flex-start' : 'flex-end', maxWidth: '75%' }}>
                       <div style={{ fontSize: '0.8rem', color: 'var(--muted-color)', marginBottom: '0.2rem', textAlign: m.isFromAdmin ? 'left' : 'right' }}>
-                        {m.senderName} • {new Date(m.createdAt).toLocaleString()}
+                        {m.senderName} • {new Date(m.createdAt).toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </div>
                       <div style={{ 
                         padding: '0.75rem 1rem', 
@@ -400,10 +400,15 @@ const ModeratorPanel: React.FC = () => {
 
               {/* Mesaj Gönderme Formu */}
               <form onSubmit={handleSendMessage} style={{ padding: '1.5rem', background: 'var(--glass-bg)', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div className="form-group">
-                  <label>Konu</label>
-                  <input type="text" className="input-field" required placeholder="Mesajınızın konusu" value={newSenderName} onChange={e => setNewSenderName(e.target.value)} style={{ width: '100%', maxWidth: '300px', padding: '0.75rem' }} />
-                </div>
+                <input 
+                  type="text" 
+                  className="input-field" 
+                  required 
+                  placeholder="Mesajınızın Konusu" 
+                  value={newSenderName} 
+                  onChange={e => setNewSenderName(e.target.value)} 
+                  style={{ padding: '1rem', borderRadius: '12px' }} 
+                />
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
                   <textarea 
                     className="input-field" 

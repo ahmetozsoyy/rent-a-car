@@ -230,7 +230,7 @@ public class ModeratorController : BaseController
 
         var message = new SupportMessage(
             user.ManagedLocationId.Value,
-            request.SenderName,
+            $"{user.FirstName} {user.LastName} - Konu: {request.SenderName}",
             request.Content,
             false // Admin'den gelmiyor, şubeden gidiyor.
         );

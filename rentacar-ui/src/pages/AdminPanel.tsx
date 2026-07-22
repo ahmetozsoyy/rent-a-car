@@ -555,7 +555,7 @@ const AdminPanel: React.FC = () => {
                         messages.map(m => (
                           <div key={m.id} style={{ alignSelf: m.isFromAdmin ? 'flex-end' : 'flex-start', maxWidth: '75%' }}>
                             <div style={{ fontSize: '0.8rem', color: 'var(--muted-color)', marginBottom: '0.2rem', textAlign: m.isFromAdmin ? 'right' : 'left' }}>
-                              {m.senderName} • {new Date(m.createdAt).toLocaleString()}
+                              {m.senderName} • {new Date(m.createdAt).toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                             </div>
                             <div style={{ 
                               padding: '0.75rem 1rem', 
