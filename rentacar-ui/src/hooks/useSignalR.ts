@@ -62,10 +62,10 @@ export const useSignalR = () => {
           duration: 5000, // 5 saniye sonra kapanır
           style: {
             borderRadius: '12px',
-            background: 'var(--glass-bg)',
+            background: '#FFFFFF',
             color: 'var(--text-color)',
-            border: '1px solid var(--glass-border)',
-            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(0,0,0,0.1)',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
           },
         });
       }

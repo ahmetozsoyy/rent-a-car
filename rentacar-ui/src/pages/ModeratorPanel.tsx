@@ -50,7 +50,7 @@ const ModeratorPanel: React.FC = () => {
             </button>
           </div>
         </div>
-      ), { duration: Infinity, position: 'top-center', style: { background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', backdropFilter: 'blur(10px)', color: 'var(--text-main)' } });
+      ), { duration: Infinity, position: 'top-center', style: { background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.1)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', color: 'var(--text-main)' } });
     });
   };
 

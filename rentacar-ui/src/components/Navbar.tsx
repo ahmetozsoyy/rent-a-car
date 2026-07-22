@@ -105,7 +105,7 @@ const Navbar: React.FC = () => {
                     top: '120%', 
                     right: 0, 
                     width: '320px', 
-                    background: 'var(--glass-bg)', 
+                    background: '#FFFFFF', 
                     backdropFilter: 'blur(16px)', 
                     border: '1px solid var(--glass-border)', 
                     borderRadius: '16px', 
