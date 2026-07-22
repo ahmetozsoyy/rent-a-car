@@ -63,6 +63,17 @@ public class ModeratorController : BaseController
         var vehicle = await _context.Vehicles.FindAsync(request.VehicleId);
         if (vehicle == null) return NotFound("Araç bulunamadı.");
 
+        var startDate = request.StartDate.ToUniversalTime();
+        var endDate = request.EndDate.ToUniversalTime();
+
+        var hasOverlap = await _context.VehicleBlocks
+            .AnyAsync(b => b.VehicleId == request.VehicleId && 
+                           b.StartDate < endDate && 
+                           b.EndDate > startDate);
+
+        if (hasOverlap)
+            return BadRequest("Bu araç belirtilen tarihler arasında zaten yayından kaldırılmış durumda.");
+
         var block = new VehicleBlock(
             request.VehicleId, 
             request.StartDate.ToUniversalTime(), 
