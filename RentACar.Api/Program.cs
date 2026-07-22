@@ -27,7 +27,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("http://localhost:5173", "http://localhost:3000") // Vite and Next.js defaults
+            policy.SetIsOriginAllowed(origin => true) // Vercel vb. tüm canlı frontend domainlerine izin ver
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials();
