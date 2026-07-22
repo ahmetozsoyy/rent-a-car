@@ -14,8 +14,18 @@ const AdminPanel: React.FC = () => {
   const { notifications, markAsReadByLocation } = useNotificationStore();
   const navigate = useNavigate();
 
+  const [activeTab, setActiveTab] = useState<'vehicles' | 'reservations' | 'messages' | 'moderators'>('vehicles');
+
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [locations, setLocations] = useState<any[]>([]);
+  const [reservations, setReservations] = useState<any[]>([]);
+
+  // Add Vehicle form
+  const [newVehicleBrand, setNewVehicleBrand] = useState('');
+  const [newVehicleModel, setNewVehicleModel] = useState('');
+  const [newVehiclePlate, setNewVehiclePlate] = useState('');
+  const [newVehicleLocationId, setNewVehicleLocationId] = useState('');
+  const [addVehicleMessage, setAddVehicleMessage] = useState<{ text: string, type: 'success' | 'error' }>({ text: '', type: 'success' });
 
   // Moderator form
   const [modEmail, setModEmail] = useState('');
@@ -32,7 +42,6 @@ const AdminPanel: React.FC = () => {
   const [newMessage, setNewMessage] = useState('');
   
   // Tabs
-  const [activeTab, setActiveTab] = useState<'moderators' | 'vehicles' | 'messages'>('messages');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -66,6 +75,8 @@ const AdminPanel: React.FC = () => {
         setLocations(lRes.data);
         const bRes = await api.get('/admin/blocked-vehicles');
         setBlockedVehicles(bRes.data);
+        const resRes = await api.get('/admin/reservations');
+        setReservations(resRes.data);
         const locMsgRes = await api.get('/admin/locations-with-messages');
         setLocationsWithMessages(locMsgRes.data);
       } catch (err) {
@@ -107,6 +118,36 @@ const AdminPanel: React.FC = () => {
     } catch (err: any) {
       const errMsg = typeof err.response?.data === 'string' ? err.response.data : err.response?.data?.title || 'Hata oluştu.';
       setBlockMessage({ text: errMsg, type: 'error' });
+    }
+  };
+
+  const handleAddVehicle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await api.post('/admin/vehicles', {
+        brand: newVehicleBrand,
+        model: newVehicleModel,
+        licensePlate: newVehiclePlate,
+        locationId: newVehicleLocationId,
+        year: new Date().getFullYear(),
+        segment: 1, // Economy default
+        dailyPrice: 1000,
+        transmission: "Otomatik",
+        fuelType: "Benzin",
+        bodyType: "Sedan",
+        minDriverAge: 21,
+        imageUrl: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=600"
+      });
+      setAddVehicleMessage({ text: 'Araç başarıyla eklendi.', type: 'success' });
+      setNewVehicleBrand('');
+      setNewVehicleModel('');
+      setNewVehiclePlate('');
+      
+      // refresh vehicles
+      const vRes = await api.get('/vehicles');
+      setVehicles(vRes.data);
+    } catch (err: any) {
+      setAddVehicleMessage({ text: err.response?.data || 'Araç eklenemedi.', type: 'error' });
     }
   };
 
@@ -159,22 +200,28 @@ const AdminPanel: React.FC = () => {
 
         <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '1rem' }}>
           <button 
-            onClick={() => setActiveTab('moderators')} 
-            className={`tab-btn ${activeTab === 'moderators' ? 'active' : ''}`}
-          >
-            <Users size={18} /> Moderatör Ata
-          </button>
-          <button 
             onClick={() => setActiveTab('vehicles')} 
             className={`tab-btn ${activeTab === 'vehicles' ? 'active' : ''}`}
           >
             <Wrench size={18} /> Araç Yönetimi
           </button>
           <button 
+            onClick={() => setActiveTab('reservations')} 
+            className={`tab-btn ${activeTab === 'reservations' ? 'active' : ''}`}
+          >
+            <List size={18} /> Rezervasyon Yönetimi
+          </button>
+          <button 
             onClick={() => setActiveTab('messages')} 
             className={`tab-btn ${activeTab === 'messages' ? 'active' : ''}`}
           >
             <MessageSquare size={18} /> Şube İletişim
+          </button>
+          <button 
+            onClick={() => setActiveTab('moderators')} 
+            className={`tab-btn ${activeTab === 'moderators' ? 'active' : ''}`}
+          >
+            <Users size={18} /> Moderatör Ata
           </button>
         </div>
 
@@ -213,6 +260,48 @@ const AdminPanel: React.FC = () => {
 
           {activeTab === 'vehicles' && (
             <>
+          {/* Araç Ekle Formu */}
+          <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)', marginBottom: '2rem' }}>
+            <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <CarFront size={20} /> Yeni Araç Ekle
+            </h2>
+
+            {addVehicleMessage.text && (
+              <div style={{ padding: '1rem', borderRadius: '8px', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: addVehicleMessage.type === 'success' ? '#10B98115' : '#EF444415', color: addVehicleMessage.type === 'success' ? '#10B981' : '#EF4444' }}>
+                {addVehicleMessage.type === 'success' ? <CheckCircle2 size={18} /> : <AlertTriangle size={18} />} {addVehicleMessage.text}
+              </div>
+            )}
+
+            <form onSubmit={handleAddVehicle} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><MapPin size={16} /> Sorumlu Şube</label>
+                <select className="form-control" required value={newVehicleLocationId} onChange={e => setNewVehicleLocationId(e.target.value)}>
+                  <option value="">Ofis Seçin</option>
+                  {locations.map(loc => (
+                    <option key={loc.id} value={loc.id}>{loc.name} ({loc.city})</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Marka</label>
+                <input type="text" className="form-control" required value={newVehicleBrand} onChange={e => setNewVehicleBrand(e.target.value)} placeholder="Örn: Fiat" />
+              </div>
+
+              <div className="form-group">
+                <label>Model</label>
+                <input type="text" className="form-control" required value={newVehicleModel} onChange={e => setNewVehicleModel(e.target.value)} placeholder="Örn: Egea" />
+              </div>
+
+              <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                <label>Plaka</label>
+                <input type="text" className="form-control" required value={newVehiclePlate} onChange={e => setNewVehiclePlate(e.target.value)} placeholder="Örn: 34 ABC 123" />
+              </div>
+
+              <button type="submit" className="btn btn-primary" style={{ gridColumn: '1 / -1', marginTop: '0.5rem' }}>Aracı Sisteme Ekle</button>
+            </form>
+          </div>
+
           {/* Aracı Yayından Kaldır */}
           <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}>
             <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -307,6 +396,55 @@ const AdminPanel: React.FC = () => {
             )}
           </div>
           </>
+          )}
+
+          {activeTab === 'reservations' && (
+            <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}>
+              <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <List size={20} /> Rezervasyon Yönetimi
+              </h2>
+
+              {reservations.length === 0 ? (
+                <p style={{ color: 'var(--muted-color)' }}>Şu an kayıtlı bir rezervasyon bulunmuyor.</p>
+              ) : (
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--muted-color)' }}>
+                        <th style={{ padding: '1rem', fontWeight: 500 }}>PNR Kodu</th>
+                        <th style={{ padding: '1rem', fontWeight: 500 }}>Kullanıcı</th>
+                        <th style={{ padding: '1rem', fontWeight: 500 }}>Araç</th>
+                        <th style={{ padding: '1rem', fontWeight: 500 }}>Ofis Bilgisi (Alış/İade)</th>
+                        <th style={{ padding: '1rem', fontWeight: 500 }}>Tarih (Alış/İade)</th>
+                        <th style={{ padding: '1rem', fontWeight: 500 }}>Durum</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {reservations.map(res => (
+                        <tr key={res.id} style={{ borderBottom: '1px solid var(--glass-border)' }}>
+                          <td style={{ padding: '1rem', fontWeight: 600 }}>{res.pnrCode}</td>
+                          <td style={{ padding: '1rem' }}>{res.user}</td>
+                          <td style={{ padding: '1rem', fontWeight: 600 }}>{res.vehicle}</td>
+                          <td style={{ padding: '1rem' }}>
+                            <div style={{ fontSize: '0.85rem' }}>Alış: {res.pickupLocation}</div>
+                            <div style={{ fontSize: '0.85rem' }}>İade: {res.dropoffLocation}</div>
+                          </td>
+                          <td style={{ padding: '1rem' }}>
+                            <div style={{ fontSize: '0.85rem' }}>{res.pickupDate}</div>
+                            <div style={{ fontSize: '0.85rem' }}>{res.dropoffDate}</div>
+                          </td>
+                          <td style={{ padding: '1rem' }}>
+                            <span style={{ padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 500, background: res.status === 'Completed' || res.status === 'Active' || res.status === 'Confirmed' ? '#10B98115' : res.status === 'Pending' ? '#F59E0B15' : '#EF444415', color: res.status === 'Completed' || res.status === 'Active' || res.status === 'Confirmed' ? '#10B981' : res.status === 'Pending' ? '#F59E0B' : '#EF4444' }}>
+                              {res.status === 'Pending' ? 'Onay Bekliyor' : res.status === 'Active' ? 'Onaylandı' : res.status === 'Confirmed' ? 'Onaylandı' : res.status === 'Cancelled' ? 'İptal Edildi' : res.status === 'Expired' ? 'Süresi Doldu' : res.status === 'Completed' ? 'Tamamlandı' : res.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           )}
 
           {activeTab === 'messages' && (

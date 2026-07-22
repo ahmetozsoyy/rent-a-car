@@ -160,4 +160,62 @@ public class AdminController : BaseController
 
         return Ok(new { Message = "Mesaj gönderildi." });
     }
+
+    [HttpGet("reservations")]
+    public async Task<IActionResult> GetReservations()
+    {
+        var reservations = await _context.Reservations
+            .Include(r => r.Vehicle)
+            .Include(r => r.PickupLocation)
+            .Include(r => r.DropoffLocation)
+            .Include(r => r.User)
+            .OrderByDescending(r => r.CreatedAt)
+            .ToListAsync();
+
+        var mapped = reservations.Select(r => new {
+            r.Id,
+            PnrCode = r.Id.ToString().Substring(0, 8).ToUpper(),
+            Vehicle = r.Vehicle.Brand + " " + r.Vehicle.Model + (string.IsNullOrEmpty(r.Vehicle.LicensePlate) ? "" : " - " + r.Vehicle.LicensePlate),
+            Image = r.Vehicle.ImageUrl,
+            PickupDate = r.StartDate.ToString("dd MMM yyyy HH:mm"),
+            DropoffDate = r.EndDate.ToString("dd MMM yyyy HH:mm"),
+            PickupLocation = r.PickupLocation.Name + " (" + r.PickupLocation.City + ")",
+            DropoffLocation = r.DropoffLocation.Name + " (" + r.DropoffLocation.City + ")",
+            User = r.User.FirstName + " " + r.User.LastName,
+            Status = (r.EndDate < DateTime.UtcNow) ? 
+                     ((r.Status == RentACar.Domain.Enums.ReservationStatus.Confirmed || r.Status == RentACar.Domain.Enums.ReservationStatus.Active) ? "Completed" :
+                      r.Status == RentACar.Domain.Enums.ReservationStatus.Pending ? "Expired" :
+                      r.Status.ToString()) : r.Status.ToString(),
+            Price = r.TotalPrice
+        });
+
+        return Ok(mapped);
+    }
+
+    [HttpPost("vehicles")]
+    public async Task<IActionResult> AddVehicle([FromBody] AddVehicleRequest request)
+    {
+        var location = await _context.Locations.FindAsync(request.LocationId);
+        if (location == null) return NotFound("Şube bulunamadı.");
+
+        var vehicle = new Vehicle(
+            request.Brand,
+            request.Model,
+            request.Year,
+            request.Segment,
+            request.DailyPrice,
+            request.Transmission,
+            request.FuelType,
+            request.BodyType,
+            request.MinDriverAge,
+            request.ImageUrl,
+            request.LicensePlate,
+            request.LocationId
+        );
+
+        _context.Vehicles.Add(vehicle);
+        await _context.SaveChangesAsync(CancellationToken.None);
+
+        return Ok(new { Message = "Araç başarıyla eklendi.", VehicleId = vehicle.Id });
+    }
 }

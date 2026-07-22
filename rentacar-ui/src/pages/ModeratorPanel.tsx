@@ -203,8 +203,8 @@ const ModeratorPanel: React.FC = () => {
               <AlertCircle size={20} /> Aracı Yayından Kaldır (Şube)
             </h2>
 
-            <form onSubmit={handleBlockVehicle} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end', flexWrap: 'wrap' }}>
-              <div className="form-group" style={{ flex: '1 1 200px' }}>
+            <form onSubmit={handleBlockVehicle} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div className="form-group">
                 <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><CarFront size={16} /> Araç Seçimi</label>
                 <select className="form-control" required value={blockVehicleId} onChange={e => setBlockVehicleId(e.target.value)}>
                   <option value="">Araç Seçin</option>
@@ -214,21 +214,23 @@ const ModeratorPanel: React.FC = () => {
                 </select>
               </div>
               
-              <div className="form-group" style={{ flex: '1 1 150px' }}>
-                <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Calendar size={16} /> Başlangıç</label>
-                <input type="date" className="form-control" required value={blockStart} onChange={e => setBlockStart(e.target.value)} />
-              </div>
-              <div className="form-group" style={{ flex: '1 1 150px' }}>
-                <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Calendar size={16} /> Bitiş</label>
-                <input type="date" className="form-control" required value={blockEnd} onChange={e => setBlockEnd(e.target.value)} />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="form-group">
+                  <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Calendar size={16} /> Başlangıç</label>
+                  <input type="date" className="form-control" required value={blockStart} onChange={e => setBlockStart(e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Calendar size={16} /> Bitiş</label>
+                  <input type="date" className="form-control" required value={blockEnd} onChange={e => setBlockEnd(e.target.value)} />
+                </div>
               </div>
 
-              <div className="form-group" style={{ flex: '2 1 200px' }}>
+              <div className="form-group">
                 <label>Sebep / Açıklama</label>
                 <input type="text" className="form-control" required value={blockReason} onChange={e => setBlockReason(e.target.value)} placeholder="Örn: Periyodik Bakım, Kaza vb." />
               </div>
 
-              <button type="submit" className="btn btn-primary" style={{ background: '#EF4444', borderColor: '#EF4444', height: '42px', padding: '0 1.5rem' }}>Yayından Kaldır</button>
+              <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', background: '#EF4444', borderColor: '#EF4444' }}>Aracı Yayından Kaldır</button>
             </form>
           </div>
 
