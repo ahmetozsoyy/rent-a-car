@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import { User, CalendarDays, History, Settings, LogOut, ChevronRight, MapPin, Clock, CreditCard, Shield, Building2 } from 'lucide-react';
+import { User, CalendarDays, History, LogOut, ChevronRight, MapPin, CreditCard, Shield, Building2 } from 'lucide-react';
 import api from '../services/api';
 
 const Dashboard: React.FC = () => {

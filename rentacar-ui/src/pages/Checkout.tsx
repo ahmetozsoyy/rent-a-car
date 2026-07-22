@@ -5,7 +5,7 @@ import api from '../services/api';
 import toast from 'react-hot-toast';
 import { vehicleService } from '../services/vehicleService';
 import type { IVehicle } from '../types/vehicle';
-import { CreditCard, CheckCircle, CarFront, Users, ShieldCheck, Store } from 'lucide-react';
+import { CreditCard, CheckCircle, Users, ShieldCheck, Store } from 'lucide-react';
 import PaymentModal from '../components/PaymentModal';
 
 interface RentalExtra {

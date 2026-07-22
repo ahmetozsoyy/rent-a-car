@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
   const { unreadCount, notifications, markAllAsRead } = useNotificationStore();
   const navigate = useNavigate();
   const location = useLocation();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [showNotifDropdown, setShowNotifDropdown] = useState(false);
 
@@ -24,10 +24,6 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
 
   // Split-layout (Solu beyaz, sağı resim) olduğu için artık Hero'da tam sayfa beyaz text kullanamayız.
   // Bu yüzden her zaman ana metin rengini (siyah) ve okunaklılığı artırmak için glass efekti kullanıyoruz.

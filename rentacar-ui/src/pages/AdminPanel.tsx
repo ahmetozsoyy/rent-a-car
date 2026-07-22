@@ -18,7 +18,6 @@ const FLEET_MODELS = [
 ];
 
 const AdminPanel: React.FC = () => {
-  const { t } = useTranslation();
   const { role } = useAuthStore();
   const { notifications, markAsReadByLocation } = useNotificationStore();
   const navigate = useNavigate();
