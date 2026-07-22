@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
+import toast from 'react-hot-toast';
 import { vehicleService } from '../services/vehicleService';
 import type { IVehicle } from '../types/vehicle';
 import { CreditCard, CheckCircle, CarFront, Users, ShieldCheck, Store } from 'lucide-react';
@@ -53,7 +54,7 @@ const Checkout: React.FC = () => {
 
   useEffect(() => {
     if (!vehicleId || !pickupLocId || !dropoffLocId || !pickupDateStr || !dropoffDateStr) {
-      alert(t('checkout.missingParams') || 'Eksik rezervasyon bilgileri. Lütfen araç seçerek ilerleyin.');
+      toast.error(t('checkout.missingParams') || 'Eksik rezervasyon bilgileri. Lütfen araç seçerek ilerleyin.');
       navigate('/');
       return;
     }
@@ -83,7 +84,7 @@ const Checkout: React.FC = () => {
 
       } catch (err) {
         console.error('Veriler yüklenemedi', err);
-        alert(t('checkout.loadError') || 'Araç bilgileri yüklenemedi.');
+        toast.error(t('checkout.loadError') || 'Araç bilgileri yüklenemedi.');
         navigate('/');
       } finally {
         setLoading(false);
@@ -160,7 +161,7 @@ const Checkout: React.FC = () => {
       console.error("API Hatası:", err);
       
       const errorMessage = err.response?.data?.details || err.response?.data?.message || err.response?.data?.error || err.message || 'Rezervasyon oluşturulurken hata oluştu.';
-      alert("Hata: " + JSON.stringify(errorMessage));
+      toast.error("Hata: " + JSON.stringify(errorMessage));
       
       // Hata durumunda isSuccess true yapmıyoruz, sayfada kalıyor.
     }

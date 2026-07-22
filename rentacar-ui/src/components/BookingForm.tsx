@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { MapPin, Calendar, Clock, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import toast from 'react-hot-toast';
 
 interface Location {
   id: string;
@@ -52,7 +53,7 @@ const BookingForm: React.FC = () => {
     if (dateStr) {
       const date = new Date(dateStr);
       if (date.getDay() === 0) {
-        alert(t('booking.sundayClosed') || 'Pazar günleri ofislerimiz kapalıdır. Lütfen başka bir gün seçin.');
+        toast.error(t('booking.sundayClosed') || 'Pazar günleri ofislerimiz kapalıdır. Lütfen başka bir gün seçin.');
         setter('');
         return;
       }
@@ -63,7 +64,7 @@ const BookingForm: React.FC = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!pickupLoc || !pickupDate || !dropoffDate) {
-      alert(t('booking.fillRequired') || 'Lütfen gerekli tüm alanları doldurun.');
+      toast.error(t('booking.fillRequired') || 'Lütfen gerekli tüm alanları doldurun.');
       return;
     }
     

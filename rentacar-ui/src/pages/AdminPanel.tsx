@@ -5,6 +5,8 @@ import { Shield, ShieldPlus, CarFront, Calendar, MapPin, Mail, AlertTriangle, Ch
 import { useAuthStore } from '../store/authStore';
 import { useNotificationStore } from '../store/useNotificationStore';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { customConfirm } from '../utils/customConfirm';
 
 const AdminPanel: React.FC = () => {
   const { t } = useTranslation();
@@ -109,7 +111,8 @@ const AdminPanel: React.FC = () => {
   };
 
   const handleUnblockVehicle = async (id: string) => {
-    if (!window.confirm('Bu bloku kaldırmak istediğinize emin misiniz?')) return;
+    const confirmed = await customConfirm('Bu bloku kaldırmak istediğinize emin misiniz?');
+    if (!confirmed) return;
     try {
       await api.delete(`/admin/unblock-vehicle/${id}`);
       setBlockedVehicles(prev => prev.filter(b => b.id !== id));
@@ -141,7 +144,7 @@ const AdminPanel: React.FC = () => {
       setNewMessage('');
       fetchMessages(selectedLocationId);
     } catch (err: any) {
-      alert(err.response?.data || 'Mesaj gönderilemedi.');
+      toast.error(err.response?.data || 'Mesaj gönderilemedi.');
     }
   };
 
