@@ -76,7 +76,7 @@ public class AdminController : BaseController
             .Select(b => new {
                 b.Id,
                 b.VehicleId,
-                Vehicle = b.Vehicle.Brand + " " + b.Vehicle.Model,
+                Vehicle = b.Vehicle.Brand + " " + b.Vehicle.Model + (string.IsNullOrEmpty(b.Vehicle.LicensePlate) ? "" : " - " + b.Vehicle.LicensePlate),
                 StartDate = b.StartDate.ToString("dd MMM yyyy"),
                 EndDate = b.EndDate.ToString("dd MMM yyyy"),
                 b.Reason

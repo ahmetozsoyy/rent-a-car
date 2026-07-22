@@ -43,6 +43,7 @@ const AdminPanel: React.FC = () => {
   }, [messages, activeTab]);
 
   // Block Vehicle form
+  const [blockLocationId, setBlockLocationId] = useState('');
   const [blockVehicleId, setBlockVehicleId] = useState('');
   const [blockStart, setBlockStart] = useState('');
   const [blockEnd, setBlockEnd] = useState('');
@@ -223,11 +224,21 @@ const AdminPanel: React.FC = () => {
 
             <form onSubmit={handleBlockVehicle} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div className="form-group">
+                <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><MapPin size={16} /> Şube Seçimi</label>
+                <select className="form-control" required value={blockLocationId} onChange={e => { setBlockLocationId(e.target.value); setBlockVehicleId(''); }}>
+                  <option value="">Ofis Seçin</option>
+                  {locations.map(loc => (
+                    <option key={loc.id} value={loc.id}>{loc.name} ({loc.city})</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
                 <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><CarFront size={16} /> Araç Seçimi</label>
-                <select className="form-control" required value={blockVehicleId} onChange={e => setBlockVehicleId(e.target.value)}>
+                <select className="form-control" required disabled={!blockLocationId} value={blockVehicleId} onChange={e => setBlockVehicleId(e.target.value)}>
                   <option value="">Araç Seçin</option>
-                  {vehicles.map(v => (
-                    <option key={v.id} value={v.id}>{v.brand} {v.model} - {v.plate || v.year} - {v.locationName}</option>
+                  {vehicles.filter(v => blockLocationId ? v.locationName.includes(locations.find(l => l.id === blockLocationId)?.city || '') : true).map(v => (
+                    <option key={v.id} value={v.id}>{v.brand} {v.model} {v.licensePlate ? `- ${v.licensePlate}` : ''}</option>
                   ))}
                 </select>
               </div>

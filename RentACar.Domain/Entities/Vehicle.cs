@@ -15,6 +15,7 @@ public class Vehicle : BaseEntity
     public string BodyType { get; private set; }
     public int MinDriverAge { get; private set; }
     public string ImageUrl { get; private set; }
+    public string LicensePlate { get; private set; }
     public Guid CurrentLocationId { get; private set; }
     public byte[] RowVersion { get; private set; }
     
@@ -24,7 +25,7 @@ public class Vehicle : BaseEntity
 
     protected Vehicle() { } // EF Core
 
-    public Vehicle(string brand, string model, int year, VehicleSegment segment, decimal dailyPrice, string transmission, string fuelType, string bodyType, int minDriverAge, string imageUrl, Guid currentLocationId)
+    public Vehicle(string brand, string model, int year, VehicleSegment segment, decimal dailyPrice, string transmission, string fuelType, string bodyType, int minDriverAge, string imageUrl, string licensePlate, Guid currentLocationId)
     {
         Brand = brand;
         Model = model;
@@ -36,6 +37,7 @@ public class Vehicle : BaseEntity
         BodyType = bodyType;
         MinDriverAge = minDriverAge;
         ImageUrl = imageUrl;
+        LicensePlate = licensePlate;
         CurrentLocationId = currentLocationId;
         RowVersion = Guid.NewGuid().ToByteArray();
     }

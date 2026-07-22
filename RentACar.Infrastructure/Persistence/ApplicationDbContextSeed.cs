@@ -45,29 +45,49 @@ public static class ApplicationDbContextSeed
             await context.SaveChangesAsync();
         }
 
-        var allLocations = await context.Locations.ToListAsync();
+        var plates = new string[] {
+            "34 HGY 412", "34 BCD 988", "34 KLN 305", "34 PAS 721", "34 RAZ 554", "34 CHL 678",
+            "06 GGF 219", "06 DRC 663", "06 CHN 801", "06 MKP 475", "06 DSR 132", "06 FGH 901",
+            "35 AJL 934", "35 EFR 256", "35 CMB 710", "35 CTC 589", "35 DTY 402", "35 DUP 342",
+            "16 LKM 159", "16 PDS 753", "16 BNH 426", "16 FDS 814", "16 DGT 369", "16 DXC 567",
+            "48 CAA 951", "48 ACC 357", "48 ASA 248", "48 AEA 654", "48 ARE 123", "48 AAE 890"
+        };
+        int plateIndex = 0;
+
+        var allLocations = await context.Locations.OrderBy(l => l.Id).ToListAsync();
         foreach (var loc in allLocations)
         {
-            var existingCount = await context.Vehicles.CountAsync(v => v.CurrentLocationId == loc.Id);
-            if (existingCount < 6)
+            var existingVehicles = await context.Vehicles.Where(v => v.CurrentLocationId == loc.Id).OrderBy(v => v.Id).ToListAsync();
+            
+            if (existingVehicles.Count == 0)
             {
-                if (!await context.Vehicles.AnyAsync(v => v.Brand == "Fiat" && v.CurrentLocationId == loc.Id))
-                    context.Vehicles.Add(new Vehicle("Fiat", "Egea", 2023, VehicleSegment.Economy, 2200, "Manuel", "Dizel", "Sedan", 21, "/images/vehicles/fiat-egea.png", loc.Id));
-                
-                if (!await context.Vehicles.AnyAsync(v => v.Brand == "Volkswagen" && v.Model == "Polo" && v.CurrentLocationId == loc.Id))
-                    context.Vehicles.Add(new Vehicle("Volkswagen", "Polo", 2024, VehicleSegment.Economy, 2450, "Otomatik", "Benzin", "Hatchback", 21, "/images/vehicles/vw-polo.jpg", loc.Id));
-                    
-                if (!await context.Vehicles.AnyAsync(v => v.Brand == "Toyota" && v.CurrentLocationId == loc.Id))
-                    context.Vehicles.Add(new Vehicle("Toyota", "Corolla", 2024, VehicleSegment.Standard, 3000, "Otomatik", "Hibrit", "Sedan", 25, "/images/vehicles/toyota-corolla.jpg", loc.Id));
-
-                if (!await context.Vehicles.AnyAsync(v => v.Brand == "BMW" && v.CurrentLocationId == loc.Id))
-                    context.Vehicles.Add(new Vehicle("BMW", "5.20 (G30)", 2023, VehicleSegment.Premium, 7500, "Otomatik", "Benzin", "Sedan", 27, "/images/vehicles/bmw-5.jpg", loc.Id));
-
-                if (!await context.Vehicles.AnyAsync(v => v.Brand == "Peugeot" && v.CurrentLocationId == loc.Id))
-                    context.Vehicles.Add(new Vehicle("Peugeot", "Rifter", 2023, VehicleSegment.Standard, 2850, "Otomatik", "Dizel", "Van", 25, "/images/vehicles/peugeot-rifter.jpg", loc.Id));
-
-                if (!await context.Vehicles.AnyAsync(v => v.Brand == "Volkswagen" && v.Model == "T-Roc" && v.CurrentLocationId == loc.Id))
-                    context.Vehicles.Add(new Vehicle("Volkswagen", "T-Roc", 2024, VehicleSegment.SUV, 3500, "Otomatik", "Benzin", "SUV", 25, "/images/vehicles/vw-troc.jpg", loc.Id));
+                context.Vehicles.Add(new Vehicle("Fiat", "Egea", 2023, VehicleSegment.Economy, 2200, "Manuel", "Dizel", "Sedan", 21, "/images/vehicles/fiat-egea.png", plates[plateIndex++], loc.Id));
+                context.Vehicles.Add(new Vehicle("Volkswagen", "Polo", 2024, VehicleSegment.Economy, 2450, "Otomatik", "Benzin", "Hatchback", 21, "/images/vehicles/vw-polo.jpg", plates[plateIndex++], loc.Id));
+                context.Vehicles.Add(new Vehicle("Toyota", "Corolla", 2024, VehicleSegment.Standard, 3000, "Otomatik", "Hibrit", "Sedan", 25, "/images/vehicles/toyota-corolla.jpg", plates[plateIndex++], loc.Id));
+                context.Vehicles.Add(new Vehicle("BMW", "5.20 (G30)", 2023, VehicleSegment.Premium, 7500, "Otomatik", "Benzin", "Sedan", 27, "/images/vehicles/bmw-5.jpg", plates[plateIndex++], loc.Id));
+                context.Vehicles.Add(new Vehicle("Peugeot", "Rifter", 2023, VehicleSegment.Standard, 2850, "Otomatik", "Dizel", "Van", 25, "/images/vehicles/peugeot-rifter.jpg", plates[plateIndex++], loc.Id));
+                context.Vehicles.Add(new Vehicle("Volkswagen", "T-Roc", 2024, VehicleSegment.SUV, 3500, "Otomatik", "Benzin", "SUV", 25, "/images/vehicles/vw-troc.jpg", plates[plateIndex++], loc.Id));
+            }
+            else
+            {
+                // Mevcut araçların plakalarını güncelle (migration sonrası null ise)
+                foreach (var ev in existingVehicles)
+                {
+                    if (string.IsNullOrEmpty(ev.LicensePlate) && plateIndex < plates.Length)
+                    {
+                        var prop = ev.GetType().GetProperty("LicensePlate");
+                        if (prop != null && prop.CanWrite)
+                        {
+                            prop.SetValue(ev, plates[plateIndex]);
+                        }
+                        else
+                        {
+                            // Backing field update for EF Core if private setter
+                            context.Entry(ev).Property(e => e.LicensePlate).CurrentValue = plates[plateIndex];
+                        }
+                    }
+                    plateIndex++;
+                }
             }
         }
         await context.SaveChangesAsync();
