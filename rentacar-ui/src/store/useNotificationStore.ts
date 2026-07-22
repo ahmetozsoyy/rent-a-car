@@ -50,7 +50,7 @@ export const useNotificationStore = create<NotificationState>((set) => ({
   markAsReadByReservation: (reservationId: string) => set((state) => {
     let newlyReadCount = 0;
     const newNotifs = state.notifications.map(n => {
-      if (!n.read && n.reservationId === reservationId) {
+      if (!n.read && n.reservationId && n.reservationId.toLowerCase() === reservationId.toLowerCase()) {
         newlyReadCount++;
         return { ...n, read: true };
       }

@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import api from '../services/api';
-import { Building2, Check, X, CarFront, Calendar, AlertTriangle, CheckCircle2, Trash2, Send, MessageSquare, List, Wrench } from 'lucide-react';
+import { Building2, Check, X, AlertTriangle, CarFront, Calendar, Clock, MapPin, Search, CheckCircle2, XCircle, AlertCircle, Ban, Trash2, Send, MessageSquare, List, Wrench } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
 import { useNotificationStore } from '../store/useNotificationStore';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const ModeratorPanel: React.FC = () => {
   const { t } = useTranslation();
@@ -21,12 +22,37 @@ const ModeratorPanel: React.FC = () => {
   const [blockStart, setBlockStart] = useState('');
   const [blockEnd, setBlockEnd] = useState('');
   const [blockReason, setBlockReason] = useState('');
-  const [blockMessage, setBlockMessage] = useState({ text: '', type: '' });
 
   // Messages
   const [messages, setMessages] = useState<any[]>([]);
   const [newSenderName, setNewSenderName] = useState('');
   const [newMessage, setNewMessage] = useState('');
+
+  const customConfirm = (msg: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+      toast((t) => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <span style={{ fontWeight: 500, color: 'var(--text-main)', fontSize: '0.95rem' }}>{msg}</span>
+          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+            <button 
+              onClick={() => { toast.dismiss(t.id); resolve(true); }} 
+              className="btn btn-primary" 
+              style={{ padding: '0.4rem 1rem', fontSize: '0.85rem', borderRadius: '8px' }}
+            >
+              Tamam
+            </button>
+            <button 
+              onClick={() => { toast.dismiss(t.id); resolve(false); }} 
+              className="btn btn-outline" 
+              style={{ padding: '0.4rem 1rem', fontSize: '0.85rem', borderRadius: '8px', color: 'var(--text-muted)', borderColor: 'var(--glass-border)' }}
+            >
+              İptal
+            </button>
+          </div>
+        </div>
+      ), { duration: Infinity, position: 'top-center', style: { background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', backdropFilter: 'blur(10px)', color: 'var(--text-main)' } });
+    });
+  };
 
   // Tabs
   const [activeTab, setActiveTab] = useState<'reservations' | 'vehicles' | 'messages'>('reservations');
@@ -76,7 +102,7 @@ const ModeratorPanel: React.FC = () => {
         endDate: blockEnd,
         reason: blockReason
       });
-      setBlockMessage({ text: 'Araç başarıyla yayından kaldırıldı.', type: 'success' });
+      toast.success('Araç başarıyla yayından kaldırıldı.');
       setBlockStart('');
       setBlockEnd('');
       setBlockReason('');
@@ -85,19 +111,20 @@ const ModeratorPanel: React.FC = () => {
       setBlockedVehicles(bRes.data);
     } catch (err: any) {
       const errMsg = typeof err.response?.data === 'string' ? err.response.data : err.response?.data?.title || 'Hata oluştu.';
-      setBlockMessage({ text: errMsg, type: 'error' });
+      toast.error(errMsg);
     }
   };
 
   const handleUnblockVehicle = async (id: string) => {
-    if (!window.confirm('Bu bloku kaldırmak istediğinize emin misiniz?')) return;
+    const confirmed = await customConfirm('Bu bloku kaldırmak istediğinize emin misiniz?');
+    if (!confirmed) return;
     try {
       await api.delete(`/moderator/unblock-vehicle/${id}`);
       setBlockedVehicles(prev => prev.filter(b => b.id !== id));
-      setBlockMessage({ text: 'Araç blokesi başarıyla kaldırıldı.', type: 'success' });
+      toast.success('Araç blokesi başarıyla kaldırıldı.');
     } catch (err: any) {
       const errMsg = typeof err.response?.data === 'string' ? err.response.data : err.response?.data?.title || 'Hata oluştu.';
-      setBlockMessage({ text: errMsg, type: 'error' });
+      toast.error(errMsg);
     }
   };
 
@@ -107,39 +134,44 @@ const ModeratorPanel: React.FC = () => {
       markAsReadByReservation(id);
       const rRes = await api.get('/moderator/reservations');
       setReservations(rRes.data);
+      toast.success('Rezervasyon onaylandı.');
     } catch (err: any) {
-      alert(err.response?.data || 'Hata oluştu.');
+      toast.error(err.response?.data || 'Hata oluştu.');
     }
   };
 
   const handleReject = async (id: string) => {
-    if (!window.confirm('Rezervasyonu reddetmek istediğinize emin misiniz?')) return;
+    const confirmed = await customConfirm('Rezervasyonu reddetmek istediğinize emin misiniz?');
+    if (!confirmed) return;
     try {
       await api.post(`/moderator/reject-reservation/${id}`);
       markAsReadByReservation(id);
       const rRes = await api.get('/moderator/reservations');
       setReservations(rRes.data);
+      toast.success('Rezervasyon reddedildi.');
     } catch (err: any) {
-      alert(err.response?.data || 'Hata oluştu.');
+      toast.error(err.response?.data || 'Hata oluştu.');
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm('Rezervasyonu tamamen silmek (veritabanından kaldırmak) istediğinize emin misiniz? Bu işlem geri alınamaz!')) return;
+    const confirmed = await customConfirm('Rezervasyonu tamamen silmek istediğinize emin misiniz? Bu işlem geri alınamaz!');
+    if (!confirmed) return;
     try {
       await api.delete(`/moderator/delete-reservation/${id}`);
       markAsReadByReservation(id);
       const rRes = await api.get('/moderator/reservations');
       setReservations(rRes.data);
+      toast.success('Rezervasyon silindi.');
     } catch (err: any) {
-      alert(err.response?.data || 'Hata oluştu.');
+      toast.error(err.response?.data || 'Hata oluştu.');
     }
   };
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newSenderName.trim() || !newMessage.trim()) {
-      alert('Lütfen adınızı ve mesajınızı girin.');
+      toast.error('Lütfen adınızı ve mesajınızı girin.');
       return;
     }
     try {
@@ -193,14 +225,8 @@ const ModeratorPanel: React.FC = () => {
               {/* Araç Bloklama Bölümü */}
           <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '2rem', boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}>
             <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <AlertTriangle size={20} /> Aracı Yayından Kaldır (Şube)
+              <AlertCircle size={20} /> Aracı Yayından Kaldır (Şube)
             </h2>
-
-            {blockMessage.text && (
-              <div style={{ padding: '1rem', borderRadius: '8px', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: blockMessage.type === 'success' ? '#10B98115' : '#EF444415', color: blockMessage.type === 'success' ? '#10B981' : '#EF4444' }}>
-                {blockMessage.type === 'success' ? <CheckCircle2 size={18} /> : <AlertTriangle size={18} />} {blockMessage.text}
-              </div>
-            )}
 
             <form onSubmit={handleBlockVehicle} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end', flexWrap: 'wrap' }}>
               <div className="form-group" style={{ flex: '1 1 200px' }}>
@@ -304,8 +330,8 @@ const ModeratorPanel: React.FC = () => {
                         <td style={{ padding: '1rem' }}>{res.pickupDate}</td>
                         <td style={{ padding: '1rem' }}>{res.dropoffDate}</td>
                         <td style={{ padding: '1rem' }}>
-                          <span style={{ padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 500, background: res.status === 'Active' || res.status === 'Confirmed' ? '#10B98115' : res.status === 'Cancelled' ? '#EF444415' : '#F59E0B15', color: res.status === 'Active' || res.status === 'Confirmed' ? '#10B981' : res.status === 'Cancelled' ? '#EF4444' : '#F59E0B' }}>
-                            {res.status === 'Pending' ? 'Onay Bekliyor' : res.status === 'Active' ? 'Aktif' : res.status === 'Confirmed' ? 'Onaylandı' : res.status === 'Cancelled' ? 'İptal Edildi' : res.status}
+                          <span style={{ padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 500, background: res.status === 'Active' || res.status === 'Confirmed' ? '#10B98115' : res.status === 'Cancelled' ? '#EF444415' : res.status === 'Expired' ? '#6B728015' : '#F59E0B15', color: res.status === 'Active' || res.status === 'Confirmed' ? '#10B981' : res.status === 'Cancelled' ? '#EF4444' : res.status === 'Expired' ? '#6B7280' : '#F59E0B' }}>
+                            {res.status === 'Pending' ? 'Onay Bekliyor' : res.status === 'Active' ? 'Onaylandı' : res.status === 'Confirmed' ? 'Onaylandı' : res.status === 'Cancelled' ? 'İptal Edildi' : res.status === 'Expired' ? 'Süresi Doldu' : res.status}
                           </span>
                         </td>
                         <td style={{ padding: '1rem', display: 'flex', gap: '0.5rem' }}>
