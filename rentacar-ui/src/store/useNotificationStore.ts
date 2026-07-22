@@ -6,6 +6,7 @@ export interface NotificationItem {
   message: string;
   date: string;
   read: boolean;
+  type?: string;
   locationId?: string;
   reservationId?: string;
 }
@@ -13,7 +14,7 @@ export interface NotificationItem {
 interface NotificationState {
   unreadCount: number;
   notifications: NotificationItem[];
-  addNotification: (message: string, locationId?: string, reservationId?: string) => void;
+  addNotification: (message: string, type?: string, locationId?: string, reservationId?: string) => void;
   markAllAsRead: () => void;
   markAsReadByLocation: (locationId: string) => void;
   markAsReadByReservation: (reservationId: string) => void;
@@ -25,10 +26,10 @@ export const useNotificationStore = create<NotificationState>()(
     (set) => ({
       unreadCount: 0,
       notifications: [],
-  addNotification: (message: string, locationId?: string, reservationId?: string) => set((state) => ({ 
+  addNotification: (message: string, type?: string, locationId?: string, reservationId?: string) => set((state) => ({ 
     unreadCount: state.unreadCount + 1,
     notifications: [
-      { id: Math.random().toString(36).substring(2, 9), message, date: new Date().toISOString(), read: false, locationId, reservationId },
+      { id: Math.random().toString(36).substring(2, 9), message, date: new Date().toISOString(), read: false, type, locationId, reservationId },
       ...state.notifications
     ]
   })),
