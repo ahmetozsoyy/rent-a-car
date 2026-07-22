@@ -242,7 +242,7 @@ public class ModeratorController : BaseController
             Type = "NEW_MESSAGE",
             LocationId = user.ManagedLocationId.Value,
             TargetRole = "Admin",
-            Message = $"{request.SenderName} adlı şube çalışanından yeni bir mesajınız var!"
+            Message = $"{user.FirstName} {user.LastName} adlı şube çalışanından yeni bir mesajınız var!"
         });
 
         return Ok(new { Message = "Mesaj gönderildi." });
