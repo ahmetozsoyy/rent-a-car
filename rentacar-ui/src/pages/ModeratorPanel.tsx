@@ -11,7 +11,7 @@ import { customConfirm } from '../utils/customConfirm';
 const ModeratorPanel: React.FC = () => {
   const { t } = useTranslation();
   const { role } = useAuthStore();
-  const { markAsReadByReservation } = useNotificationStore();
+  const { notifications, markAsReadByReservation } = useNotificationStore();
   const navigate = useNavigate();
 
   const [reservations, setReservations] = useState<any[]>([]);
