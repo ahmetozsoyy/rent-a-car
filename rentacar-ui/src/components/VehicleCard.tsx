@@ -4,6 +4,7 @@ import type { IVehicle } from '../types/vehicle';
 import { useTranslation } from 'react-i18next';
 import { Settings, Fuel, ArrowRight, Car, User } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useAuthStore } from '../store/authStore';
 
 interface VehicleCardProps {
   vehicle: IVehicle;
@@ -13,6 +14,7 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { isAuthenticated } = useAuthStore();
 
   const segmentLabels: Record<number, string> = {
     [VehicleSegment.Economy]: 'Economy',
@@ -26,6 +28,10 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
   const imageUrl = vehicle.imageUrl || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800';
 
   const handleSelect = () => {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
     const params = new URLSearchParams(searchParams.toString());
     params.set('vehicleId', vehicle.id);
     navigate(`/checkout?${params.toString()}`);
@@ -123,7 +129,7 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
               borderRadius: 'var(--border-radius-soft)'
             }}
           >
-            <span>{t('fleet.rentNow') || 'Seç ve İlerle'}</span>
+            <span>{isAuthenticated ? (t('fleet.rentNow') || 'Seç ve İlerle') : 'Giriş Yap / Üye Ol'}</span>
             <ArrowRight size={18} />
           </button>
         </div>
