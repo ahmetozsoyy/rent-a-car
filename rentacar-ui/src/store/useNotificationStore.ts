@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export interface NotificationItem {
   id: string;
@@ -19,9 +20,11 @@ interface NotificationState {
   clearUnread: () => void;
 }
 
-export const useNotificationStore = create<NotificationState>((set) => ({
-  unreadCount: 0,
-  notifications: [],
+export const useNotificationStore = create<NotificationState>()(
+  persist(
+    (set) => ({
+      unreadCount: 0,
+      notifications: [],
   addNotification: (message: string, locationId?: string, reservationId?: string) => set((state) => ({ 
     unreadCount: state.unreadCount + 1,
     notifications: [
@@ -62,4 +65,9 @@ export const useNotificationStore = create<NotificationState>((set) => ({
     };
   }),
   clearUnread: () => set({ unreadCount: 0 }),
-}));
+    }),
+    {
+      name: 'notification-storage',
+    }
+  )
+);
