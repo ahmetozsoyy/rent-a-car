@@ -62,6 +62,17 @@ const AdminPanel: React.FC = () => {
     }
   }, [messages, activeTab]);
 
+  // Yeni mesaj geldiğinde aktif penceredeyse anında yenile
+  useEffect(() => {
+    if (selectedLocationId && activeTab === 'messages') {
+      const hasUnread = notifications.some(n => !n.read && n.type === 'NEW_MESSAGE' && n.locationId === selectedLocationId);
+      if (hasUnread) {
+        fetchMessages(selectedLocationId);
+        markAsReadByLocation(selectedLocationId);
+      }
+    }
+  }, [notifications, selectedLocationId, activeTab, markAsReadByLocation]);
+
   // Block Vehicle form
   const [blockLocationId, setBlockLocationId] = useState('');
   const [blockVehicleId, setBlockVehicleId] = useState('');

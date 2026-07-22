@@ -11,7 +11,7 @@ import { customConfirm } from '../utils/customConfirm';
 const ModeratorPanel: React.FC = () => {
   const { t } = useTranslation();
   const { role } = useAuthStore();
-  const { notifications, markAsReadByReservation } = useNotificationStore();
+  const { notifications, markAsReadByReservation, markAsReadByLocation } = useNotificationStore();
   const navigate = useNavigate();
 
   const [reservations, setReservations] = useState<any[]>([]);
@@ -41,6 +41,20 @@ const ModeratorPanel: React.FC = () => {
       }, 100);
     }
   }, [messages, activeTab]);
+
+  useEffect(() => {
+    if (activeTab === 'messages') {
+      const unreadMsg = notifications.find(n => !n.read && n.type === 'NEW_MESSAGE');
+      if (unreadMsg) {
+        api.get('/moderator/messages')
+          .then(res => setMessages(res.data))
+          .catch(console.error);
+        if (unreadMsg.locationId) {
+          markAsReadByLocation(unreadMsg.locationId);
+        }
+      }
+    }
+  }, [notifications, activeTab, markAsReadByLocation]);
 
   useEffect(() => {
     if (role !== 'Moderator') {
