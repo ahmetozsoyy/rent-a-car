@@ -4,24 +4,24 @@ Bu proje, modern web teknolojileri kullanilarak gelistirilmis kapsamli bir arac 
 
 ## Kullanilan Teknolojiler ve Araclar
 
-### Arka Uc (Backend)
-- **.NET 8 (C#):** Performansli ve guvenli web API gelistirmek icin temel platform.
-- **ASP.NET Core Web API:** RESTful API mimarisinin uygulandigi framework.
-- **Entity Framework Core:** Veritabani islemleri icin kullanilan ORM (Object-Relational Mapper) araci. Code-First yaklasimi benimsenmistir.
-- **PostgreSQL:** Iliskisel veritabani yonetim sistemi.
-- **SignalR:** Gercek zamanli cift yonlu iletisim saglamak icin (canli destek hatti ve anlik bildirimler) kullanilmistir.
-- **JWT (JSON Web Token):** Kimlik dogrulama (Authentication) ve yetkilendirme (Authorization) islemleri icin guvenli token tabanli yapi.
-- **BCrypt.Net-Next:** Kullanici sifrelerinin guvenli bir sekilde hashlendigi kutuphane.
-- **Swagger / OpenAPI:** API uclarinin test edilmesi ve dokumante edilmesi icin entegre edilmistir.
+### Backend
+- **.NET 8 (C#)
+- **ASP.NET Core Web API** RESTful API
+- **Entity Framework Core** Veritabani islemleri icin kullanilan ORM (Object-Relational Mapper) araci. Code-First yaklasimi benimsenmistir.
+- **PostgreSQL** 
+- **SignalR** Gercek zamanli cift yonlu iletisim saglamak icin (canli destek hatti ve anlik bildirimler) kullanilmistir.
+- **JWT (JSON Web Token)** Kimlik dogrulama (Authentication) ve yetkilendirme (Authorization) islemleri icin guvenli token tabanli yapi.
+- **BCrypt.Net-Next** Kullanici sifrelerinin guvenli bir sekilde hashlendigi kutuphane.
+- **Swagger / OpenAPI** API uclarinin test edilmesi ve dokumante edilmesi icin entegre edilmistir.
 
-### On Uc (Frontend)
-- **React (v18):** Bilesen tabanli modern kullanici arayuzu gelistirme kutuphanesi.
-- **TypeScript:** JavaScript'e statik tip denetimi ekleyerek daha guvenilir ve yonetilebilir kod yazilmasini saglar.
-- **Vite:** Hizli derleme ve gelistirme sunucusu amaciyla kullanilan modern build araci.
-- **Zustand:** Projedeki global durum (state) yonetimini saglayan hafif ve hizli kutuphane. (Kimlik dogrulama ve bildirim state'leri icin kullanildi)
-- **React Router DOM:** Tek sayfa uygulamasi (SPA) icerisindeki yonlendirme (routing) mekanizmasi.
-- **Axios:** RESTful API'ler ile asenkron HTTP iletisimi saglar (JWT token interceptor yapisi ile desteklenmistir).
-- **Vanilla CSS:** Projede herhangi bir harici CSS framework'u (Tailwind, Bootstrap vb.) kullanilmadan, ozel CSS degiskenleri ve modern teknikler (Glassmorphism, Flexbox, CSS Grid) ile tasarim insa edilmistir.
+### Frontend
+- **React (v18)** 
+- **TypeScript** 
+- **Vite** 
+- **Zustand** Kimlik dogrulama ve bildirim state'leri icin kullanildi.
+- **React Router DOM** Tek sayfa uygulamasi (SPA) icerisindeki yonlendirme (routing) mekanizmasi.
+- **Axios** RESTful API'ler ile asenkron HTTP iletisimi saglar (JWT token interceptor yapisi ile desteklenmistir).
+- **Vanilla CSS** 
 
 ## Mimari ve Sistem Yapisi
 
