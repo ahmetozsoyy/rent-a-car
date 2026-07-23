@@ -30,7 +30,9 @@ function AppContent() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/demo-admin" element={<AdminPanel isDemo={true} />} />
         <Route path="/moderator" element={<ModeratorPanel />} />
+        <Route path="/demo-moderator" element={<ModeratorPanel isDemo={true} />} />
       </Routes>
     </>
   );

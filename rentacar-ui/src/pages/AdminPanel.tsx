@@ -17,7 +17,7 @@ const FLEET_MODELS = [
   { brand: 'Volkswagen', model: 'T-Roc', year: 2024, segment: 6, dailyPrice: 3500, transmission: 'Otomatik', fuelType: 'Benzin', bodyType: 'SUV', minDriverAge: 25, imageUrl: '/images/vehicles/vw-troc.jpg' },
 ];
 
-const AdminPanel: React.FC = () => {
+const AdminPanel: React.FC<{ isDemo?: boolean }> = ({ isDemo }) => {
   const { role } = useAuthStore();
   const { notifications, markAsReadByLocation } = useNotificationStore();
   const navigate = useNavigate();
@@ -81,12 +81,20 @@ const AdminPanel: React.FC = () => {
   const [blockMessage, setBlockMessage] = useState({ text: '', type: '' });
 
   useEffect(() => {
-    if (role !== 'Admin') {
+    if (!isDemo && role !== 'Admin') {
       navigate('/dashboard');
       return;
     }
 
     const fetchData = async () => {
+      if (isDemo) {
+        setVehicles([{ id: 'mock1', brand: 'Porsche', model: '911', year: 2024, licensePlate: '34 XYZ 911', locationName: 'İstanbul Merkez' }]);
+        setLocations([{ id: 'loc1', name: 'İstanbul Merkez', city: 'İstanbul' }]);
+        setBlockedVehicles([{ id: 'block1', vehicle: 'Porsche 911 - 34 XYZ 911', startDate: '2026-08-01', endDate: '2026-08-10', reason: 'Periyodik Bakım' }]);
+        setReservations([{ id: 'res1', pnrCode: 'PNR123', user: 'Ahmet Yılmaz', vehicle: 'Porsche 911', pickupLocation: 'İstanbul Merkez', dropoffLocation: 'İstanbul Havalimanı', pickupDate: '2026-07-25', dropoffDate: '2026-07-30', status: 'Pending' }]);
+        setLocationsWithMessages([{ id: 'loc1', name: 'İstanbul Merkez' }]);
+        return;
+      }
       try {
         const vRes = await api.get('/vehicles');
         setVehicles(vRes.data);
@@ -107,6 +115,7 @@ const AdminPanel: React.FC = () => {
 
   const handleAssignModerator = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isDemo) return toast.error('Simülasyon modunda işlem yapamazsınız.');
     try {
       await api.post('/admin/assign-moderator', { email: modEmail, locationId: modLocation });
       setModMessage({ text: 'Yetki başarıyla atandı.', type: 'success' });
@@ -119,6 +128,7 @@ const AdminPanel: React.FC = () => {
 
   const handleBlockVehicle = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isDemo) return toast.error('Simülasyon modunda işlem yapamazsınız.');
     try {
       await api.post('/admin/block-vehicle', {
         vehicleId: blockVehicleId,
@@ -142,6 +152,7 @@ const AdminPanel: React.FC = () => {
 
   const handleAddVehicle = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isDemo) return toast.error('Simülasyon modunda işlem yapamazsınız.');
     if (!selectedFleetModelIndex) {
       setAddVehicleMessage({ text: 'Lütfen filodan bir model seçin.', type: 'error' });
       return;
@@ -179,6 +190,7 @@ const AdminPanel: React.FC = () => {
   };
 
   const handleUnblockVehicle = async (id: string) => {
+    if (isDemo) return toast.error('Simülasyon modunda işlem yapamazsınız.');
     const confirmed = await customConfirm('Bu bloku kaldırmak istediğinize emin misiniz?');
     if (!confirmed) return;
     try {
@@ -193,6 +205,10 @@ const AdminPanel: React.FC = () => {
 
   const fetchMessages = async (locationId: string) => {
     setSelectedLocationId(locationId);
+    if (isDemo) {
+      setMessages([{ id: 'msg1', senderName: 'Şube Yetkilisi', content: 'Merhaba, son rezervasyon hakkında bilgi alabilir miyim?', createdAt: new Date().toISOString(), isFromAdmin: false }]);
+      return;
+    }
     try {
       const mRes = await api.get(`/admin/messages/${locationId}`);
       setMessages(mRes.data);
@@ -203,6 +219,7 @@ const AdminPanel: React.FC = () => {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isDemo) return toast.error('Simülasyon modunda işlem yapamazsınız.');
     if (!selectedLocationId || !newMessage.trim()) return;
     try {
       await api.post('/admin/messages', {
@@ -216,10 +233,15 @@ const AdminPanel: React.FC = () => {
     }
   };
 
-  if (role !== 'Admin') return null;
+  if (!isDemo && role !== 'Admin') return null;
 
   return (
     <div style={{ padding: '6rem 2rem 2rem 2rem', minHeight: '100vh', background: 'var(--bg-main)' }}>
+      {isDemo && (
+        <div style={{ background: '#FEF3C7', color: '#92400E', padding: '1rem', borderRadius: '8px', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500, boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+          <AlertTriangle size={24} /> Simülasyon Modu: Bu sayfa sadece okuma yetkisine (Read-Only) sahiptir. Yaptığınız işlemler kaydedilmez.
+        </div>
+      )}
       <div className="container" style={{ maxWidth: '1400px' }}>
         <h1 style={{ fontSize: '2rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <Shield size={32} color="var(--primary)" /> Yönetim Paneli

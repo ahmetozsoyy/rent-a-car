@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { customConfirm } from '../utils/customConfirm';
 
-const ModeratorPanel: React.FC = () => {
+const ModeratorPanel: React.FC<{ isDemo?: boolean }> = ({ isDemo }) => {
   const { t } = useTranslation();
   const { role } = useAuthStore();
   const { notifications, markAsReadByReservation, markAsReadByLocation } = useNotificationStore();
@@ -57,12 +57,19 @@ const ModeratorPanel: React.FC = () => {
   }, [notifications, activeTab, markAsReadByLocation]);
 
   useEffect(() => {
-    if (role !== 'Moderator') {
+    if (!isDemo && role !== 'Moderator') {
       navigate('/dashboard');
       return;
     }
 
     const fetchData = async () => {
+      if (isDemo) {
+        setReservations([{ id: 'res1', pnrCode: 'PNR456', user: 'Ayşe Kaya', vehicle: 'Fiat Egea', pickupLocation: 'Kadıköy Şube', dropoffLocation: 'Kadıköy Şube', pickupDate: '2026-07-28', dropoffDate: '2026-08-02', status: 'Pending' }]);
+        setVehicles([{ id: 'mock2', brand: 'Fiat', model: 'Egea', licensePlate: '34 DEF 456' }]);
+        setBlockedVehicles([{ id: 'block2', vehicle: 'Fiat Egea - 34 DEF 456', startDate: '2026-07-25', endDate: '2026-07-27', reason: 'Temizlik' }]);
+        setMessages([{ id: 'msg2', senderName: 'Admin', content: 'Lütfen bekleyen rezervasyonları kontrol edin.', createdAt: new Date().toISOString(), isFromAdmin: true }]);
+        return;
+      }
       try {
         const rRes = await api.get('/moderator/reservations');
         setReservations(rRes.data);
@@ -84,6 +91,7 @@ const ModeratorPanel: React.FC = () => {
 
   const handleBlockVehicle = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isDemo) return toast.error('Simülasyon modunda işlem yapamazsınız.');
     try {
       await api.post('/moderator/block-vehicle', {
         vehicleId: blockVehicleId,
@@ -105,6 +113,7 @@ const ModeratorPanel: React.FC = () => {
   };
 
   const handleUnblockVehicle = async (id: string) => {
+    if (isDemo) return toast.error('Simülasyon modunda işlem yapamazsınız.');
     const confirmed = await customConfirm('Bu bloku kaldırmak istediğinize emin misiniz?');
     if (!confirmed) return;
     try {
@@ -118,6 +127,7 @@ const ModeratorPanel: React.FC = () => {
   };
 
   const handleApprove = async (id: string) => {
+    if (isDemo) return toast.error('Simülasyon modunda işlem yapamazsınız.');
     try {
       await api.post(`/moderator/approve-reservation/${id}`);
       markAsReadByReservation(id);
@@ -130,6 +140,7 @@ const ModeratorPanel: React.FC = () => {
   };
 
   const handleReject = async (id: string) => {
+    if (isDemo) return toast.error('Simülasyon modunda işlem yapamazsınız.');
     const confirmed = await customConfirm('Rezervasyonu reddetmek istediğinize emin misiniz?');
     if (!confirmed) return;
     try {
@@ -144,6 +155,7 @@ const ModeratorPanel: React.FC = () => {
   };
 
   const handleDelete = async (id: string) => {
+    if (isDemo) return toast.error('Simülasyon modunda işlem yapamazsınız.');
     const confirmed = await customConfirm('Rezervasyonu tamamen silmek istediğinize emin misiniz? Bu işlem geri alınamaz!');
     if (!confirmed) return;
     try {
@@ -159,6 +171,7 @@ const ModeratorPanel: React.FC = () => {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isDemo) return toast.error('Simülasyon modunda işlem yapamazsınız.');
     if (!newSenderName.trim() || !newMessage.trim()) {
       toast.error('Lütfen adınızı ve mesajınızı girin.');
       return;
@@ -177,10 +190,15 @@ const ModeratorPanel: React.FC = () => {
     }
   };
 
-  if (role !== 'Moderator') return null;
+  if (!isDemo && role !== 'Moderator') return null;
 
   return (
     <div style={{ padding: '6rem 2rem 2rem 2rem', minHeight: '100vh', background: 'var(--bg-main)' }}>
+      {isDemo && (
+        <div style={{ background: '#FEF3C7', color: '#92400E', padding: '1rem', borderRadius: '8px', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500, boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+          <AlertTriangle size={24} /> Simülasyon Modu: Bu sayfa sadece okuma yetkisine (Read-Only) sahiptir. Yaptığınız işlemler kaydedilmez.
+        </div>
+      )}
       <div className="container" style={{ maxWidth: '1400px' }}>
         <h1 style={{ fontSize: '2rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <Building2 size={32} color="var(--primary)" /> Şube Yönetimi

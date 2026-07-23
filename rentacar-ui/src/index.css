@@ -398,3 +398,77 @@ p { color: var(--text-muted); font-size: 1.125rem; font-weight: 400; line-height
 @media (min-width: 768px) {
   .md\:col-span-2 { grid-column: span 2 / span 2; }
 }
+
+/* Home Hero Mobile Fixes */
+.home-hero-container {
+  background-image: linear-gradient(to right, var(--bg-main) 0%, var(--bg-main) 20%, transparent 50%), url(/images/vehicles/mercedesyeni.jpg);
+  background-size: 100% 100%, auto 100%;
+  background-position: left center, right center;
+  background-repeat: no-repeat, no-repeat;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+}
+
+.home-content-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem 4rem 4rem 4rem;
+  background-color: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  -webkit-mask-image: linear-gradient(to right, black 0%, black 75%, transparent 100%);
+  mask-image: linear-gradient(to right, black 0%, black 75%, transparent 100%);
+  width: 120%;
+  min-height: 100vh;
+  z-index: 2;
+}
+
+.home-right-spacer {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+.home-signature {
+  position: absolute;
+  bottom: 0.2rem;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .home-hero-container {
+    background-image: url(/images/vehicles/mercedesyeni.jpg);
+    background-size: 140% auto;
+    background-position: center top 4rem;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  
+  .home-content-overlay {
+    width: 100%;
+    padding: 2rem 1.5rem 5rem 1.5rem;
+    background-color: rgba(255,255,255,0.95);
+    -webkit-mask-image: none;
+    mask-image: none;
+    min-height: auto;
+    margin-top: 14rem;
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
+  }
+
+  .home-right-spacer {
+    display: none;
+  }
+
+  .home-signature img {
+    max-height: 120px !important;
+  }
+}
