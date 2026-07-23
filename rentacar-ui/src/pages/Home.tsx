@@ -26,6 +26,9 @@ const Home: React.FC = () => {
               <Building2 size={18} /> Şube Paneli Simülasyonu
             </Link>
           </div>
+          <div style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+            * Bu paneller sadece arayüzü incelemek/test etmek amaçlıdır, işlem yapılamaz.
+          </div>
         </div>
         
         {/* Entegrasyon: Booking Form as a minimalist block */}

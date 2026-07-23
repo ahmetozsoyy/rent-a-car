@@ -64,10 +64,10 @@ const ModeratorPanel: React.FC<{ isDemo?: boolean }> = ({ isDemo }) => {
 
     const fetchData = async () => {
       if (isDemo) {
-        setReservations([{ id: 'res1', pnrCode: 'PNR456', user: 'Ayşe Kaya', vehicle: 'Fiat Egea', pickupLocation: 'Kadıköy Şube', dropoffLocation: 'Kadıköy Şube', pickupDate: '2026-07-28', dropoffDate: '2026-08-02', status: 'Pending' }]);
-        setVehicles([{ id: 'mock2', brand: 'Fiat', model: 'Egea', licensePlate: '34 DEF 456' }]);
-        setBlockedVehicles([{ id: 'block2', vehicle: 'Fiat Egea - 34 DEF 456', startDate: '2026-07-25', endDate: '2026-07-27', reason: 'Temizlik' }]);
-        setMessages([{ id: 'msg2', senderName: 'Admin', content: 'Lütfen bekleyen rezervasyonları kontrol edin.', createdAt: new Date().toISOString(), isFromAdmin: true }]);
+        setReservations([{ id: 'res1', pnrCode: 'PNR456', user: 'Ayşe Kaya', vehicle: 'Volkswagen Polo', pickupLocation: 'İzmir Adnan Menderes', dropoffLocation: 'İzmir Adnan Menderes', pickupDate: '2026-07-28', dropoffDate: '2026-08-02', status: 'Pending' }]);
+        setVehicles([{ id: 'mock2', brand: 'Volkswagen', model: 'Polo', licensePlate: '35 EFR 256' }]);
+        setBlockedVehicles([{ id: 'block2', vehicle: 'Volkswagen Polo - 35 EFR 256', startDate: '2026-07-25', endDate: '2026-07-27', reason: 'Detaylı Temizlik' }]);
+        setMessages([{ id: 'msg2', senderName: 'Admin', content: 'Lütfen İzmir ofisindeki bekleyen rezervasyonları kontrol edin.', createdAt: new Date().toISOString(), isFromAdmin: true }]);
         return;
       }
       try {
