@@ -27,7 +27,7 @@ const Home: React.FC = () => {
             </Link>
           </div>
           <div style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-            * Bu paneller sadece arayüzü incelemek/test etmek amaçlıdır, işlem yapılamaz.
+            * Bu simülasyon panelleri sadece arayüzü incelemek/test etmek amaçlıdır, işlem yapılamaz.
           </div>
         </div>
         

@@ -89,17 +89,32 @@ const AdminPanel: React.FC<{ isDemo?: boolean }> = ({ isDemo }) => {
     const fetchData = async () => {
       if (isDemo) {
         setVehicles([
-          { id: 'mock1', brand: 'BMW', model: '5.20 (G30)', year: 2023, licensePlate: '35 AJL 934', locationName: 'İzmir Adnan Menderes (İzmir)' },
-          { id: 'mock2', brand: 'Toyota', model: 'Corolla', year: 2024, licensePlate: '16 LKM 159', locationName: 'Bursa Şehir Merkezi (Bursa)' }
+          { id: 'mock1', brand: 'Fiat', model: 'Egea', year: 2023, licensePlate: '34 HGY 412', locationName: 'İstanbul Merkez (İstanbul)' },
+          { id: 'mock2', brand: 'Volkswagen', model: 'Polo', year: 2024, licensePlate: '06 GGF 219', locationName: 'Ankara Esenboğa (Ankara)' },
+          { id: 'mock3', brand: 'Toyota', model: 'Corolla', year: 2024, licensePlate: '35 AJL 934', locationName: 'İzmir Adnan Menderes (İzmir)' },
+          { id: 'mock4', brand: 'BMW', model: '5.20 (G30)', year: 2023, licensePlate: '16 LKM 159', locationName: 'Bursa Şehir Merkezi (Bursa)' },
+          { id: 'mock5', brand: 'Peugeot', model: 'Rifter', year: 2023, licensePlate: '48 CAA 951', locationName: 'Muğla Bodrum-Milas (Muğla)' },
+          { id: 'mock6', brand: 'Volkswagen', model: 'T-Roc', year: 2024, licensePlate: '34 BCD 988', locationName: 'İstanbul Merkez (İstanbul)' }
         ]);
         setLocations([
-          { id: 'loc1', name: 'İzmir Adnan Menderes', city: 'İzmir' },
-          { id: 'loc2', name: 'Bursa Şehir Merkezi', city: 'Bursa' },
-          { id: 'loc3', name: 'Muğla Bodrum-Milas', city: 'Muğla' }
+          { id: 'loc1', name: 'İstanbul Merkez', city: 'İstanbul' },
+          { id: 'loc2', name: 'Ankara Esenboğa', city: 'Ankara' },
+          { id: 'loc3', name: 'İzmir Adnan Menderes', city: 'İzmir' },
+          { id: 'loc4', name: 'Bursa Şehir Merkezi', city: 'Bursa' },
+          { id: 'loc5', name: 'Muğla Bodrum-Milas', city: 'Muğla' }
         ]);
-        setBlockedVehicles([{ id: 'block1', vehicle: 'BMW 5.20 (G30) - 35 AJL 934', startDate: '2026-08-01', endDate: '2026-08-10', reason: 'Periyodik Bakım' }]);
-        setReservations([{ id: 'res1', pnrCode: 'PNR123', user: 'Ahmet Özsoy', vehicle: 'BMW 5.20 (G30)', pickupLocation: 'İzmir Adnan Menderes', dropoffLocation: 'İzmir Adnan Menderes', pickupDate: '2026-07-25', dropoffDate: '2026-07-30', status: 'Pending' }]);
-        setLocationsWithMessages([{ id: 'loc1', name: 'İzmir Adnan Menderes' }]);
+        setBlockedVehicles([
+          { id: 'block1', vehicle: 'BMW 5.20 (G30) - 16 LKM 159', startDate: '2026-08-01', endDate: '2026-08-10', reason: 'Periyodik Bakım' },
+          { id: 'block2', vehicle: 'Volkswagen Polo - 06 GGF 219', startDate: '2026-07-25', endDate: '2026-07-28', reason: 'Detaylı Temizlik' }
+        ]);
+        setReservations([
+          { id: 'res1', pnrCode: 'PNR123', user: 'Ahmet Özsoy', vehicle: 'BMW 5.20 (G30)', pickupLocation: 'İzmir Adnan Menderes', dropoffLocation: 'İzmir Adnan Menderes', pickupDate: '2026-07-25', dropoffDate: '2026-07-30', status: 'Pending' },
+          { id: 'res2', pnrCode: 'PNR456', user: 'Ayşe Kaya', vehicle: 'Toyota Corolla', pickupLocation: 'İstanbul Merkez', dropoffLocation: 'Bursa Şehir Merkezi', pickupDate: '2026-08-01', dropoffDate: '2026-08-05', status: 'Active' }
+        ]);
+        setLocationsWithMessages([
+          { id: 'loc1', name: 'İstanbul Merkez' },
+          { id: 'loc3', name: 'İzmir Adnan Menderes' }
+        ]);
         return;
       }
       try {

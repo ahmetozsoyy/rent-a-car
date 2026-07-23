@@ -64,10 +64,25 @@ const ModeratorPanel: React.FC<{ isDemo?: boolean }> = ({ isDemo }) => {
 
     const fetchData = async () => {
       if (isDemo) {
-        setReservations([{ id: 'res1', pnrCode: 'PNR456', user: 'Ayşe Kaya', vehicle: 'Volkswagen Polo', pickupLocation: 'İzmir Adnan Menderes', dropoffLocation: 'İzmir Adnan Menderes', pickupDate: '2026-07-28', dropoffDate: '2026-08-02', status: 'Pending' }]);
-        setVehicles([{ id: 'mock2', brand: 'Volkswagen', model: 'Polo', licensePlate: '35 EFR 256' }]);
-        setBlockedVehicles([{ id: 'block2', vehicle: 'Volkswagen Polo - 35 EFR 256', startDate: '2026-07-25', endDate: '2026-07-27', reason: 'Detaylı Temizlik' }]);
-        setMessages([{ id: 'msg2', senderName: 'Admin', content: 'Lütfen İzmir ofisindeki bekleyen rezervasyonları kontrol edin.', createdAt: new Date().toISOString(), isFromAdmin: true }]);
+        setVehicles([
+          { id: 'mock1', brand: 'Fiat', model: 'Egea', licensePlate: '35 AJL 934' },
+          { id: 'mock2', brand: 'Volkswagen', model: 'Polo', licensePlate: '35 EFR 256' },
+          { id: 'mock3', brand: 'Toyota', model: 'Corolla', licensePlate: '35 CMB 710' },
+          { id: 'mock4', brand: 'BMW', model: '5.20 (G30)', licensePlate: '35 CTC 589' },
+          { id: 'mock5', brand: 'Peugeot', model: 'Rifter', licensePlate: '35 DTY 402' },
+          { id: 'mock6', brand: 'Volkswagen', model: 'T-Roc', licensePlate: '35 DUP 342' }
+        ]);
+        setReservations([
+          { id: 'res1', pnrCode: 'PNR456', user: 'Ayşe Kaya', vehicle: 'Volkswagen Polo', pickupLocation: 'İzmir Adnan Menderes', dropoffLocation: 'İzmir Adnan Menderes', pickupDate: '2026-07-28', dropoffDate: '2026-08-02', status: 'Pending' },
+          { id: 'res2', pnrCode: 'PNR789', user: 'Mehmet Yılmaz', vehicle: 'BMW 5.20 (G30)', pickupLocation: 'İzmir Adnan Menderes', dropoffLocation: 'İstanbul Merkez', pickupDate: '2026-08-05', dropoffDate: '2026-08-10', status: 'Active' },
+          { id: 'res3', pnrCode: 'PNR101', user: 'Canan Öz', vehicle: 'Fiat Egea', pickupLocation: 'İzmir Adnan Menderes', dropoffLocation: 'İzmir Adnan Menderes', pickupDate: '2026-07-20', dropoffDate: '2026-07-22', status: 'Completed' }
+        ]);
+        setBlockedVehicles([
+          { id: 'block2', vehicle: 'Volkswagen Polo - 35 EFR 256', startDate: '2026-07-25', endDate: '2026-07-27', reason: 'Detaylı Temizlik' }
+        ]);
+        setMessages([
+          { id: 'msg2', senderName: 'Admin Merkezi', content: 'Lütfen İzmir ofisindeki bekleyen rezervasyonları kontrol edin.', createdAt: new Date().toISOString(), isFromAdmin: true }
+        ]);
         return;
       }
       try {
