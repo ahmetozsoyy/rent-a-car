@@ -4,6 +4,7 @@ Bu proje, modern web teknolojileri kullanilarak gelistirilmis kapsamli bir arac 
 
 **Website**
 https://rent-a-car-iota-peach.vercel.app/
+Siteye giriş yaptıktan 1 dakika sonra sorunsuzca deneyebilirsiniz.
 
 ## Kullanilan Teknolojiler ve Araclar
 
